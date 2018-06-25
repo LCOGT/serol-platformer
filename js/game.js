@@ -16,6 +16,10 @@
 
     function preload() {
         game.load.spritesheet('character', 'assets/character.png', 40, 64);
+
+        //background level
+        game.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('level', "assets/level.png");
     }
 
     var player;
@@ -24,23 +28,38 @@
     var vertMove = -120;
     var jumpTimer = 0;
 
+    //background level
+    var map;
+    var layer;
+
     function create() {
 
         game.stage.backgroundColor = '#D3D3D3';
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        //Tilemap
+        map = game.add.tilemap('map');
+        map.addTilesetImage('level');
+        map.setCollisionBetween(1, 5);
+        layer = map.createLayer('Tile Layer 1');
+        layer.resizeWorld();
+        //end tilemap
+
         player = game.add.sprite(2 * 48, 6 * 48, 'character');
 
         game.physics.enable(player);
 
-        player.body.collideWorldBounds = true;
-
         player.body.gravity.y = 96;
+
+        // Set the camera to follow the 'player'
+        game.camera.follow(player);
 
     }
 
     function update() {
+        //collision
+        game.physics.arcade.collide(player, layer);
 
         player.body.velocity.x = 0;
 
