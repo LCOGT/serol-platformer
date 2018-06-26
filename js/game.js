@@ -15,7 +15,7 @@
     );
 
     function preload() {
-        game.load.spritesheet('character', 'assets/character.png', 40, 64);
+        game.load.spritesheet('serol', 'assets/serol_sprites.png', 50, 50);
 
         //background level
         game.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
@@ -46,7 +46,7 @@
         layer.resizeWorld();
         //end tilemap
 
-        player = game.add.sprite(2 * 48, 6 * 48, 'character');
+        player = game.add.sprite(2 * 48, 6 * 48, 'serol');
 
         game.physics.enable(player);
 
@@ -90,9 +90,9 @@
         }
 
         if (facing === "left") {
-            player.frame = 1;
+            player.frame = 3;
         } else {
-            player.frame = 0;
+            player.frame = 2;
         }
 
     }
