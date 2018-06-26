@@ -4,7 +4,7 @@
 (function (Phaser) {
 
     var game = new Phaser.Game(
-            500, 500,
+            800, 600,
             Phaser.AUTO,
             'phaser',
             {
@@ -46,7 +46,7 @@
         layer.resizeWorld();
         //end tilemap
 
-        player = game.add.sprite(2 * 48, 6 * 48, 'serol');
+        player = game.add.sprite(7 * 64, 4 * 64, 'serol');
 
         game.physics.enable(player);
 
