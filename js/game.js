@@ -16,13 +16,14 @@
 
     function preload() {
         game.load.spritesheet('serol', 'assets/serol_sprites.png', 50, 50);
-
+        game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 18, 20);
         //background level
         game.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('level', "assets/level.png");
     }
 
     var player;
+    var collectible;
     var facing = "left";
     var hozMove = 160;
     var vertMove = -120;
@@ -47,10 +48,13 @@
         //end tilemap
 
         player = game.add.sprite(7 * 64, 4 * 64, 'serol');
+        collectible = game.add.sprite(5 * 64, 3 * 64, 'tetromino')
 
         game.physics.enable(player);
+        game.physics.enable(collectible);
 
         player.body.gravity.y = 96;
+        collectible.body.gravity.y = 50;
 
         // Set the camera to follow the 'player'
         game.camera.follow(player);
