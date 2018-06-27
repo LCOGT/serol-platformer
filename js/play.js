@@ -5,12 +5,18 @@
 //https://www.youtube.com/watch?v=mBEVHWUelWs
 
 var playState = {
-  player: null,
+  player:{
+
+  },
+  tetromino:{
+
+  },
     create: function(){
       var self = this;
+      //background setup
       game.stage.backgroundColor = '#D3D3D3';
       bgImage = game.add.tileSprite(0, 0, 800, 600, 'background');
-
+      //serol setup
       self.player = game.add.sprite(7 * 64, 4 * 64, 'serol');
       self.player.frame = 1;
       game.add.existing(self.player);
@@ -24,19 +30,31 @@ var playState = {
       self.player.body.collideWorldBounds = true;
       self.player.body.gravity.y = 96;
 
+      //tetromino setup
+      self.tetromino = game.add.sprite(5 * 64, 3 * 64, 'tetromino');
+      self.tetromino.frame = 0;
+      game.add.existing(self.tetromino);
+      game.physics.enable(self.tetromino, Phaser.Physics.ARCADE);
+      self.tetromino.body.gravity.y = 50;
+
     },
     update: function(){
       var self = this;
 
+      //initial state of Serol
+      self.player.body.velocity.x = 0;
+      self.player.animations.play('static');
+
+      self.movePlayer();
+    },
+
+    movePlayer: function() {
+      var self = this;
       //control variables
       var facing = "front";
       var hozMove = 160;
       var vertMove = -120;
       var jumpTimer = 0;
-
-      //initial state of Serol
-      self.player.body.velocity.x = 0;
-      self.player.animations.play('static');
 
       //controls here
 
