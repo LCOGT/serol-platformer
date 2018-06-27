@@ -68,6 +68,11 @@ var playState = {
             }
         }
 
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && self.player.body.onFloor() && game.time.now > jumpTimer){
+          self.player.body.velocity.y = vertMove;
+          jumpTimer = game.time.now + 650;
+        }
+
       //facing check
       if (facing === "left") {
           self.player.frame = 3;
