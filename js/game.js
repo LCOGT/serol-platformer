@@ -1,6 +1,13 @@
 //game.js
 
-var game = new Phaser.Game(800, 500, Phaser.AUTO, 'SerolGame', null);
+var game = new Phaser.Game(
+  800, 500,
+  Phaser.AUTO,
+  'SerolGame',
+  null,
+  false,
+  false,
+  null);
 
 //add each game state
 game.state.add('boot', bootState);

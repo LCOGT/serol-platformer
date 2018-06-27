@@ -36,6 +36,9 @@ var playState = {
       game.add.existing(self.tetromino);
       game.physics.enable(self.tetromino, Phaser.Physics.ARCADE);
       self.tetromino.body.gravity.y = 50;
+      //scaling tetrominos
+      self.tetromino.scale.x = 2;
+      self.tetromino.scale.y = 2;
 
     },
     update: function(){
