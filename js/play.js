@@ -49,6 +49,9 @@ var playState = {
       self.player.animations.play('static');
 
       self.movePlayer();
+      game.physics.arcade.overlap(self.player, self.tetromino, function(){
+        self.getCollectible();
+      })
     },
 
     movePlayer: function() {
@@ -103,6 +106,11 @@ var playState = {
         self.player.frame = 1;
       }
 
+    },
+
+    getCollectible: function() {
+      var self = this;
+      self.tetromino.kill();
     }
 
 }
