@@ -53,7 +53,7 @@ var playState = {
 
     getCollectible: function() {
       var self = this;
-      tetromino.destroy();
+      self.tetrominos.destroy();
     }
 };
 //7 * 64, 4 * 64 for serol
