@@ -12,9 +12,8 @@ var loadState={
     game.load.spritesheet('serol', 'assets/serol_sprites.png', 50, 50);
     game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 16, 16);
 
-    game.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('level', "assets/level.png");
-		game.load.image('background', 'assets/background_day_large.png');
+    game.load.image('background', 'assets/background_day_large.png');
+		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 
 
  	},

@@ -5,11 +5,6 @@
 //https://www.youtube.com/watch?v=mBEVHWUelWs
 
 var playState = {
-  /**
-  TODO:
-  resolve changes
-  in create/update functions due to factory functions
-  **/
   player: null,
   tetrominos: null,
   junk: null,
@@ -17,7 +12,7 @@ var playState = {
       var self = this;
       //background setup
       game.stage.backgroundColor = '#D3D3D3';
-      bgImage = game.add.tileSprite(0, 0, 800, 600, 'background');
+      bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
 
       //add Serol object
       self.player = new Player(7 * 64, 4 * 64);

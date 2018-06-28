@@ -1,7 +1,7 @@
 //game.js
 
 var game = new Phaser.Game(
-  800, 500,
+  1024, 640,
   Phaser.AUTO,
   'SerolGame',
   null,
