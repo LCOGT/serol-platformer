@@ -10,7 +10,7 @@ var loadState={
 
 		/**** Load graphics assets ****/
     game.load.spritesheet('serol', 'assets/serol_sprites.png', 50, 50);
-    game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 18, 20);
+    game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 16, 16);
 
     game.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('level', "assets/level.png");
