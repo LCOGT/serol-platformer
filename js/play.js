@@ -15,7 +15,7 @@ var playState = {
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
 
       //add Serol object
-      self.player = new Player(7 * 64, 4 * 64);
+      self.player = new Player(350, 350);
       game.add.existing(self.player);
       //activate physics for Serol
       game.physics.enable(self.player, Phaser.Physics.ARCADE);
@@ -56,12 +56,12 @@ function Player(x, y) {
 
   //serol attributes
   var player = game.add.sprite(x, y, 'serol');
-  player.frame = 1;
+  // player.frame = 1;
   player.animations.add('turnRight', [1, 2], 4);
-  player.animations.add('walkRight', [6, 7, 8, 9, 10], 4);
+  player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 4, true);
   player.animations.add('turnLeft', [1, 3], 4);
-  player.animations.add('walkLeft', [12, 13, 14, 15, 16],4);
-  player.animations.add('static', [1], 4);
+  player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 4, true);
+  player.animations.add('static', [30, 31, 32, 33], 4, true);
 
   //serol methods
 
@@ -76,11 +76,6 @@ function Player(x, y) {
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
           player.body.velocity.x = -hozMove;
-          /**
-          TODO:
-          fix walking animations
-          **/
-          player.animations.play('walkLeft');
 
           if (facing !== "left"){
             //play turn left animations
@@ -106,11 +101,13 @@ function Player(x, y) {
 
     //facing check
     if (facing === "left") {
-        player.frame = 3;
+
+        player.animations.play('walkLeft');
+
     } else if (facing === "right") {
-        player.frame = 2;
+        player.animations.play('walkRight');
     } else {
-      player.frame = 1;
+        player.animations.play('static');
     }
   }
 
