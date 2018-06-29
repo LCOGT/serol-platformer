@@ -17,6 +17,7 @@ var playState = {
       //add Serol object
       self.player = new Player(350, 350);
       game.add.existing(self.player);
+
       //activate physics for Serol
       game.physics.enable(self.player, Phaser.Physics.ARCADE);
       self.player.body.collideWorldBounds = true;
@@ -38,7 +39,7 @@ var playState = {
 
       //initial state of Serol
       self.player.body.velocity.x = 0;
-      self.player.animations.play('static');
+
 
       self.player.movePlayer();
       game.physics.arcade.overlap(self.tetrominos, self.player, function(){
@@ -61,7 +62,9 @@ function Player(x, y) {
   player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 4, true);
   player.animations.add('turnLeft', [1, 3], 4);
   player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 4, true);
-  player.animations.add('static', [30, 31, 32, 33], 4, true);
+  player.animations.add('static', [30, 31, 30, 31, 32, 33], 4, true);
+
+
 
   //serol methods
 
@@ -97,17 +100,21 @@ function Player(x, y) {
       if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jumpTimer = game.time.now + 650;
+        player.animations.stop('static');
       }
 
     //facing check
     if (facing === "left") {
-
-        player.animations.play('walkLeft');
-
+        // player.frame = 3;
+        player.play('walkLeft');
     } else if (facing === "right") {
-        player.animations.play('walkRight');
-    } else {
-        player.animations.play('static');
+        // player.frame = 2;
+        player.play('walkRight');
+    } else if (facing === 'front' && player.body.onFloor()){
+        // player.frame = 1;
+        player.play('static');
+    }else {
+      player.frame = 1;
     }
   }
 

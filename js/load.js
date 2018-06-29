@@ -9,7 +9,7 @@ var loadState={
 		game.stage.backgroundColor = '#000000';
 
 		/**** Load graphics assets ****/
-    game.load.spritesheet('serol', 'assets/serol_sprites_big_2.png', 140, 180);
+    game.load.spritesheet('serol', 'assets/serol_sprites_big_2.png', 138, 176);
     game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 16, 16);
 		game.load.spritesheet('start', 'assets/click_start.png', 219, 26);
     game.load.image('background', 'assets/background_day_large.png');
