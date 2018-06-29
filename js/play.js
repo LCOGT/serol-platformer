@@ -40,7 +40,6 @@ var playState = {
       //initial state of Serol
       self.player.body.velocity.x = 0;
 
-
       self.player.movePlayer();
       game.physics.arcade.overlap(self.tetrominos, self.player, function(){
         self.getCollectible();
@@ -52,20 +51,17 @@ var playState = {
       self.tetrominos.destroy();
     }
 };
-//7 * 64, 4 * 64 for serol
+
 function Player(x, y) {
 
   //serol attributes
   var player = game.add.sprite(x, y, 'serol');
-  // player.frame = 1;
 
   player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 4, true);
   player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 4, true);
   player.animations.add('static', [30, 31, 30, 31, 32, 33], 4, true);
   player.animations.add('staticRight', [18, 19, 20, 21], 4, true);
   player.animations.add('staticLeft', [24, 25, 26, 27], 4, true);
-
-
 
   //serol methods
 
@@ -86,14 +82,13 @@ function Player(x, y) {
             facing = "left";
           }
       }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+        player.body.velocity.x = hozMove;
+        //animation here?
 
-      else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
-          player.body.velocity.x = hozMove;
-          //animation here?
-
-          if (facing !== "right"){
-            facing = "right";
-          }
+        if (facing !== "right"){
+          facing = "right";
+        }
       }
 
       if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
@@ -109,9 +104,6 @@ function Player(x, y) {
       }else {
         player.play('staticLeft');
       }
-
-
-        // player.play('walkLeft');
     } else if (facing == "right") {
         //check if on the floor or not
         if (player.body.onFloor()){
@@ -121,7 +113,6 @@ function Player(x, y) {
         }
 
     } else if (facing === 'front' && player.body.onFloor()){
-        // player.frame = 1;
         player.play('static');
     }else {
       player.frame = 1;
@@ -137,8 +128,8 @@ function Tetromino(x, sprite) {
   var tetromino = game.add.sprite(x, 3 * 64, 'tetromino');
   tetromino.frame = sprite;
   //scaling tetrominos
-  tetromino.scale.x = 2;
-  tetromino.scale.y = 2;
+  tetromino.scale.x = 4;
+  tetromino.scale.y = 4;
 
   //tetromino methods
   // tetromino.appear = fuction(){
