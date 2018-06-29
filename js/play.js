@@ -58,11 +58,12 @@ function Player(x, y) {
   //serol attributes
   var player = game.add.sprite(x, y, 'serol');
   // player.frame = 1;
-  player.animations.add('turnRight', [1, 2], 4);
+
   player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 4, true);
-  player.animations.add('turnLeft', [1, 3], 4);
   player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 4, true);
   player.animations.add('static', [30, 31, 30, 31, 32, 33], 4, true);
+  player.animations.add('staticRight', [18, 19, 20, 21], 4, true);
+  player.animations.add('staticLeft', [24, 25, 26, 27], 4, true);
 
 
 
@@ -82,7 +83,6 @@ function Player(x, y) {
 
           if (facing !== "left"){
             //play turn left animations
-            player.animations.play('turnLeft');
             facing = "left";
           }
       }
@@ -92,7 +92,6 @@ function Player(x, y) {
           //animation here?
 
           if (facing !== "right"){
-            player.animations.play('turnRight');
             facing = "right";
           }
       }
@@ -104,12 +103,23 @@ function Player(x, y) {
       }
 
     //facing check
-    if (facing === "left") {
-        // player.frame = 3;
+    if (facing == "left") {
+      if (player.body.onFloor()){
         player.play('walkLeft');
-    } else if (facing === "right") {
-        // player.frame = 2;
-        player.play('walkRight');
+      }else {
+        player.play('staticLeft');
+      }
+
+
+        // player.play('walkLeft');
+    } else if (facing == "right") {
+        //check if on the floor or not
+        if (player.body.onFloor()){
+          player.play('walkRight');
+        }else {
+          player.play('staticRight');
+        }
+
     } else if (facing === 'front' && player.body.onFloor()){
         // player.frame = 1;
         player.play('static');
