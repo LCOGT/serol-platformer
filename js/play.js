@@ -10,10 +10,10 @@ var playState = {
   junk: null,
   create: function(){
       var self = this;
-      var randNum = Math.floor(Math.random() * 60);
       //background setup
       game.stage.backgroundColor = '#D3D3D3';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
+      game.world.setBounds(0, 0, 1024, 545);
 
       //add Serol object
       self.player = new Player(350, 350);
@@ -32,7 +32,9 @@ var playState = {
 
       self.tetrominos.forEach(function(tetromino, index){
         game.physics.enable(tetromino, Phaser.Physics.ARCADE);
-        tetromino.body.gravity.y = 50;
+
+        tetromino.body.immovable = true;
+        tetromino.fall();
       });
     },
     update: function(){
@@ -42,8 +44,13 @@ var playState = {
       self.player.body.velocity.x = 0;
 
       self.player.movePlayer();
-      game.physics.arcade.overlap(self.tetrominos, self.player, function(){
-        self.getCollectible();
+
+      /*
+      TODO:
+      Make it so that individual tetrominos disappear when touched
+      */
+      game.physics.arcade.overlap(self.tetrominos, self.player, function(p,t){
+        t.getCaught();
       });
     },
 
@@ -133,9 +140,16 @@ function Tetromino(x, sprite) {
   tetromino.scale.y = 4;
 
   //tetromino methods
-  // tetromino.appear = fuction(){
-  //
-  // }
+  tetromino.fall = function(){
+    var self = this;
+    tetromino.body.gravity.y = 50;
+    self.body.immovable = false;
+  }
+
+  tetromino.getCaught = function(){
+    var self = this;
+    self.kill();
+  }
   return tetromino;
 };
 

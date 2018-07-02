@@ -15,7 +15,7 @@ var loadState={
     game.load.image('background', 'assets/background_day_large.png');
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 
-
+		
  	},
  	create: function(){
  		game.state.start('title');
