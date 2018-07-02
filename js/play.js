@@ -3,17 +3,23 @@
 
 //Made using Brian Greig's YouTube tutorials
 //https://www.youtube.com/watch?v=mBEVHWUelWs
-
+var counterVal = 0;
 var playState = {
+  counter: null,
   player: null,
   tetrominos: null,
   junk: null,
   create: function(){
       var self = this;
+
       //background setup
       game.stage.backgroundColor = '#D3D3D3';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
       game.world.setBounds(0, 0, 1024, 545);
+
+      //add Counter
+      self.counter = new Counter(counterVal);
+      game.add.existing(self.counter);
 
       //add Serol object
       self.player = new Player(350, 350);
@@ -39,7 +45,7 @@ var playState = {
     },
     update: function(){
       var self = this;
-
+      // var counterVal = 0;
       //initial state of Serol
       self.player.body.velocity.x = 0;
 
@@ -47,17 +53,19 @@ var playState = {
 
       /*
       TODO:
-      Make it so that individual tetrominos disappear when touched
+      debug counter
       */
       game.physics.arcade.overlap(self.tetrominos, self.player, function(p,t){
         t.getCaught();
+        counterVal = counterVal + 10;
+        self.counter.updateScore(counterVal);
       });
     },
 
-    getCollectible: function() {
-      var self = this;
-      self.tetrominos.destroy();
-    }
+    // getCollectible: function() {
+    //   var self = this;
+    //   self.tetrominos.destroy();
+    // }
 };
 
 function Player(x, y) {
@@ -154,3 +162,23 @@ function Tetromino(x, sprite) {
 };
 
 //junk function here:
+
+//counter function here:
+function Counter(i){
+  var counter = game.add.text(0, 0, ("Score: " + i), {
+    font: "50px Courier",
+    fill: "#ffffff",
+    align: "center"
+  });
+
+  counter.x = game.camera.x;
+  counter.y = game.camera.y;
+
+  counter.updateScore = function(value){
+    var self = this;
+    self.setText("Score: " + value);
+    return value;
+  }
+
+  return counter;
+}
