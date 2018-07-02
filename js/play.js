@@ -11,7 +11,8 @@ var playState = {
   junk: null,
   create: function(){
       var self = this;
-
+      var max = 960;
+      var min = 20;
       //background setup
       game.stage.backgroundColor = '#D3D3D3';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
@@ -32,9 +33,13 @@ var playState = {
 
       //tetrominos: sprite group setup
       self.tetrominos = game.add.group();
-      self.tetrominos.add(Tetromino(5 * 64, Math.floor(Math.random() * 60)));
-      self.tetrominos.add(Tetromino(7 * 64, Math.floor(Math.random() * 60)));
-      self.tetrominos.add(Tetromino(3 * 64, Math.floor(Math.random() * 60)));
+
+      self.tetrominos.add(Tetromino(Math.floor(Math.random() * (max - min + 1)) + min,
+       Math.floor(Math.random() * 60)));
+      self.tetrominos.add(Tetromino(Math.floor(Math.random() * (max - min + 1)) + min,
+       Math.floor(Math.random() * 60)));
+      self.tetrominos.add(Tetromino(Math.floor(Math.random() * (max - min + 1)) + min,
+       Math.floor(Math.random() * 60)));
 
       self.tetrominos.forEach(function(tetromino, index){
         game.physics.enable(tetromino, Phaser.Physics.ARCADE);
