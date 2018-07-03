@@ -4,8 +4,10 @@
 //Made using Brian Greig's YouTube tutorials
 //https://www.youtube.com/watch?v=mBEVHWUelWs
 var counterVal = 0;
+var lifeCount = 3;
 var playState = {
   counter: null,
+  lives: null,
   player: null,
   tetrominos: null,
   junkItems: null,
@@ -21,6 +23,22 @@ var playState = {
       //add Counter
       self.counter = new Counter(counterVal);
       game.add.existing(self.counter);
+
+      //add Lives
+      self.lives = new Lives(3);
+      game.add.existing(self.lives);
+      game.add.text(11 * 64, 10, ("Lives: "), {
+        font: "50px Courier",
+        fill: "#ffffff",
+        align: "center"
+      });
+
+      //add 1up
+      self.battery = new Battery(350);
+      game.add.existing(self.battery);
+      game.physics.enable(self.battery, Phaser.Physics.ARCADE);
+      self.battery.body.immovable = true;
+      self.battery.fall();
 
       //add Serol object
       self.player = new Player(350, 350);
@@ -52,6 +70,10 @@ var playState = {
       self.junkItems = game.add.group();
       self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
        Math.floor(Math.random() * 6)));
+      self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
+       Math.floor(Math.random() * 6)));
+      self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
+       Math.floor(Math.random() * 6)));
 
       self.junkItems.forEach(function(junk, index){
         game.physics.enable(junk, Phaser.Physics.ARCADE);
@@ -76,6 +98,8 @@ var playState = {
       //catching junk
       game.physics.arcade.overlap(self.junkItems, self.player, function(p,j){
         j.getCaught();
+        lifeCount--;
+        self.lives.updateLife(lifeCount);
         /*
         TODO:
         make catching junk affect life count
@@ -209,8 +233,37 @@ function Counter(i){
   counter.updateScore = function(value){
     var self = this;
     self.setText("Score: " + value);
-    return value;
   }
 
   return counter;
+}
+
+//lives widget here
+function Lives(i){
+  //set position and frame
+  var lives = game.add.sprite(14 * 64, -30, 'lives');
+  lives.frame = i;
+  lives.scale.x = 4;
+  lives.scale.y = 4;
+
+  //methods
+  lives.updateLife = function(j){
+    var self = this;
+    self.frame = j;
+  }
+
+  return lives;
+}
+
+//battery 1up function here:
+function Battery(x){
+  var battery = game.add.sprite(x, 0, '1up');
+  battery.frame = 0;
+
+  battery.fall = function(){
+    var self = this;
+    battery.body.gravity.y = 50;
+    self.body.immovable = false;
+  }
+  return battery;
 }
