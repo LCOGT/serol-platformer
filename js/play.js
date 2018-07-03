@@ -5,6 +5,7 @@
 //https://www.youtube.com/watch?v=mBEVHWUelWs
 var counterVal = 0;
 var lifeCount = 3;
+var endGame = false;
 var playState = {
   counter: null,
   lives: null,
@@ -34,11 +35,11 @@ var playState = {
       });
 
       //add 1up
-      self.battery = new Battery(350);
-      game.add.existing(self.battery);
-      game.physics.enable(self.battery, Phaser.Physics.ARCADE);
-      self.battery.body.immovable = true;
-      self.battery.fall();
+      // self.battery = new Battery(350);
+      // game.add.existing(self.battery);
+      // game.physics.enable(self.battery, Phaser.Physics.ARCADE);
+      // self.battery.body.immovable = true;
+      // self.battery.fall();
 
       //add Serol object
       self.player = new Player(350, 350);
@@ -68,12 +69,12 @@ var playState = {
 
       //junk sprite group setup
       self.junkItems = game.add.group();
-      self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
-       Math.floor(Math.random() * 6)));
-      self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
-       Math.floor(Math.random() * 6)));
-      self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
-       Math.floor(Math.random() * 6)));
+      // self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
+      //  Math.floor(Math.random() * 6)));
+      self.junkItems.add(Junk(350, Math.floor(Math.random() * 6)));
+      self.junkItems.add(Junk(355, Math.floor(Math.random() * 6)));
+      self.junkItems.add(Junk(360, Math.floor(Math.random() * 6)));
+
 
       self.junkItems.forEach(function(junk, index){
         game.physics.enable(junk, Phaser.Physics.ARCADE);
@@ -98,12 +99,7 @@ var playState = {
       //catching junk
       game.physics.arcade.overlap(self.junkItems, self.player, function(p,j){
         j.getCaught();
-        if (lifeCount <= 0){
-          lifeCount = 0;
-        }else{
-          lifeCount--;
-        }
-
+        lifeCount--;
         self.lives.updateLife(lifeCount);
       });
 
@@ -117,7 +113,16 @@ var playState = {
       }
       self.lives.updateLife(lifeCount);
     });
-
+    if (lifeCount <= 0){
+      lifeCount = 0;
+      endGame = true;
+    }
+    if (endGame === true){
+        self.player.animations.stop('staticBob');
+        self.player.play('sleeping');
+        self.player.body.velocity.x = 0;
+        self.player.body.velocity.y = 0;
+    }
     },
 };
 
@@ -128,9 +133,11 @@ function Player(x, y) {
 
   player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 4, true);
   player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 4, true);
-  player.animations.add('static', [30, 31, 30, 31, 32, 33], 4, true);
+  player.animations.add('staticBob', [30, 31, 30, 31, 32, 33], 4, true);
+  player.animations.add('static', [1, 1], 4, true);
   player.animations.add('staticRight', [18, 19, 20, 21], 4, true);
   player.animations.add('staticLeft', [24, 25, 26, 27], 4, true);
+  player.animations.add('sleeping', [28, 29, 28, 29], 2, true);
 
   //serol methods
 
@@ -147,7 +154,6 @@ function Player(x, y) {
           player.body.velocity.x = -hozMove;
 
           if (facing !== "left"){
-            //play turn left animations
             facing = "left";
           }
       }
@@ -163,7 +169,7 @@ function Player(x, y) {
       if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jumpTimer = game.time.now + 650;
-        player.animations.stop('static');
+        player.animations.play('static');
       }
 
     //facing check
@@ -182,12 +188,11 @@ function Player(x, y) {
         }
 
     } else if (facing === 'front' && player.body.onFloor()){
-        player.play('static');
-    }else {
-      player.frame = 1;
+        player.play('staticBob');
+    } else{
+      player.play('static');
     }
   }
-
   return player;
 };
 
