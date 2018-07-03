@@ -8,7 +8,7 @@ var playState = {
   counter: null,
   player: null,
   tetrominos: null,
-  junk: null,
+  junkItems: null,
   create: function(){
       var self = this;
       var max = 960;
@@ -47,30 +47,41 @@ var playState = {
         tetromino.body.immovable = true;
         tetromino.fall();
       });
+
+      //junk sprite group setup
+      self.junkItems = game.add.group();
+      self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
+       Math.floor(Math.random() * 6)));
+
+      self.junkItems.forEach(function(junk, index){
+        game.physics.enable(junk, Phaser.Physics.ARCADE);
+
+        junk.body.immovable = true;
+        junk.fall();
+      });
     },
     update: function(){
       var self = this;
-      // var counterVal = 0;
       //initial state of Serol
       self.player.body.velocity.x = 0;
 
       self.player.movePlayer();
 
-      /*
-      TODO:
-      debug counter
-      */
+      //catching tetrominos
       game.physics.arcade.overlap(self.tetrominos, self.player, function(p,t){
         t.getCaught();
         counterVal = counterVal + 10;
         self.counter.updateScore(counterVal);
       });
+      //catching junk
+      game.physics.arcade.overlap(self.junkItems, self.player, function(p,j){
+        j.getCaught();
+        /*
+        TODO:
+        make catching junk affect life count
+        */
+      });
     },
-
-    // getCollectible: function() {
-    //   var self = this;
-    //   self.tetrominos.destroy();
-    // }
 };
 
 function Player(x, y) {
@@ -167,7 +178,23 @@ function Tetromino(x, sprite) {
 };
 
 //junk function here:
+function Junk(x, sprite){
+  var junk = game.add.sprite(x, 3 * 64, 'junk');
+  junk.frame = sprite;
 
+  //junk methods
+  junk.fall = function(){
+    var self = this;
+    junk.body.gravity.y = 50;
+    self.body.immovable = false;
+  }
+
+  junk.getCaught = function(){
+    var self = this;
+    self.kill();
+  }
+  return junk;
+}
 //counter function here:
 function Counter(i){
   var counter = game.add.text(0, 0, ("Score: " + i), {
