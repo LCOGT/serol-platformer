@@ -98,7 +98,7 @@ var playState = {
       //catching junk
       game.physics.arcade.overlap(self.junkItems, self.player, function(p,j){
         j.getCaught();
-        if (lifeCount <= 3){
+        if (lifeCount <= 0){
           lifeCount = 0;
         }else{
           lifeCount--;
