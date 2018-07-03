@@ -98,13 +98,26 @@ var playState = {
       //catching junk
       game.physics.arcade.overlap(self.junkItems, self.player, function(p,j){
         j.getCaught();
-        lifeCount--;
+        if (lifeCount <= 3){
+          lifeCount = 0;
+        }else{
+          lifeCount--;
+        }
+
         self.lives.updateLife(lifeCount);
-        /*
-        TODO:
-        make catching junk affect life count
-        */
       });
+
+    //catching 1up
+    game.physics.arcade.overlap(self.battery, self.player, function(){
+      self.battery.getCaught();
+      if (lifeCount >= 3){
+        lifeCount = 3;
+      }else{
+        lifeCount++;
+      }
+      self.lives.updateLife(lifeCount);
+    });
+
     },
 };
 
@@ -264,6 +277,10 @@ function Battery(x){
     var self = this;
     battery.body.gravity.y = 50;
     self.body.immovable = false;
+  }
+  battery.getCaught = function(){
+    var self = this;
+    self.kill();
   }
   return battery;
 }
