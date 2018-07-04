@@ -50,38 +50,19 @@ var playState = {
       self.player.body.collideWorldBounds = true;
       self.player.body.gravity.y = 96;
 
-      //tetrominos: sprite group setup
+      //sprite groups setup
       self.tetrominos = game.add.group();
-
-      self.tetrominos.add(Tetromino(Math.floor(Math.random() * (max - min + 1)) + min,
-       Math.floor(Math.random() * 60)));
-      self.tetrominos.add(Tetromino(Math.floor(Math.random() * (max - min + 1)) + min,
-       Math.floor(Math.random() * 60)));
-      self.tetrominos.add(Tetromino(Math.floor(Math.random() * (max - min + 1)) + min,
-       Math.floor(Math.random() * 60)));
-
-      self.tetrominos.forEach(function(tetromino, index){
-        game.physics.enable(tetromino, Phaser.Physics.ARCADE);
-
-        tetromino.body.immovable = true;
-        tetromino.fall();
-      });
-
-      //junk sprite group setup
       self.junkItems = game.add.group();
-      // self.junkItems.add(Junk(Math.floor(Math.random() * (max - min + 1)) + min,
-      //  Math.floor(Math.random() * 6)));
-      self.junkItems.add(Junk(350, Math.floor(Math.random() * 6)));
-      self.junkItems.add(Junk(355, Math.floor(Math.random() * 6)));
-      self.junkItems.add(Junk(360, Math.floor(Math.random() * 6)));
+      /*
+      TODO: loop spawning until endGame==true
+      */
 
+      game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+        //keep adding tetrominos to the group
+        self.tetrominos.add(Tetromino());
+        self.junkItems.add(Junk());
+      }, this);
 
-      self.junkItems.forEach(function(junk, index){
-        game.physics.enable(junk, Phaser.Physics.ARCADE);
-
-        junk.body.immovable = true;
-        junk.fall();
-      });
     },
     update: function(){
       var self = this;
@@ -197,21 +178,18 @@ function Player(x, y) {
 };
 
 //tetromino
-function Tetromino(x, sprite) {
+function Tetromino() {
   //tetromino attributes
-  var tetromino = game.add.sprite(x, 3 * 64, 'tetromino');
-  tetromino.frame = sprite;
+  var tetromino = game.add.sprite(game.world.randomX, 0, 'tetromino');
+  tetromino.frame = Math.floor(Math.random() * 60);
   //scaling tetrominos
   tetromino.scale.x = 4;
   tetromino.scale.y = 4;
+  //enabling physics for fall
+  game.physics.enable(tetromino, Phaser.Physics.ARCADE);
+  tetromino.body.gravity.y = 50;
 
   //tetromino methods
-  tetromino.fall = function(){
-    var self = this;
-    tetromino.body.gravity.y = 50;
-    self.body.immovable = false;
-  }
-
   tetromino.getCaught = function(){
     var self = this;
     self.kill();
@@ -220,17 +198,14 @@ function Tetromino(x, sprite) {
 };
 
 //junk function here:
-function Junk(x, sprite){
-  var junk = game.add.sprite(x, 3 * 64, 'junk');
-  junk.frame = sprite;
+function Junk(){
+  var junk = game.add.sprite(game.world.randomX, 0, 'junk');
+  junk.frame = Math.floor(Math.random() * 6);
+  //enable physics
+  game.physics.enable(junk, Phaser.Physics.ARCADE);
+  junk.body.gravity.y = 50;
 
   //junk methods
-  junk.fall = function(){
-    var self = this;
-    junk.body.gravity.y = 50;
-    self.body.immovable = false;
-  }
-
   junk.getCaught = function(){
     var self = this;
     self.kill();
