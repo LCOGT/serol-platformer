@@ -12,6 +12,7 @@ var playState = {
   player: null,
   tetrominos: null,
   junkItems: null,
+  batteries: null,
   create: function(){
       var self = this;
       var max = 960;
@@ -34,13 +35,6 @@ var playState = {
         align: "center"
       });
 
-      //add 1up
-      // self.battery = new Battery(350);
-      // game.add.existing(self.battery);
-      // game.physics.enable(self.battery, Phaser.Physics.ARCADE);
-      // self.battery.body.immovable = true;
-      // self.battery.fall();
-
       //add Serol object
       self.player = new Player(350, 350);
       game.add.existing(self.player);
@@ -53,6 +47,7 @@ var playState = {
       //sprite groups setup
       self.tetrominos = game.add.group();
       self.junkItems = game.add.group();
+      self.batteries = game.add.group();
       /*
       TODO: loop spawning until endGame==true
       */
@@ -61,6 +56,7 @@ var playState = {
         //keep adding tetrominos to the group
         self.tetrominos.add(Tetromino());
         self.junkItems.add(Junk());
+        self.batteries.add(Battery());
       }, this);
 
     },
@@ -85,8 +81,8 @@ var playState = {
       });
 
     //catching 1up
-    game.physics.arcade.overlap(self.battery, self.player, function(){
-      self.battery.getCaught();
+    game.physics.arcade.overlap(self.batteries, self.player, function(p,b){
+      b.getCaught();
       if (lifeCount >= 3){
         lifeCount = 3;
       }else{
@@ -94,10 +90,12 @@ var playState = {
       }
       self.lives.updateLife(lifeCount);
     });
+
     if (lifeCount <= 0){
       lifeCount = 0;
       endGame = true;
     }
+    
     if (endGame === true){
         self.player.animations.stop('staticBob');
         self.player.play('sleeping');
@@ -180,7 +178,7 @@ function Player(x, y) {
 //tetromino
 function Tetromino() {
   //tetromino attributes
-  var tetromino = game.add.sprite(game.world.randomX, 0, 'tetromino');
+  var tetromino = game.add.sprite(game.world.randomX, -50, 'tetromino');
   tetromino.frame = Math.floor(Math.random() * 60);
   //scaling tetrominos
   tetromino.scale.x = 4;
@@ -199,7 +197,7 @@ function Tetromino() {
 
 //junk function here:
 function Junk(){
-  var junk = game.add.sprite(game.world.randomX, 0, 'junk');
+  var junk = game.add.sprite(game.world.randomX, -40, 'junk');
   junk.frame = Math.floor(Math.random() * 6);
   //enable physics
   game.physics.enable(junk, Phaser.Physics.ARCADE);
@@ -249,15 +247,12 @@ function Lives(i){
 }
 
 //battery 1up function here:
-function Battery(x){
-  var battery = game.add.sprite(x, 0, '1up');
+function Battery(){
+  var battery = game.add.sprite(game.world.randomX, -40, '1up');
   battery.frame = 0;
+  game.physics.enable(battery, Phaser.Physics.ARCADE);
+  battery.body.gravity.y = 50;
 
-  battery.fall = function(){
-    var self = this;
-    battery.body.gravity.y = 50;
-    self.body.immovable = false;
-  }
   battery.getCaught = function(){
     var self = this;
     self.kill();
