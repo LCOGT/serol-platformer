@@ -52,7 +52,7 @@ var playState = {
       TODO: loop spawning until endGame==true
       */
 
-      game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+      generateItems = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
         //keep adding tetrominos to the group
         self.tetrominos.add(Tetromino());
         self.junkItems.add(Junk());
@@ -95,12 +95,15 @@ var playState = {
       lifeCount = 0;
       endGame = true;
     }
-    
+
+    //endgame sequence
     if (endGame === true){
         self.player.animations.stop('staticBob');
         self.player.play('sleeping');
         self.player.body.velocity.x = 0;
         self.player.body.velocity.y = 0;
+        self.lives.frame = 0;
+        game.time.events.remove(generateItems);
     }
     },
 };
