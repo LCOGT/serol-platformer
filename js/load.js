@@ -10,7 +10,7 @@ var loadState={
 
 		/*Load graphics assets */
 		//sprites
-    game.load.spritesheet('serol', 'assets/serol_sprites_big_1.png', 138, 176);
+    game.load.spritesheet('serol', 'assets/serol_sprites_condensed.png', 138, 131);
     game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 15, 15);
 		game.load.spritesheet('start', 'assets/click_start.png', 219, 26);
 		game.load.spritesheet('junk', 'assets/random_objects.png', 52, 52);
