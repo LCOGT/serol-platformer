@@ -6,6 +6,8 @@
 var counterVal = 0;
 var lifeCount = 3;
 var endGame = false;
+var pauseTime = 8;
+var grav = 40;
 var playState = {
   counter: null,
   lives: null,
@@ -15,6 +17,11 @@ var playState = {
   batteries: null,
   create: function(){
       var self = this;
+      /*
+      TODO:
+      increase spawn rate for junk/generateTetrominos
+      decrease spawn rate for batteries
+      */
       //background setup
       game.stage.backgroundColor = '#D3D3D3';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
@@ -47,14 +54,25 @@ var playState = {
       self.junkItems = game.add.group();
       self.batteries = game.add.group();
 
-      generateTetrominos = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+      generateTetrominos = game.time.events.loop(Phaser.Timer.SECOND * 1.5, function() {
         //keep adding tetrominos to the group
         self.tetrominos.add(Tetromino());
+        grav = grav + 5;
+
       }, this);
 
-      generateJunk = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
+      generateJunk = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
         //keep adding junk to the group
-        self.junkItems.add(Junk());
+        game.time.events.add(Phaser.Timer.SECOND * pauseTime,
+          function() {
+            self.junkItems.add(Junk());
+            if (pauseTime > 0.0005){
+              pauseTime = parseFloat((pauseTime - 0.025).toFixed(4));
+            }else {
+              pauseTime = 0.0005
+            }
+
+          },this);
       }, this);
 
       generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 10, function() {
@@ -210,7 +228,7 @@ function Tetromino() {
   tetromino.scale.y = 4;
   //enabling physics for fall
   game.physics.enable(tetromino, Phaser.Physics.ARCADE);
-  tetromino.body.gravity.y = 50;
+  tetromino.body.gravity.y = grav;
 
   //tetromino methods
   tetromino.getCaught = function(){
