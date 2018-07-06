@@ -22,6 +22,12 @@ var playState = {
       increase spawn rate for junk/generateTetrominos
       decrease spawn rate for batteries
       */
+      //sounds setup
+      collect_sfx = game.add.audio('collect_t');
+      gain_life_sfx = game.add.audio('gain_life');
+      game_over_sfx = game.add.audio('game_over', 1, false);
+      jump_sfx = game.add.audio('jump');
+      lose_life_sfx = game.add.audio('lose_life');
       //background setup
       game.stage.backgroundColor = '#D3D3D3';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
@@ -34,11 +40,7 @@ var playState = {
       //add Lives
       self.lives = new Lives(3);
       game.add.existing(self.lives);
-      game.add.text(11 * 64, 10, ("Lives: "), {
-        font: "50px Courier",
-        fill: "#ffffff",
-        align: "center"
-      });
+
 
       //add Serol object
       self.player = new Player(350, 350);
@@ -47,7 +49,7 @@ var playState = {
       //activate physics for Serol
       game.physics.enable(self.player, Phaser.Physics.ARCADE);
       self.player.body.collideWorldBounds = true;
-      self.player.body.gravity.y = 200;
+      self.player.body.gravity.y = 3000;
 
       //sprite groups setup
       self.tetrominos = game.add.group();
@@ -91,12 +93,14 @@ var playState = {
       //catching tetrominos
       game.physics.arcade.overlap(self.tetrominos, self.player, function(p,t){
         t.getCaught();
+        collect_sfx.play();
         counterVal = counterVal + 10;
         self.counter.updateScore(counterVal);
       });
       //catching junk
       game.physics.arcade.overlap(self.junkItems, self.player, function(p,j){
         j.getCaught();
+        lose_life_sfx.play();
         lifeCount--;
         self.lives.updateLife(lifeCount);
       });
@@ -104,6 +108,7 @@ var playState = {
     //catching 1up
     game.physics.arcade.overlap(self.batteries, self.player, function(p,b){
       b.getCaught();
+      gain_life_sfx.play();
       if (lifeCount >= 3){
         lifeCount = 3;
       }else{
@@ -132,6 +137,8 @@ var playState = {
       self.player.body.velocity.x = 0;
       self.player.body.velocity.y = 0;
       self.lives.frame = 0;
+      // game_over_sfx.play();
+
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
           game.add.tween(gameOverScreen).to( { alpha: 1 },
@@ -143,7 +150,6 @@ var playState = {
              true);
         },
         this);
-
     }
     },
 };
@@ -168,8 +174,8 @@ function Player(x, y) {
     var self = this;
     //control variables
     var facing = "front";
-    var hozMove = 300;
-    var vertMove = -170;
+    var hozMove = 400;
+    var vertMove = -1000;
     var jumpTimer = 0;
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
@@ -190,7 +196,8 @@ function Player(x, y) {
 
       if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
-        jumpTimer = game.time.now + 650;
+        jump_sfx.play();
+        jumpTimer = game.time.now + 900;
         player.animations.play('static');
       }
 
@@ -256,13 +263,13 @@ function Junk(){
 //counter function here:
 function Counter(i){
   var counter = game.add.text(0, 0, ("Score: " + i), {
-    font: "50px Courier",
+    font: "32px 'Press Start 2P'",
     fill: "#ffffff",
     align: "center"
   });
 
-  counter.x = game.camera.x;
-  counter.y = game.camera.y;
+  counter.x = game.camera.x+10;
+  counter.y = game.camera.y+20;
 
   counter.updateScore = function(value){
     var self = this;
@@ -279,6 +286,13 @@ function Lives(i){
   lives.frame = i;
   lives.scale.x = 4;
   lives.scale.y = 4;
+
+  //text
+  game.add.text(11 * 64, 20, ("Lives: "), {
+    font: "32px 'Press Start 2P'",
+    fill: "#ffffff",
+    align: "center"
+  });
 
   //methods
   lives.updateLife = function(j){

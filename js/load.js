@@ -20,7 +20,12 @@ var loadState={
     game.load.image('background', 'assets/background_day_large.png');
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 		game.load.image('gameOverScreen', 'assets/game_over.png');
-
+		//audio
+		game.load.audio('collect_t', 'assets/audio/collect_t.mp3');
+		game.load.audio('gain_life', 'assets/audio/gain_life.mp3');
+		game.load.audio('game_over', 'assets/audio/game_over.mp3');
+		game.load.audio('jump', 'assets/audio/jump.mp3');
+		game.load.audio('lose_life', 'assets/audio/lose_life.mp3');
 
  	},
  	create: function(){
