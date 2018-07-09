@@ -10,6 +10,7 @@ var playState2 = {
   player: null,
   create: function(){
     var self = this;
+    jump_sfx = game.add.audio('jump');
     //set up background
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
     game.world.setBounds(0, 0, 1024, 545);
@@ -18,19 +19,31 @@ var playState2 = {
     //create cursor key controls
     cursors = game.input.keyboard.createCursorKeys();
     //add Serol
-    self.player = new Player(350, 350);
+    self.player = new Player(100, 350);
     game.add.existing(self.player);
+    //activate physics for Serol
+    game.physics.enable(self.player, Phaser.Physics.ARCADE);
+    self.player.body.collideWorldBounds = true;
+    self.player.body.gravity.y = 3000;
   },
 
   update: function(){
     var self = this;
+    var vertMove = -1000;
+    var jumpTimer = 0;
+
     if (cursors.left.isDown){
-        runnerBg.tilePosition.x += 2;
-        self.player.animations.play('walkLeft');
-    } else if (cursors.right.isDown){
-        runnerBg.tilePosition.x -= 2;
+        runnerBg.tilePosition.x += 3;
         self.player.animations.play('walkRight');
-    } else{
+    } else if (cursors.right.isDown){
+        runnerBg.tilePosition.x -= 3;
+        self.player.animations.play('walkRight');
+    } else if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && self.player.body.onFloor() && game.time.now > jumpTimer){
+      self.player.body.velocity.y = vertMove;
+      jump_sfx.play();
+      jumpTimer = game.time.now + 900;
+      self.player.animations.play('staticRight');
+    } else {
       self.player.animations.play('staticRight');
     }
   },
