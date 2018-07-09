@@ -29,23 +29,11 @@ var playState2 = {
 
   update: function(){
     var self = this;
-    var vertMove = -1000;
-    var jumpTimer = 0;
 
-    if (cursors.left.isDown){
-        runnerBg.tilePosition.x += 3;
-        self.player.animations.play('walkRight');
-    } else if (cursors.right.isDown){
-        runnerBg.tilePosition.x -= 3;
-        self.player.animations.play('walkRight');
-    } else if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && self.player.body.onFloor() && game.time.now > jumpTimer){
-      self.player.body.velocity.y = vertMove;
-      jump_sfx.play();
-      jumpTimer = game.time.now + 900;
-      self.player.animations.play('staticRight');
-    } else {
-      self.player.animations.play('staticRight');
-    }
+    runnerBg.tilePosition.x -= 3;
+    self.player.body.velocity.x = 0;
+    self.player.movePlayer();
+
   },
 
 
@@ -63,6 +51,31 @@ function Player(x, y) {
   player.animations.add('staticRight', [18, 19, 20, 21], 4, true);
   player.animations.add('staticLeft', [24, 25, 26, 27], 4, true);
   player.animations.add('sleeping', [28, 29, 28, 29], 2, true);
+
+  player.movePlayer = function(){
+    var hozMove = 400;
+    var vertMove = -1000;
+    var jumpTimer = 0;
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+          player.body.velocity.x = -hozMove;
+          player.play('walkRight');
+      }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+        player.body.velocity.x = hozMove;
+        player.play('walkRight');
+      }
+
+      if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
+        player.body.velocity.y = vertMove;
+        jump_sfx.play();
+        jumpTimer = game.time.now + 900;
+        player.animations.play('staticRight');
+      } else {
+        player.animations.play('walkRight');
+      }
+  };
+
+
 
   return player;
 };
