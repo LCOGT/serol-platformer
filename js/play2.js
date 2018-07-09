@@ -12,12 +12,10 @@ var playState2 = {
     var self = this;
     jump_sfx = game.add.audio('jump');
     //set up background
+    skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
     game.world.setBounds(0, 0, 1024, 545);
-    // runnerBg.scale.y = 4.5;
-    // runnerBg.scale.x = 4;
-    //create cursor key controls
-    cursors = game.input.keyboard.createCursorKeys();
+
     //add Serol
     self.player = new Player(100, 350);
     game.add.existing(self.player);
@@ -30,6 +28,7 @@ var playState2 = {
   update: function(){
     var self = this;
 
+    skyBg.tilePosition.x -= 0.5;
     runnerBg.tilePosition.x -= 3;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
@@ -59,16 +58,14 @@ function Player(x, y) {
     if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
           player.body.velocity.x = -hozMove;
           player.play('walkRight');
-      }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+      } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
         player.body.velocity.x = hozMove;
         player.play('walkRight');
-      }
-
-      if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
+      } else if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jump_sfx.play();
         jumpTimer = game.time.now + 900;
+        player.animations.stop('walkRight');
         player.animations.play('staticRight');
       } else {
         player.animations.play('walkRight');
