@@ -8,7 +8,7 @@ var lifeCount = 3;
 var endGame = false;
 var pauseTime = 8;
 var grav = 40;
-var playState = {
+var playState1 = {
   counter: null,
   lives: null,
   player: null,
@@ -17,11 +17,6 @@ var playState = {
   batteries: null,
   create: function(){
       var self = this;
-      /*
-      TODO:
-      increase spawn rate for junk/generateTetrominos
-      decrease spawn rate for batteries
-      */
       //sounds setup
       collect_sfx = game.add.audio('collect_t');
       gain_life_sfx = game.add.audio('gain_life');

@@ -13,7 +13,8 @@ var game = new Phaser.Game(
 game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('title', titleState);
-game.state.add('play', playState);
+game.state.add('levelone', playState1);
+game.state.add('leveltwo', playState2);
 
 //call the boot state
 game.state.start('boot');
