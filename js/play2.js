@@ -57,7 +57,8 @@ function Player1(x, y) {
       } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
         player.body.velocity.x = hozMove;
         player.play('walkRight');
-      } else if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
+      }
+      if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jump_sfx.play();
         jumpTimer = game.time.now + 900;
