@@ -18,6 +18,7 @@ var loadState={
 		game.load.spritesheet('1up', 'assets/battery.png', 64, 43);
 		game.load.spritesheet('telescope', 'assets/telescopes.png', 250, 250);
 		game.load.spritesheet('river', 'assets/river.png', 124, 158);
+		game.load.spritesheet('obstacle', 'assets/obstacles.png', 135, 75);
 		//backgrounds and screens
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 		game.load.image('level_select', 'assets/level_select.png');

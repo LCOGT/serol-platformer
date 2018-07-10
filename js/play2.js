@@ -28,6 +28,12 @@ var playState2 = {
     game.physics.enable(self.player, Phaser.Physics.ARCADE);
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
+
+    self.obstacles = game.add.group();
+    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+      //keep adding tetrominos to the group
+      self.obstacles.add(Obstacle());
+    }, this);
   },
 
   update: function(){
@@ -125,3 +131,18 @@ function Lives(i){
 
   return lives;
 };
+
+function Obstacle(){
+  var obstacle = game.add.sprite(1000, 480, 'obstacle');
+  obstacle.frame = Math.floor(Math.random() * 5);
+  //enable physics
+  game.physics.enable(obstacle, Phaser.Physics.ARCADE);
+  obstacle.body.velocity.x = -181;
+
+  //junk methods
+  obstacle.goOffScreen = function(){
+    var self = this;
+    self.kill();
+  }
+  return obstacle;
+}
