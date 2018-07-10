@@ -4,6 +4,8 @@ Level 2
 
 var playState2 = {
   player: null,
+  lives: null,
+  counter: null,
   create: function(){
     var self = this;
     jump_sfx = game.add.audio('jump');
@@ -11,6 +13,13 @@ var playState2 = {
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
     game.world.setBounds(0, 0, 1024, 545);
+
+    //add Counter
+    self.counter = new Counter(counterVal);
+    game.add.existing(self.counter);
+
+    self.lives = new Lives(3);
+    game.add.existing(self.lives);
 
     //add Serol
     self.player = new Player1(100, 350);
@@ -72,4 +81,47 @@ function Player1(x, y) {
 
 
   return player;
+};
+
+//counter function here:
+function Counter(i){
+  var counter = game.add.text(0, 0, ("Score: " + i), {
+    font: "32px 'Press Start 2P'",
+    fill: "#ffffff",
+    align: "center"
+  });
+
+  counter.x = game.camera.x+10;
+  counter.y = game.camera.y+20;
+
+  counter.updateScore = function(value){
+    var self = this;
+    self.setText("Score: " + value);
+  }
+
+  return counter;
+};
+
+//lives widget here
+function Lives(i){
+  //set position and frame
+  var lives = game.add.sprite(14 * 64, -30, 'lives');
+  lives.frame = i;
+  lives.scale.x = 4;
+  lives.scale.y = 4;
+
+  //text
+  game.add.text(11 * 64, 20, ("Lives: "), {
+    font: "32px 'Press Start 2P'",
+    fill: "#ffffff",
+    align: "center"
+  });
+
+  //methods
+  lives.updateLife = function(j){
+    var self = this;
+    self.frame = j;
+  }
+
+  return lives;
 };
