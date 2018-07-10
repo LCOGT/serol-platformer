@@ -13,7 +13,7 @@ var playState2 = {
     game.world.setBounds(0, 0, 1024, 545);
 
     //add Serol
-    self.player = new Player(100, 350);
+    self.player = new Player1(100, 350);
     game.add.existing(self.player);
     //activate physics for Serol
     game.physics.enable(self.player, Phaser.Physics.ARCADE);
@@ -34,7 +34,7 @@ var playState2 = {
 
 };
 
-function Player(x, y) {
+function Player1(x, y) {
 
   //serol attributes
   var player = game.add.sprite(x, y, 'serol');
