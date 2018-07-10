@@ -17,12 +17,16 @@ var loadState={
 		game.load.spritesheet('lives', 'assets/batterylife.png', 32, 32);
 		game.load.spritesheet('1up', 'assets/battery.png', 64, 43);
 		game.load.spritesheet('telescope', 'assets/telescopes.png', 250, 250);
+		game.load.spritesheet('river', 'assets/river.png', 124, 158);
 		//backgrounds and screens
-    game.load.image('background', 'assets/background_day_large.png');
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
+		game.load.image('level_select', 'assets/level_select.png');
+		game.load.image('button', 'assets/button.png');
+    game.load.image('background', 'assets/background_day_large.png');
 		game.load.image('gameOverScreen', 'assets/game_over.png');
 		game.load.image('endless_bg', 'assets/ground_long.png');
 		game.load.image('endless_sky', 'assets/night_sky_bg.png');
+		game.load.image('pipe', 'assets/pipe.png');
 		//audio
 		game.load.audio('collect_t', 'assets/audio/collect_t.mp3');
 		game.load.audio('gain_life', 'assets/audio/gain_life.mp3');

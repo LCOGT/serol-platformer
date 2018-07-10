@@ -1,9 +1,5 @@
 /*
 Level 2
-TODO 1:
-add endless scrolling sprite which scrolls with the cursor _keys
-TODO 2:
-Add Serol sprite and adjust velocity
 */
 
 var playState2 = {

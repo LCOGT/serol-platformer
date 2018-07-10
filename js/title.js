@@ -2,7 +2,7 @@ var titleState = {
 	pressStart: null,
 	create: function (){
 		var self = this;
-		self.titleScreenImage = game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
+		game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
 		self.pressStart = game.add.sprite(340, 350, 'start');
 		self.pressStart.scale.x = 1.5;
 		self.pressStart.scale.y = 1.5;
@@ -16,7 +16,7 @@ var titleState = {
 		var self = this;
 		self.pressStart.animations.play('blink');
 		if (game.input.activePointer.isDown) {
-			game.state.start('leveltwo');
+			game.state.start('menu');
 		}
 	}
 }
