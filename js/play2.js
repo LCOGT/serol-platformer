@@ -14,8 +14,17 @@ var playState2 = {
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
-    pipe = game.add.sprite(10, 540, 'pipe')
+    pipeImage = game.add.sprite(10, 540, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
+
+    queue = new Queue();
+    queue.enqueue("item 1");
+    queue.enqueue("item 2");
+    console.log(queue.peek());
+
+    //add pipe content
+    self.pipe = new Pipe();
+    game.add.existing(self.pipe);
 
     //add Counter
     self.counter = new Counter(counterVal);
@@ -186,3 +195,17 @@ function River(){
   river.body.velocity.x = -180;
   return river;
 }
+
+function Pipe(){
+  var pipe = game.add.text(100, 580, ("Queue: "), {
+    font: "32px 'Press Start 2P'",
+    fill: "#ffffff",
+    align: "center"
+  });
+
+  pipe.updateScore = function(value){
+    var self = this;
+    self.setText("Queue: " + value);
+  }
+  return pipe;
+};
