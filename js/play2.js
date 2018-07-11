@@ -5,7 +5,7 @@ Level 2
 var playState2 = {
   telescopes: null,
   playerLayer: null,
-  obstacles: null,
+  // obstacles: null,
   lives: null,
   counter: null,
   create: function(){
@@ -27,12 +27,11 @@ var playState2 = {
     //add sprite layers
     self.telescopes = game.add.group();
     self.playerLayer = game.add.group();
-    self.obstacles = game.add.group();
-    self.rivers = game.add.group();
+    // self.obstacles = game.add.group();
+    // self.rivers = game.add.group();
 
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
-      //keep adding tetrominos to the group
-      self.obstacles.create(Telescope());
+      self.telescopes.add(Telescope());
     }, this);
 
     //add Serol
@@ -44,15 +43,14 @@ var playState2 = {
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
-    generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
-      //keep adding tetrominos to the group
-      self.rivers.create(River());
-    }, this);
+    // generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
+    //   self.rivers.create(River());
+    // }, this);
 
-    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
-      //keep adding tetrominos to the group
-      self.obstacles.create(Obstacle());
-    }, this);
+    // generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
+    //   //keep adding tetrominos to the group
+    //   self.obstacles.create(Obstacle());
+    // }, this);
   },
 
   update: function(){
@@ -62,9 +60,8 @@ var playState2 = {
     runnerBg.tilePosition.x -= 3;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
-    game.world.sendToBack(self.telescopes);
+    // game.world.sendToBack(self.telescopes);
     game.world.bringToTop(self.playerLayer);
-    game.world.bringToTop(self.obstacles);
 
 
 
