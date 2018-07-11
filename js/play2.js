@@ -3,7 +3,9 @@ Level 2
 */
 
 var playState2 = {
-  player: null,
+  telescopes: null,
+  playerLayer: null,
+  obstacles: null,
   lives: null,
   counter: null,
   create: function(){
@@ -12,7 +14,8 @@ var playState2 = {
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
-    game.world.setBounds(0, 0, 1024, 545);
+    pipe = game.add.sprite(10, 540, 'pipe')
+    game.world.setBounds(0, 0, 1024, 520);
 
     //add Counter
     self.counter = new Counter(counterVal);
@@ -21,18 +24,34 @@ var playState2 = {
     self.lives = new Lives(3);
     game.add.existing(self.lives);
 
+    //add sprite layers
+    self.telescopes = game.add.group();
+    self.playerLayer = game.add.group();
+    self.obstacles = game.add.group();
+    self.rivers = game.add.group();
+
+    generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
+      //keep adding tetrominos to the group
+      self.obstacles.create(Telescope());
+    }, this);
+
     //add Serol
+
     self.player = new Player1(100, 350);
-    game.add.existing(self.player);
+    self.playerLayer.create(self.player);
     //activate physics for Serol
     game.physics.enable(self.player, Phaser.Physics.ARCADE);
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
-    self.obstacles = game.add.group();
+    generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
+      //keep adding tetrominos to the group
+      self.rivers.create(River());
+    }, this);
+
     generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
       //keep adding tetrominos to the group
-      self.obstacles.add(Obstacle());
+      self.obstacles.create(Obstacle());
     }, this);
   },
 
@@ -43,6 +62,11 @@ var playState2 = {
     runnerBg.tilePosition.x -= 3;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
+    game.world.sendToBack(self.telescopes);
+    game.world.bringToTop(self.playerLayer);
+    game.world.bringToTop(self.obstacles);
+
+
 
   },
 
@@ -133,16 +157,35 @@ function Lives(i){
 };
 
 function Obstacle(){
-  var obstacle = game.add.sprite(1000, 480, 'obstacle');
+  var obstacle = game.add.sprite(1000, 450, 'obstacle');
   obstacle.frame = Math.floor(Math.random() * 5);
   //enable physics
   game.physics.enable(obstacle, Phaser.Physics.ARCADE);
-  obstacle.body.velocity.x = -181;
+  obstacle.body.velocity.x = -180;
 
-  //junk methods
+  //methods
   obstacle.goOffScreen = function(){
     var self = this;
     self.kill();
   }
   return obstacle;
+}
+
+function Telescope(){
+  var telescope = game.add.sprite(1000, 250, 'telescope');
+  telescope.frame = Math.floor(Math.random() * 6);
+
+  game.physics.enable(telescope, Phaser.Physics.ARCADE);
+  telescope.body.velocity.x = -180;
+  return telescope;
+}
+
+function River(){
+  var river = game.add.sprite(1000, 482, 'river');
+  river.animations.add('flow', [0, 1, 2], 4, true);
+
+  river.animations.play('flow');
+  game.physics.enable(river, Phaser.Physics.ARCADE);
+  river.body.velocity.x = -180;
+  return river;
 }
