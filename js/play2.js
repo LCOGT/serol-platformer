@@ -1,7 +1,9 @@
 /*
 Level 2
 */
-
+var q = new Queue();
+var choices = [1, "asdf", 5, "erhl", 9, "oier", 3, "fheo", 4, "nfek"];
+var cursors;
 var playState2 = {
   telescopes: null,
   playerLayer: null,
@@ -16,14 +18,24 @@ var playState2 = {
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
     pipeImage = game.add.sprite(10, 540, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
+    cursors = game.input.keyboard.createCursorKeys();
 
-    queue = new Queue();
-    queue.enqueue("item 1");
-    queue.enqueue("item 2");
-    console.log(queue.peek());
+
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.enqueue("string1");
+    q.enqueue(5);
+    q.enqueue("String2");
+    q.enqueue(7);
+    q.enqueue(8);
+    q.enqueue("String3");
+    q.enqueue(10);
+    q.enqueue("String4");
+    q.peek();
 
     //add pipe content
-    self.pipe = new Pipe();
+    self.pipe = new Pipe(q.toString());
     game.add.existing(self.pipe);
 
     //add Counter
@@ -72,7 +84,22 @@ var playState2 = {
     // game.world.sendToBack(self.telescopes);
     game.world.bringToTop(self.playerLayer);
 
-
+      if (cursors.up.downDuration(10))
+    	{
+        console.log(IsNumeric(parseInt(q.dequeue())));
+        console.log(q.peek());
+        console.log(q.toString());
+        q.enqueue(choose(choices));
+        self.pipe.updatePipe(q.toString());
+    	}
+      if (cursors.down.downDuration(10))
+    	{
+        q.dequeue();
+        console.log(q.peek());
+        console.log(q.toString());
+        q.enqueue(choose(choices));
+        self.pipe.updatePipe(q.toString());
+    	}
 
   },
 
@@ -196,16 +223,45 @@ function River(){
   return river;
 }
 
-function Pipe(){
-  var pipe = game.add.text(100, 580, ("Queue: "), {
+function Pipe(string){
+  var pipe = game.add.text(100, 580, ("Queue: "+ string), {
     font: "32px 'Press Start 2P'",
     fill: "#ffffff",
     align: "center"
   });
 
-  pipe.updateScore = function(value){
+  pipe.updatePipe = function(value){
     var self = this;
     self.setText("Queue: " + value);
   }
   return pipe;
 };
+
+function Queue(){
+  var queue = [];
+
+  queue.enqueue = function(item){
+    queue.push(item);
+  }
+  queue.dequeue = function(){
+    queue.shift();
+  }
+  queue.peek = function(){
+    console.log(queue.length > 0 ? queue[0] : undefined);
+  }
+  queue.disp = function(){
+    console.log(queue);
+  }
+  queue.flush = function(){
+    queue = [];
+  }
+  return queue;
+}
+
+function IsNumeric(val) {
+    return !isNaN(val);
+}
+function choose(choices) {
+  var index = Math.floor(Math.random() * choices.length);
+  return choices[index];
+}
