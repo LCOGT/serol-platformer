@@ -33,6 +33,7 @@ var playState2 = {
     q.enqueue(10);
     q.enqueue("String4");
     q.peek();
+    console.log(typeof q);
 
     //add pipe content
     self.pipe = new Pipe(q.toString());
@@ -86,7 +87,7 @@ var playState2 = {
 
       if (cursors.up.downDuration(10))
     	{
-        console.log(IsNumeric(parseInt(q.dequeue())));
+        console.log(IsNumeric(q.dequeue()));
         console.log(q.peek());
         console.log(q.toString());
         q.enqueue(choose(choices));
@@ -259,7 +260,7 @@ function Queue(){
 }
 
 function IsNumeric(val) {
-    return !isNaN(val);
+    return !isNaN(parseInt(val));
 }
 function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
