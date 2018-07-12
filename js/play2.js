@@ -87,7 +87,7 @@ var playState2 = {
 
       if (cursors.up.downDuration(10))
     	{
-        console.log(IsNumeric(q.dequeue()));
+        console.log(typeof q.dequeue());
         console.log(q.peek());
         console.log(q.toString());
         q.enqueue(choose(choices));
@@ -248,7 +248,12 @@ function Queue(){
     queue.shift();
   }
   queue.peek = function(){
-    console.log(queue.length > 0 ? queue[0] : undefined);
+    if (queue.length <0){
+      console.log(null);
+    }else{
+      console.log(queue[0]);
+    }
+
   }
   queue.disp = function(){
     console.log(queue);
