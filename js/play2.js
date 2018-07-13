@@ -2,7 +2,7 @@
 Level 2
 */
 var q = new Queue();
-var choices = [1, "asdf", 5, "erhl", 9, "oier", 3, "fheo", 4, "nfek"];
+var choices = ["tetromino", "junk"];
 var cursors;
 var playState2 = {
   telescopes: null,
@@ -21,17 +21,12 @@ var playState2 = {
     cursors = game.input.keyboard.createCursorKeys();
 
 
-    q.enqueue(1);
-    q.enqueue(2);
-    q.enqueue(3);
-    q.enqueue("string1");
-    q.enqueue(5);
-    q.enqueue("String2");
-    q.enqueue(7);
-    q.enqueue(8);
-    q.enqueue("String3");
-    q.enqueue(10);
-    q.enqueue("String4");
+    q.enqueue("tetromino");
+    q.enqueue("junk");
+    q.enqueue("tetromino");
+    q.enqueue("tetromino");
+    q.enqueue("junk");
+    q.enqueue("junk");
     q.peek();
     console.log(typeof q);
 
@@ -87,8 +82,8 @@ var playState2 = {
 
       if (cursors.up.downDuration(10))
     	{
-        console.log(typeof q.dequeue());
-        console.log(q.peek());
+        console.log(typeof typeof q.dequeue());
+        // console.log(q.peek());
         console.log(q.toString());
         q.enqueue(choose(choices));
         self.pipe.updatePipe(q.toString());
@@ -96,7 +91,7 @@ var playState2 = {
       if (cursors.down.downDuration(10))
     	{
         q.dequeue();
-        console.log(q.peek());
+        // console.log(q.peek());
         console.log(q.toString());
         q.enqueue(choose(choices));
         self.pipe.updatePipe(q.toString());
@@ -145,49 +140,6 @@ function Player1(x, y) {
 
 
   return player;
-};
-
-//counter function here:
-function Counter(i){
-  var counter = game.add.text(0, 0, ("Score: " + i), {
-    font: "32px 'Press Start 2P'",
-    fill: "#ffffff",
-    align: "center"
-  });
-
-  counter.x = game.camera.x+10;
-  counter.y = game.camera.y+20;
-
-  counter.updateScore = function(value){
-    var self = this;
-    self.setText("Score: " + value);
-  }
-
-  return counter;
-};
-
-//lives widget here
-function Lives(i){
-  //set position and frame
-  var lives = game.add.sprite(14 * 64, -30, 'lives');
-  lives.frame = i;
-  lives.scale.x = 4;
-  lives.scale.y = 4;
-
-  //text
-  game.add.text(11 * 64, 20, ("Lives: "), {
-    font: "32px 'Press Start 2P'",
-    fill: "#ffffff",
-    align: "center"
-  });
-
-  //methods
-  lives.updateLife = function(j){
-    var self = this;
-    self.frame = j;
-  }
-
-  return lives;
 };
 
 function Obstacle(){
@@ -264,9 +216,9 @@ function Queue(){
   return queue;
 }
 
-function IsNumeric(val) {
-    return !isNaN(parseInt(val));
-}
+// function IsNumeric(val) {
+//     return !isNaN(parseInt(val));
+// }
 function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
   return choices[index];
