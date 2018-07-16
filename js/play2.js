@@ -3,6 +3,7 @@ Level 2
 */
 var q = new Queue();
 var choices = ["tetromino", "junk"];
+var counterVal1 = 0;
 var cursors;
 var playState2 = {
   telescopes: null,
@@ -28,14 +29,14 @@ var playState2 = {
     q.enqueue("junk");
     q.enqueue("junk");
     q.peek();
-    console.log(typeof q);
+    //console.log(typeof q);
 
     //add pipe content
     self.pipe = new Pipe(q.toString());
     game.add.existing(self.pipe);
 
     //add Counter
-    self.counter = new Counter(counterVal);
+    self.counter = new Counter(counterVal1);
     game.add.existing(self.counter);
 
     self.lives = new Lives(3);
@@ -80,21 +81,28 @@ var playState2 = {
     // game.world.sendToBack(self.telescopes);
     game.world.bringToTop(self.playerLayer);
 
-      if (cursors.up.downDuration(10))
-    	{
-        console.log(typeof typeof q.dequeue());
-        // console.log(q.peek());
-        console.log(q.toString());
-        q.enqueue(choose(choices));
-        self.pipe.updatePipe(q.toString());
-    	}
+      // if (cursors.up.downDuration(10))
+    	// {
+      //   console.log(q.shift());
+      //   // console.log(q.peek());
+      //   console.log(q.shift());
+      //   q.enqueue(choose(choices));
+      //   self.pipe.updatePipe(q.toString());
+      //   counterVal1++;
+      //   self.counter.updateScore(counterVal1);
+    	// }
       if (cursors.down.downDuration(10))
     	{
-        q.dequeue();
-        // console.log(q.peek());
-        console.log(q.toString());
+        if (q.shift().valueOf()==="tetromino"){
+          console.log("tetromino dequeued");
+        }else if(q.shift().valueOf()==="junk"){
+          console.log("junk dequeued");
+        }
         q.enqueue(choose(choices));
         self.pipe.updatePipe(q.toString());
+        // console.log(q.peek());
+        console.log(q.toString());
+
     	}
 
   },
@@ -196,9 +204,9 @@ function Queue(){
   queue.enqueue = function(item){
     queue.push(item);
   }
-  queue.dequeue = function(){
-    queue.shift();
-  }
+  // queue.dequeue = function(){
+  //   return queue.shift().valueOf();
+  // }
   queue.peek = function(){
     if (queue.length <0){
       console.log(null);
