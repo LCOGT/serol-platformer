@@ -71,24 +71,25 @@ var playState2 = {
     // }, this);
 
     //dequeueing using keyup
-    game.input.keyboard.addCallbacks(Phaser.Keyboard.DOWN, null, function (event) {
-      var removed = q.shift();
-      if (removed.valueOf()==="tetromino"){
-        console.log("tetromino dequeued");
-        q.enqueue(choose(choices));
-        self.pipe.updatePipe(q.toString());
-      }else if(removed.valueOf()==="junk"){
-        console.log("junk dequeued");
-        q.enqueue(choose(choices));
-        self.pipe.updatePipe(q.toString());
+    game.input.keyboard.onUpCallback = function( e ){
+      //down key logic
+      if(e.keyCode == Phaser.Keyboard.DOWN){
+        var removed = q.shift();
+        if (removed.valueOf()==="tetromino"){
+          console.log("tetromino dequeued");
+          q.enqueue(choose(choices));
+          self.pipe.updatePipe(q.toString());
+        }else if(removed.valueOf()==="junk"){
+          console.log("junk dequeued");
+          q.enqueue(choose(choices));
+          self.pipe.updatePipe(q.toString());
+        }
+        console.log(q.toString());
+      } else if (e.keyCode == Phaser.Keyboard.UP){
+        console.log("Up pressed");
       }
+    };
 
-      // q.enqueue(choose(choices));
-      // self.pipe.updatePipe(q.toString());
-      // console.log(q.peek());
-      console.log(q.toString());
-
-    }, null);
   },
 
   update: function(){
