@@ -69,6 +69,26 @@ var playState2 = {
     //   //keep adding tetrominos to the group
     //   self.obstacles.create(Obstacle());
     // }, this);
+
+    //dequeueing using keyup
+    game.input.keyboard.addCallbacks(Phaser.Keyboard.DOWN, null, function (event) {
+      var removed = q.shift();
+      if (removed.valueOf()==="tetromino"){
+        console.log("tetromino dequeued");
+        q.enqueue(choose(choices));
+        self.pipe.updatePipe(q.toString());
+      }else if(removed.valueOf()==="junk"){
+        console.log("junk dequeued");
+        q.enqueue(choose(choices));
+        self.pipe.updatePipe(q.toString());
+      }
+
+      // q.enqueue(choose(choices));
+      // self.pipe.updatePipe(q.toString());
+      // console.log(q.peek());
+      console.log(q.toString());
+
+    }, null);
   },
 
   update: function(){
@@ -81,29 +101,24 @@ var playState2 = {
     // game.world.sendToBack(self.telescopes);
     game.world.bringToTop(self.playerLayer);
 
-      // if (cursors.up.downDuration(10))
+      // if (cursors.down.downDuration(10))
     	// {
-      //   console.log(q.shift());
+      //   if (q.shift().valueOf()==="tetromino"){
+      //     console.log("tetromino dequeued");
+      //     q.enqueue(choose(choices));
+      //     self.pipe.updatePipe(q.toString());
+      //   }else if(q.shift().valueOf()==="junk"){
+      //     console.log("junk dequeued");
+      //     q.enqueue(choose(choices));
+      //     self.pipe.updatePipe(q.toString());
+      //   }
+      //
+      //   // q.enqueue(choose(choices));
+      //   // self.pipe.updatePipe(q.toString());
       //   // console.log(q.peek());
-      //   console.log(q.shift());
-      //   q.enqueue(choose(choices));
-      //   self.pipe.updatePipe(q.toString());
-      //   counterVal1++;
-      //   self.counter.updateScore(counterVal1);
+      //   console.log(q.toString());
+      //
     	// }
-      if (cursors.down.downDuration(10))
-    	{
-        if (q.shift().valueOf()==="tetromino"){
-          console.log("tetromino dequeued");
-        }else if(q.shift().valueOf()==="junk"){
-          console.log("junk dequeued");
-        }
-        q.enqueue(choose(choices));
-        self.pipe.updatePipe(q.toString());
-        // console.log(q.peek());
-        console.log(q.toString());
-
-    	}
 
   },
 
