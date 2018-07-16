@@ -20,6 +20,7 @@ var playState2 = {
     pipeImage = game.add.sprite(10, 540, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
     cursors = game.input.keyboard.createCursorKeys();
+    text = game.add.text(500, 500, 'Overlapping: false', { fill: '#ffffff' });
 
 
     q.enqueue("tetromino");
@@ -79,7 +80,9 @@ var playState2 = {
           console.log("tetromino dequeued");
           q.enqueue(choose(choices));
           self.pipe.updatePipe(q.toString());
-        }else if(removed.valueOf()==="junk"){
+        }
+        //up key logic
+        else if(removed.valueOf()==="junk"){
           console.log("junk dequeued");
           q.enqueue(choose(choices));
           self.pipe.updatePipe(q.toString());
@@ -99,27 +102,17 @@ var playState2 = {
     runnerBg.tilePosition.x -= 3;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
-    // game.world.sendToBack(self.telescopes);
     game.world.bringToTop(self.playerLayer);
 
-      // if (cursors.down.downDuration(10))
-    	// {
-      //   if (q.shift().valueOf()==="tetromino"){
-      //     console.log("tetromino dequeued");
-      //     q.enqueue(choose(choices));
-      //     self.pipe.updatePipe(q.toString());
-      //   }else if(q.shift().valueOf()==="junk"){
-      //     console.log("junk dequeued");
-      //     q.enqueue(choose(choices));
-      //     self.pipe.updatePipe(q.toString());
-      //   }
-      //
-      //   // q.enqueue(choose(choices));
-      //   // self.pipe.updatePipe(q.toString());
-      //   // console.log(q.peek());
-      //   console.log(q.toString());
-      //
-    	// }
+    if (checkOverlap(self.player, self.telescopes))
+    {
+        text.text = 'Overlapping: true';
+    }
+    else
+    {
+        text.text = 'Overlapping: false';
+    }
+
 
   },
 
@@ -246,4 +239,13 @@ function Queue(){
 function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
   return choices[index];
+}
+
+function checkOverlap(spriteA, spriteB) {
+
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
+
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
+
 }
