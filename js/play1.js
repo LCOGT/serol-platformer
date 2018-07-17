@@ -153,6 +153,11 @@ var playState1 = {
         },
         this);
 
+      game.time.events.add(Phaser.Timer.SECOND * 6,
+        function(){
+          game.state.start('hiScores');
+        },this);
+
     }
     },
 };

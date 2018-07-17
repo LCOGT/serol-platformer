@@ -16,6 +16,7 @@ game.state.add('title', titleState);
 game.state.add('menu', mainMenu);
 game.state.add('levelone', playState1);
 game.state.add('leveltwo', playState2);
+game.state.add('hiScores', hiScores);
 
 //call the boot state
 game.state.start('boot');
