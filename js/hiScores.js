@@ -2,6 +2,29 @@ var hiScores = {
 	create: function (){
 		var self = this;
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
+		self.title = game.add.text(280, 80, ("High scores"), {
+			font: "40px 'Press Start 2P'",
+			fill: "#ffd800",
+			align: "center"
+		});
+		self.top5 = game.add.text(120, 200,
+			("1. " + "name1 " + "5000 \n" +
+			 "2. " + "name2 " + "4000 \n" +
+			 "3. " + "name3 " + "3000 \n" +
+			 "4. " + "name4 " + "2000 \n" +
+			 "5. " + "name5 " + "1000 \n" +
+			 "\n"+
+		   "-------------------------"), {
+			font: "32px 'Press Start 2P'",
+			fill: "#ffffff",
+			align: "center"
+		});
+		self.myScore = game.add.text(280, 500, ("Your name: " + counterVal), {
+			font: "32px 'Press Start 2P'",
+			fill: "#ffffff",
+			align: "center"
+		});
+
 
 		game.input.activePointer.capture = true;
 
