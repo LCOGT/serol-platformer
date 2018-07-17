@@ -1,6 +1,27 @@
 var hiScores = {
 	create: function (){
 		var self = this;
+		//get leaderboard
+		var resp = {};
+		var request = new XMLHttpRequest();
+		request.open('GET', 'https://serol.lco.global/api/highscore/leaders/', true);
+		request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
+		request.onreadystatechange = function() {
+		  if (this.readyState === 4) {
+		    if (this.status >= 200 && this.status < 400) {
+		      // Success!
+		      resp = this.responseText;
+		    } else {
+		      // Error :(
+		    }
+		  }
+		};
+
+		request.send();
+		request = null;
+
+		var jsonResponse = JSON.parse(resp);
+		console.log(jsonResponse);
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
 		self.title = game.add.text(280, 80, ("High scores"), {
 			font: "40px 'Press Start 2P'",
