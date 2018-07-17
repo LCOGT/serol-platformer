@@ -1,3 +1,6 @@
+var counterVal = 0;
+var lifeCount = 3;
+var endGame = false;
 var titleState = {
 	pressStart: null,
 	create: function (){
@@ -16,7 +19,12 @@ var titleState = {
 		var self = this;
 		self.pressStart.animations.play('blink');
 		if (game.input.activePointer.isDown) {
-			game.state.start('levelone');
+			game.state.start('levelone', true, false);
+			if (endGame === true) {
+				endGame = false;
+				lifeCount = 3;
+				counterVal = 0;
+			}
 		}
 	}
 }

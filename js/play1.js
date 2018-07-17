@@ -3,9 +3,6 @@
 
 //Made using Brian Greig's YouTube tutorials
 //https://www.youtube.com/watch?v=mBEVHWUelWs
-var counterVal = 0;
-var lifeCount = 3;
-var endGame = false;
 var pauseTime = 8;
 var grav = 40;
 var v = 20;
@@ -36,6 +33,7 @@ var playState1 = {
       //add Lives
       self.lives = new Lives(3);
       game.add.existing(self.lives);
+      self.lives.updateLife(lifeCount);
 
 
       //add Serol object
