@@ -16,7 +16,7 @@ var titleState = {
 		var self = this;
 		self.pressStart.animations.play('blink');
 		if (game.input.activePointer.isDown) {
-			game.state.start('menu');
+			game.state.start('levelone');
 		}
 	}
 }

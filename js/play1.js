@@ -8,6 +8,7 @@ var lifeCount = 3;
 var endGame = false;
 var pauseTime = 8;
 var grav = 40;
+var v = 20;
 var playState1 = {
   counter: null,
   lives: null,
@@ -68,6 +69,7 @@ var playState1 = {
             }else {
               pauseTime = 0.0005
             }
+            v = v + 5;
 
           },this);
       }, this);
@@ -247,6 +249,7 @@ function Junk(){
   //enable physics
   game.physics.enable(junk, Phaser.Physics.ARCADE);
   junk.body.gravity.y = 50;
+  junk.body.velocity.y = v;
 
   //junk methods
   junk.getCaught = function(){
