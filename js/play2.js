@@ -104,15 +104,16 @@ var playState2 = {
     self.player.movePlayer();
     game.world.bringToTop(self.playerLayer);
 
-    if (checkOverlap(self.player, self.telescopes))
-    {
-        text.text = 'Overlapping: true';
-    }
-    else
-    {
-        text.text = 'Overlapping: false';
-    }
-
+    self.telescopes.forEach(function(telescope){
+      if (checkOverlap(telescope, self.player))
+      {
+          text.text = 'Overlapping: true';
+      }
+      else
+      {
+          text.text = 'Overlapping: false';
+      }
+    }, this);
 
   },
 
