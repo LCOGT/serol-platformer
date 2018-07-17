@@ -145,8 +145,14 @@ var playState1 = {
              0,
              1000,
              true);
+         game.add.text(280, 280, ("Your score: " + counterVal), {
+           font: "32px 'Press Start 2P'",
+           fill: "#ffffff",
+           align: "center"
+         });
         },
         this);
+
     }
     },
 };
