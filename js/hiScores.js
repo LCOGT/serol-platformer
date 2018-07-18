@@ -4,6 +4,7 @@ var hiScores = {
 		//get leaderboard
 		var xhr = new XMLHttpRequest();
 		var resp;
+		var leaders;
 		xhr.open("GET","https://serol.lco.global/api/highscore/leaders", true)
 		xhr.onload = function() {
 		  if (xhr.status >= 200 && xhr.status < 400) {
@@ -11,6 +12,7 @@ var hiScores = {
 		    resp = xhr.responseText;
 		    console.log(resp);
 				console.log(typeof resp);
+				generateLeaderboard(leaders);
 		  } else {
 		    // We reached our target server, but it returned an error
 		    console.log("Error")
@@ -60,4 +62,9 @@ var hiScores = {
 			game.state.start('title');
 		}
 	}
+};
+
+function generateLeaderboard(dict){
+	console.log(dict);
+	console.log(typeof dict);
 }
