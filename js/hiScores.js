@@ -1,5 +1,6 @@
 var hiScoreVals = [];
 var hiScoreNames = [];
+
 var hiScores = {
 	create: function (){
 		var self = this;
@@ -13,7 +14,6 @@ var hiScores = {
 		    // Success!
 		    resp = xhr.responseText.toString();
 		    console.log(resp);
-				console.log(typeof resp);
 				leaders = JSON.parse(resp);
 				generateLeaderboard(leaders);
 		  } else {
@@ -28,7 +28,8 @@ var hiScores = {
 		};
 
 		xhr.send();
-
+		console.log(hiScoreVals);
+		console.log(hiScoreNames);
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
 		self.title = game.add.text(280, 80, ("High scores"), {
 			font: "40px 'Press Start 2P'",
@@ -72,15 +73,15 @@ function generateLeaderboard(dict){
     console.log(dict[i]);
 		var currentData = dict[i];
 		for (var key in currentData) {
-			console.log(key);
-  		console.log(typeof currentData[key]);
 			if(key === "score"){
 				hiScoreVals.push(currentData[key].toString());
+				console.log(hiScoreVals);
 			} else {
 				hiScoreNames.push(currentData[key]);
+				console.log(hiScoreNames);
 			}
 		}
 	}
-	console.log(hiScoreVals);
-	console.log(hiScoreNames);
+	// console.log(hiScoreVals);
+	// console.log(hiScoreNames);
 }
