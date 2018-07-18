@@ -36,18 +36,6 @@ var hiScores = {
 			fill: "#ffd800",
 			align: "center"
 		});
-		self.top5 = game.add.text(120, 200,
-			("1. " + hiScoreNames[0]+ " " + hiScoreVals[0] + " \n" +
-			 "2. " + "name2 " + "4000 \n" +
-			 "3. " + "name3 " + "3000 \n" +
-			 "4. " + "name4 " + "2000 \n" +
-			 "5. " + "name5 " + "1000 \n" +
-			 "\n"+
-		   "-------------------------"), {
-			font: "32px 'Press Start 2P'",
-			fill: "#ffffff",
-			align: "center"
-		});
 		self.myScore = game.add.text(280, 500, ("Your name: " + counterVal), {
 			font: "32px 'Press Start 2P'",
 			fill: "#ffffff",
@@ -69,19 +57,20 @@ var hiScores = {
 function generateLeaderboard(dict){
 	console.log(dict);
 	console.log(typeof dict);
+  var score_text = "";
 	for (i = 0; i < 5; i++) {
-    console.log(dict[i]);
 		var currentData = dict[i];
-		for (var key in currentData) {
-			if(key === "score"){
-				hiScoreVals.push(currentData[key].toString());
-				console.log(hiScoreVals);
-			} else {
-				hiScoreNames.push(currentData[key]);
-				console.log(hiScoreNames);
-			}
+    score_text += (i+1).toString()+" "+currentData['username']+" "+currentData['score']+"\n";
+    console.log(score_text);
 		}
-	}
+  score_text +="\n-------------------------";
+
+  game.add.text(120, 200,
+    (score_text), {
+    font: "32px 'Press Start 2P'",
+    fill: "#ffffff",
+    align: "center"
+  });
 	// console.log(hiScoreVals);
 	// console.log(hiScoreNames);
 }
