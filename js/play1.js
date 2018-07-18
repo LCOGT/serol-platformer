@@ -154,7 +154,7 @@ var playState1 = {
 
       game.time.events.add(Phaser.Timer.SECOND * 6,
         function(){
-          sendResult();
+          // sendResult();
           game.state.start('hiScores');
         },this);
 
@@ -164,15 +164,15 @@ var playState1 = {
 };
 
 //send data to leaderboard
-function sendResult(){
-  var data = '{"username":"anon","score":counterVal.toString()}';
-  var request = new XMLHttpRequest();
-  request.open('POST', 'https://serol.lco.global/api/highscore/add/', true);
-  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
-  request.send(data = data);
-
-}
+// function sendResult(){
+//   var data = '{"username":"anon","score":counterVal.toString()}';
+//   var request = new XMLHttpRequest();
+//   request.open('POST', 'https://serol.lco.global/api/highscore/add/', true);
+//   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+//   request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
+//   request.send(data = data);
+//
+// }
 
 
 

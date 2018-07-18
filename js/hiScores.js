@@ -2,26 +2,30 @@ var hiScores = {
 	create: function (){
 		var self = this;
 		//get leaderboard
-		var resp = {};
-		var request = new XMLHttpRequest();
-		request.open('GET', 'https://serol.lco.global/api/highscore/leaders/', true);
-		request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
-		request.onreadystatechange = function() {
-		  if (this.readyState === 4) {
-		    if (this.status >= 200 && this.status < 400) {
-		      // Success!
-		      resp = this.responseText;
-		    } else {
-		      // Error :(
-		    }
+		var xhr = new XMLHttpRequest();
+		var resp;
+		xhr.open("GET","https://serol.lco.global/api/highscore/leaders", true)
+		xhr.onload = function() {
+		  if (xhr.status >= 200 && xhr.status < 400) {
+		    // Success!
+		    resp = xhr.responseText;
+		    console.log(resp);
+				console.log(typeof resp);
+		  } else {
+		    // We reached our target server, but it returned an error
+		    console.log("Error")
 		  }
 		};
 
-		request.send();
-		request = null;
+		xhr.onerror = function() {
+		  // There was a connection error of some sort
+		  console.log("Connection error")
+		};
 
-		var jsonResponse = JSON.parse(resp);
-		console.log(jsonResponse);
+		xhr.send();
+		var leaders = JSON.parse(resp);
+		console.log(leaders);
+
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
 		self.title = game.add.text(280, 80, ("High scores"), {
 			font: "40px 'Press Start 2P'",
