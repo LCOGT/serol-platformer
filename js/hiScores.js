@@ -1,3 +1,5 @@
+var hiScoreVals = [];
+var hiScoreNames = [];
 var hiScores = {
 	create: function (){
 		var self = this;
@@ -9,9 +11,10 @@ var hiScores = {
 		xhr.onload = function() {
 		  if (xhr.status >= 200 && xhr.status < 400) {
 		    // Success!
-		    resp = xhr.responseText;
+		    resp = xhr.responseText.toString();
 		    console.log(resp);
 				console.log(typeof resp);
+				leaders = JSON.parse(resp);
 				generateLeaderboard(leaders);
 		  } else {
 		    // We reached our target server, but it returned an error
@@ -25,8 +28,6 @@ var hiScores = {
 		};
 
 		xhr.send();
-		var leaders = JSON.parse(resp);
-		console.log(leaders);
 
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
 		self.title = game.add.text(280, 80, ("High scores"), {
@@ -35,7 +36,7 @@ var hiScores = {
 			align: "center"
 		});
 		self.top5 = game.add.text(120, 200,
-			("1. " + "name1 " + "5000 \n" +
+			("1. " + hiScoreNames[0]+ " " + hiScoreVals[0] + " \n" +
 			 "2. " + "name2 " + "4000 \n" +
 			 "3. " + "name3 " + "3000 \n" +
 			 "4. " + "name4 " + "2000 \n" +
@@ -67,4 +68,19 @@ var hiScores = {
 function generateLeaderboard(dict){
 	console.log(dict);
 	console.log(typeof dict);
+	for (i = 0; i < 5; i++) {
+    console.log(dict[i]);
+		var currentData = dict[i];
+		for (var key in currentData) {
+			console.log(key);
+  		console.log(typeof currentData[key]);
+			if(key === "score"){
+				hiScoreVals.push(currentData[key].toString());
+			} else {
+				hiScoreNames.push(currentData[key]);
+			}
+		}
+	}
+	console.log(hiScoreVals);
+	console.log(hiScoreNames);
 }
