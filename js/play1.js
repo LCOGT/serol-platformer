@@ -165,13 +165,12 @@ var playState1 = {
 
 //send data to leaderboard
 function sendResult(){
-  var data = '{"username":"anon","score":counterVal.toString()}';
+  var data = {"username":"anon","score":counterVal.toString()};
   var request = new XMLHttpRequest();
   request.open('POST', 'https://serol.lco.global/api/highscore/add/', true);
   request.setRequestHeader('Content-Type', 'application/json');
   request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
-  request.send(data = data);
-
+  request.send(JSON.stringify(data));
 }
 
 
