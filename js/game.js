@@ -14,6 +14,7 @@ game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('title', titleState);
 game.state.add('menu', mainMenu);
+game.state.add('gameOver', gameOver);
 game.state.add('levelone', playState1);
 game.state.add('leveltwo', playState2);
 game.state.add('hiScores', hiScores);
