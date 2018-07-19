@@ -21,13 +21,14 @@ var playState1 = {
       //sounds setup
       collect_sfx = game.add.audio('collect_t');
       gain_life_sfx = game.add.audio('gain_life');
-      game_over_sfx = game.add.audio('game_over', 1, false);
+      lvl1bgm = game.add.audio('levelone_bgm', 0.8, true);
       jump_sfx = game.add.audio('jump');
       lose_life_sfx = game.add.audio('lose_life');
       //background setup
       game.stage.backgroundColor = '#000000';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
       game.world.setBounds(0, 0, 1024, 545);
+      lvl1bgm.play();
 
       //add Counter
       self.counter = new Counter(counterVal);
@@ -123,6 +124,7 @@ var playState1 = {
     //endgame sequence
     if (endGame === true){
       //remove all objects
+      lvl1bgm.fadeOut(2000);
       game.time.events.remove(generateTetrominos);
       game.time.events.remove(generateJunk);
       game.time.events.remove(generateBatteries);
@@ -140,6 +142,7 @@ var playState1 = {
       // game.camera.fade(#000000, 4000);
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
+          lvl1bgm.stop();
           sendResult();
           console.log("result sent");
           game.state.start('gameOver', true, false);

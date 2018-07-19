@@ -5,6 +5,8 @@ var titleState = {
 	pressStart: null,
 	create: function (){
 		var self = this;
+		titlebgm = game.add.audio('title_bgm', 1, true);
+		titlebgm.play();
 		game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
 		self.pressStart = game.add.sprite(340, 350, 'start');
 		self.pressStart.scale.x = 1.5;
@@ -19,6 +21,8 @@ var titleState = {
 		var self = this;
 		self.pressStart.animations.play('blink');
 		if (game.input.activePointer.isDown) {
+			titlebgm.fadeOut(1000);
+			titlebgm.stop();
 			game.state.start('levelone', true, false);
 			if (endGame === true) {
 				endGame = false;
