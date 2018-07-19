@@ -25,7 +25,7 @@ var playState1 = {
       jump_sfx = game.add.audio('jump');
       lose_life_sfx = game.add.audio('lose_life');
       //background setup
-      game.stage.backgroundColor = '#D3D3D3';
+      game.stage.backgroundColor = '#000000';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
       game.world.setBounds(0, 0, 1024, 545);
 
@@ -122,14 +122,11 @@ var playState1 = {
 
     //endgame sequence
     if (endGame === true){
-      var gameOverScreen = game.add.sprite(game.world.centerX, game.world.centerY, 'gameOverScreen');
-      gameOverScreen.anchor.setTo(0.5, 0.425);
-      gameOverScreen.alpha = 0;
-
+      //remove all objects
       game.time.events.remove(generateTetrominos);
       game.time.events.remove(generateJunk);
       game.time.events.remove(generateBatteries);
-
+      //put Serol to sleep
       self.player.animations.stop('staticBob');
       self.player.play('sleeping');
       self.player.body.velocity.x = 0;
@@ -140,28 +137,12 @@ var playState1 = {
       self.batteries.destroy(true, true);
       // game_over_sfx.play();
 
+      // game.camera.fade(#000000, 4000);
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
-          game.add.tween(gameOverScreen).to( { alpha: 1 },
-             2000,
-             Phaser.Easing.Linear.None,
-             true,
-             0,
-             1000,
-             true);
-         game.add.text(280, 280, ("Your score: " + counterVal), {
-           font: "32px 'Press Start 2P'",
-           fill: "#ffffff",
-           align: "center"
-         });
-       },
-       this);
-
-
-      game.time.events.add(Phaser.Timer.SECOND * 6,
-        function(){
           sendResult();
-          game.state.start('hiScores', false, false);
+          console.log("result sent");
+          game.state.start('gameOver', true, false);
         },this);
 
     }
