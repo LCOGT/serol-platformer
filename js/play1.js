@@ -3,9 +3,9 @@
 
 //Made using Brian Greig's YouTube tutorials
 //https://www.youtube.com/watch?v=mBEVHWUelWs
-var pauseTime = 8;
-var grav = 40;
-var v = 20;
+var pauseTime;
+var grav;
+var v;
 var playState1 = {
   counter: null,
   lives: null,
@@ -15,6 +15,9 @@ var playState1 = {
   batteries: null,
   create: function(){
       var self = this;
+      pauseTime = 8;
+      grav = 40;
+      v = 20;
       //sounds setup
       collect_sfx = game.add.audio('collect_t');
       gain_life_sfx = game.add.audio('gain_life');
