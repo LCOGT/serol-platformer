@@ -13,6 +13,7 @@ var game = new Phaser.Game(
 game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('title', titleState);
+game.state.add('instructions', instructions);
 game.state.add('menu', mainMenu);
 game.state.add('gameOver', gameOver);
 game.state.add('levelone', playState1);

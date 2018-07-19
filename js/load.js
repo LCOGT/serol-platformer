@@ -23,6 +23,7 @@ var loadState={
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 		game.load.image('level_select', 'assets/level_select.png');
 		game.load.image('button', 'assets/button.png');
+		game.load.image('instructions', 'assets/L1_instructions.png');
     game.load.image('background', 'assets/background_day_large.png');
 		game.load.image('gameOverScreen', 'assets/game_over.png');
 		game.load.image('endless_bg', 'assets/ground_long.png');

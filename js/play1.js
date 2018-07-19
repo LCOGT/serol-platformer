@@ -21,14 +21,14 @@ var playState1 = {
       //sounds setup
       collect_sfx = game.add.audio('collect_t');
       gain_life_sfx = game.add.audio('gain_life');
-      lvl1bgm = game.add.audio('levelone_bgm', 0.8, true);
+      // lvl1bgm = game.add.audio('levelone_bgm', 0.8, true);
       jump_sfx = game.add.audio('jump');
       lose_life_sfx = game.add.audio('lose_life');
       //background setup
       game.stage.backgroundColor = '#000000';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
       game.world.setBounds(0, 0, 1024, 545);
-      lvl1bgm.play();
+      // lvl1bgm.play();
 
       //add Counter
       self.counter = new Counter(counterVal);

@@ -23,7 +23,7 @@ var titleState = {
 		if (game.input.activePointer.isDown) {
 			titlebgm.fadeOut(1000);
 			titlebgm.stop();
-			game.state.start('levelone', true, false);
+			game.state.start('instructions', true, false);
 			if (endGame === true) {
 				endGame = false;
 				lifeCount = 3;
