@@ -1,7 +1,8 @@
+var jinglePlayed = false
 var gameOver = {
 	create: function (){
 		var self = this;
-		//game.add.tileSprite(0, 0, 1024, 640, 'gameOverScreen');
+    jingle = game.add.audio('game_over');
     self.gameOverScreen = game.add.sprite(
       game.world.centerX,
       game.world.centerY,
@@ -14,6 +15,10 @@ var gameOver = {
 	},
 	update: function(){
 		var self = this;
+    if (jinglePlayed == false){
+      jingle.play();
+      jinglePlayed = true;
+    }
 
     game.add.tween(self.gameOverScreen).to( { alpha: 1 },
        500,

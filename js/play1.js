@@ -140,7 +140,6 @@ var playState1 = {
       // game.camera.fade(#000000, 4000);
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
-
           sendResult();
           console.log("result sent");
           game.state.start('gameOver', true, false);

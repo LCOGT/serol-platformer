@@ -24,6 +24,7 @@ var titleState = {
 				endGame = false;
 				lifeCount = 3;
 				counterVal = 0;
+				jinglePlayed = false;
 			}
 		}
 	}
