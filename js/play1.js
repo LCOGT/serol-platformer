@@ -132,6 +132,9 @@ var playState1 = {
       self.player.body.velocity.x = 0;
       self.player.body.velocity.y = 0;
       self.lives.frame = 0;
+      self.tetrominos.destroy(true, true);
+      self.junkItems.destroy(true, true);
+      self.batteries.destroy(true, true);
       // game_over_sfx.play();
 
       game.time.events.add(Phaser.Timer.SECOND * 2,
@@ -155,7 +158,7 @@ var playState1 = {
       game.time.events.add(Phaser.Timer.SECOND * 6,
         function(){
           sendResult();
-          game.state.start('hiScores');
+          game.state.start('hiScores', false, false);
         },this);
 
     }
