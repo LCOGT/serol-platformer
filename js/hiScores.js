@@ -30,6 +30,10 @@ var hiScores = {
 		xhr.send();
 		console.log(hiScoreVals);
 		console.log(hiScoreNames);
+
+		//add text plugin
+		game.add.plugin(PhaserInput.Plugin);
+		
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
 		self.title = game.add.text(280, 80, ("High scores"), {
 			font: "40px 'Press Start 2P'",
