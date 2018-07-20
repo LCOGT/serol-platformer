@@ -143,8 +143,6 @@ var playState1 = {
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
           lvl1bgm.stop();
-          sendResult();
-          console.log("result sent");
           game.state.start('gameOver', true, false);
         },this);
 
@@ -152,17 +150,6 @@ var playState1 = {
 
     },
 };
-
-//send data to leaderboard
-function sendResult(){
-  var data = {"username":"anon","score":counterVal.toString()};
-  var request = new XMLHttpRequest();
-  request.open('POST', 'https://serol.lco.global/api/highscore/add/', true);
-  request.setRequestHeader('Content-Type', 'application/json');
-  request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
-  request.send(JSON.stringify(data));
-}
-
 
 
 function Player(x, y) {

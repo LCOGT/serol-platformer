@@ -1,5 +1,6 @@
 var hiScoreVals = [];
 var hiScoreNames = [];
+var name = "";
 
 var hiScores = {
 	create: function (){
@@ -13,7 +14,6 @@ var hiScores = {
 		  if (xhr.status >= 200 && xhr.status < 400) {
 		    // Success!
 		    resp = xhr.responseText.toString();
-		    console.log(resp);
 				leaders = JSON.parse(resp);
 				generateLeaderboard(leaders);
 		  } else {
@@ -28,8 +28,6 @@ var hiScores = {
 		};
 
 		xhr.send();
-		console.log(hiScoreVals);
-		console.log(hiScoreNames);
 
 		//add text plugin
 		game.add.plugin(PhaserInput.Plugin);
@@ -49,32 +47,51 @@ var hiScores = {
 		var nameInput = game.add.inputField(600, 510, {
 			font: "32px 'Press Start 2P'",
 			fill: "#ffffff",
-			align: "center"
+			align: "center",
+    	borderWidth: 0,
+    	borderColor: '#ffffff',
+			background: "#0BE783",
 		});
-		nameInput.fill = '#ffffff';
+		nameInput.backgroundColor = "#0BE783";
 		nameInput.fillAlpha = 0;
 		nameInput.width = 300;
+		nameInput.height = 34;
 		nameInput.cursorColor = '#ffffff';
+		console.log("brcolour: " + nameInput.backgroundColor);
+		console.log("fillAlpha: " + nameInput.fillAlpha);
 
 		// game.input.activePointer.capture = true;
+		game.input.keyboard.onUpCallback = function( e ){
+      //down key logic
+      if(e.keyCode == Phaser.Keyboard.ENTER){
+				name = nameInput.value;
+				console.log(name);
+				sendResult(name);
+				console.log("result sent");
+				game.time.events.add(Phaser.Timer.SECOND * 2,
+	        function(){
+	          game.state.start('title', true, false);
+	        },this);
+				
+			}
+		};
 
 	},
 	update: function(){
 		var self = this;
+
 		// if (game.input.activePointer.isDown) {
-		// 	game.state.start('title');
+		//
 		// }
+
 	}
 };
 
 function generateLeaderboard(dict){
-	console.log(dict);
-	console.log(typeof dict);
   var score_text = "";
 	for (i = 0; i < 5; i++) {
 		var currentData = dict[i];
     score_text += (i+1).toString()+" "+currentData['username']+" "+currentData['score']+"\n";
-    console.log(score_text);
 		}
   score_text +="\n-------------------------";
 
@@ -84,6 +101,13 @@ function generateLeaderboard(dict){
     fill: "#ffffff",
     align: "center"
   });
-	// console.log(hiScoreVals);
-	// console.log(hiScoreNames);
+}
+//send data to leaderboard
+function sendResult(nameVal){
+  var data = {"username":nameVal,"score":counterVal.toString()};
+  var request = new XMLHttpRequest();
+  request.open('POST', 'https://serol.lco.global/api/highscore/add/', true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
+  request.send(JSON.stringify(data));
 }
