@@ -46,16 +46,24 @@ var hiScores = {
 			align: "center"
 		});
 
-		var nameInput = game.add.inputField(600, 510);
+		var nameInput = game.add.inputField(600, 510, {
+			font: "32px 'Press Start 2P'",
+			fill: "#ffffff",
+			align: "center"
+		});
+		nameInput.fill = '#ffffff';
+		nameInput.fillAlpha = 0;
+		nameInput.width = 300;
+		nameInput.cursorColor = '#ffffff';
 
-		game.input.activePointer.capture = true;
+		// game.input.activePointer.capture = true;
 
 	},
 	update: function(){
 		var self = this;
-		if (game.input.activePointer.isDown) {
-			game.state.start('title');
-		}
+		// if (game.input.activePointer.isDown) {
+		// 	game.state.start('title');
+		// }
 	}
 };
 
