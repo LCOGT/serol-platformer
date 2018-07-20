@@ -33,19 +33,20 @@ var hiScores = {
 
 		//add text plugin
 		game.add.plugin(PhaserInput.Plugin);
-		
+
 		game.add.tileSprite(0, 0, 1024, 640, 'background');
 		self.title = game.add.text(280, 80, ("High scores"), {
 			font: "40px 'Press Start 2P'",
 			fill: "#ffd800",
 			align: "center"
 		});
-		self.myScore = game.add.text(280, 500, ("Your name: " + counterVal), {
+		self.myScore = game.add.text(240, 500, ("Your name: "), {
 			font: "32px 'Press Start 2P'",
 			fill: "#ffffff",
 			align: "center"
 		});
 
+		var nameInput = game.add.inputField(600, 510);
 
 		game.input.activePointer.capture = true;
 
