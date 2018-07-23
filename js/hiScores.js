@@ -38,27 +38,27 @@ var hiScores = {
 			fill: "#ffd800",
 			align: "center"
 		});
-		self.myScore = game.add.text(240, 500, ("Your name: "), {
+		self.myScore = game.add.text(150, 500, ("Your name: "), {
 			font: "32px 'Press Start 2P'",
 			fill: "#ffffff",
 			align: "center"
 		});
 
-		var nameInput = game.add.inputField(500, 510, {
-			font: "32px 'Press Start 2P'",
-      fill: '#212121',
+		var nameInput = game.add.inputField(500, 498, {
+			font: "30px 'Press Start 2P'",
+      fill: '#ffffff',
       fillAlpha: 0,
       fontWeight: 'bold',
-      width: 200,
+      width: 400,
       max: 20,
-      padding: 8,
+      padding: 2,
       borderWidth: 1,
       borderColor: '#000',
       borderRadius: 6,
-      placeHolder: 'Username',
-      textAlign: 'center',
+      placeHolder: 'Anonymous',
+      textAlign: 'left',
       zoom: true,
-      cursorColor : '#000'
+      cursorColor : '#ffffff'
 		});
     nameInput.startFocus();
 		console.log("brcolour: " + nameInput.backgroundColor);
