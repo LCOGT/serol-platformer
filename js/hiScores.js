@@ -44,19 +44,23 @@ var hiScores = {
 			align: "center"
 		});
 
-		var nameInput = game.add.inputField(600, 510, {
+		var nameInput = game.add.inputField(500, 510, {
 			font: "32px 'Press Start 2P'",
-			fill: "#ffffff",
-			align: "center",
-    	borderWidth: 0,
-    	borderColor: '#ffffff',
-			background: "#0BE783",
+      fill: '#212121',
+      fillAlpha: 0,
+      fontWeight: 'bold',
+      width: 200,
+      max: 20,
+      padding: 8,
+      borderWidth: 1,
+      borderColor: '#000',
+      borderRadius: 6,
+      placeHolder: 'Username',
+      textAlign: 'center',
+      zoom: true,
+      cursorColor : '#000'
 		});
-		nameInput.backgroundColor = "#0BE783";
-		nameInput.fillAlpha = 0;
-		nameInput.width = 300;
-		nameInput.height = 34;
-		nameInput.cursorColor = '#ffffff';
+    nameInput.startFocus();
 		console.log("brcolour: " + nameInput.backgroundColor);
 		console.log("fillAlpha: " + nameInput.fillAlpha);
 
@@ -72,7 +76,7 @@ var hiScores = {
 	        function(){
 	          game.state.start('title', true, false);
 	        },this);
-				
+
 			}
 		};
 
