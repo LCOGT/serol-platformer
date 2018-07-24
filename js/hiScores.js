@@ -100,7 +100,6 @@ var hiScores = {
 	createTimer: function(){
 
     var self = this;
- 		/*TODO change font*/
   	self.timeLabel = self.game.add.text(10, 10,
 			"00:00",
 			{font: "40px 'Press Start 2P'", fill: "#ffffff"});

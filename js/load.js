@@ -19,12 +19,15 @@ var loadState={
 		game.load.spritesheet('telescope', 'assets/telescopes.png', 250, 250);
 		game.load.spritesheet('river', 'assets/river.png', 124, 158);
 		game.load.spritesheet('obstacle', 'assets/obstacles.png', 135, 75);
+		game.load.spritesheet('buttons', 'assets/buttons.png', 242, 72);
+		game.load.spritesheet('people', 'assets/credits.png', 160, 412);
 		//backgrounds and screens
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 		game.load.image('level_select', 'assets/level_select.png');
 		game.load.image('button', 'assets/button.png');
 		game.load.image('instructions', 'assets/L1_instructions.png');
     game.load.image('background', 'assets/background_day_large.png');
+		game.load.image('night_background', 'assets/credits_bg.png');
 		game.load.image('gameOverScreen', 'assets/game_over.png');
 		game.load.image('endless_bg', 'assets/ground_long.png');
 		game.load.image('endless_sky', 'assets/night_sky_bg.png');

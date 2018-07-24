@@ -8,12 +8,31 @@ var titleState = {
 		titlebgm = game.add.audio('title_bgm', 1, true);
 		titlebgm.play();
 		game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
-		self.pressStart = game.add.sprite(340, 350, 'start');
+
+		self.pressStart = game.add.sprite(self.world.centerX, 350, 'start');
 		self.pressStart.scale.x = 1.5;
 		self.pressStart.scale.y = 1.5;
 		self.pressStart.frame = 0;
+		self.pressStart.anchor.setTo(0.5, 0);
 		game.add.existing(self.pressStart);
 		self.pressStart.animations.add('blink', [0, 1], 2);
+
+		self.creditsButton = game.add.sprite(self.world.centerX , 500, 'buttons');
+		self.creditsButton.anchor.setTo(0.5, 0);
+		self.creditsButton.frame = 2;
+		game.add.existing(self.creditsButton);
+		//handle button click
+		self.creditsButton.inputEnabled = true;
+		self.creditsButton.events.onInputDown.add(
+			function(){game.state.start('credits', true, false)}, this);
+		//button text
+		self.creditsLabel = self.game.add.text(self.world.centerX, 515,
+			"credits",
+			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
+    self.creditsLabel.anchor.setTo(0.5, 0);
+    self.creditsLabel.align = 'center';
+
+
 		game.input.activePointer.capture = true;
 
 	},
