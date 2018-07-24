@@ -2,6 +2,8 @@ var mainMenu = {
   create: function(){
     var self = this;
     self.menuBg = game.add.tileSprite(0, 0, 1024, 640, 'level_select');
+    menubgm = game.add.audio('menu_bgm', 0.7, true);
+		menubgm.play();
     button1 = game.add.button(207, 152, 'button',
       level1Select,
       this,
@@ -19,8 +21,10 @@ var mainMenu = {
 };
 
 function level1Select() {
-  game.state.start('levelone');
+  menubgm.stop();
+  game.state.start('instructions');
 };
 function level2Select() {
+  menubgm.stop();
   game.state.start('leveltwo');
 }
