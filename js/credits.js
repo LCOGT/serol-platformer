@@ -3,6 +3,15 @@ var credits = {
 	create: function (){
 		var self = this;
     bgImage = game.add.tileSprite(0, 0, 1024, 640, 'night_background');
+    creditsbgm = game.add.audio('credits_bgm', 0.7, true);
+		creditsbgm.play();
+
+    self.creditsTitle = game.add.text(self.world.centerX, 50, ("Credits"), {
+			font: "48px 'Press Start 2P'",
+			fill: "#ffb600",
+			align: "center"
+		});
+    self.creditsTitle.anchor.setTo(0.5,0);
     //adding people
     self.ronnie = new Person(120, 550);
     game.add.existing(self.ronnie);
@@ -43,6 +52,26 @@ var credits = {
       {font: "20px 'Press Start 2P'", fill: "#00ff6e"});
     self.edwardLabel.anchor.setTo(0.5, 0);
     self.edwardLabel.align = 'center';
+
+    //back button
+    self.backButton = game.add.sprite(self.world.centerX , 550, 'buttons');
+		self.backButton.anchor.setTo(0.5, 0);
+		self.backButton.frame = 2;
+		game.add.existing(self.backButton);
+		//handle button click
+		self.backButton.inputEnabled = true;
+		self.backButton.events.onInputDown.add(
+			function(){
+				creditsbgm.fadeOut(1000);
+				creditsbgm.stop();
+        game.state.start('title', true, false);
+			}, this);
+		//button text
+		self.creditsLabel = self.game.add.text(self.world.centerX, 565,
+			"back",
+			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
+    self.creditsLabel.anchor.setTo(0.5, 0);
+    self.creditsLabel.align = 'center';
 
 	},
 	update: function(){

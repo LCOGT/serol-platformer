@@ -17,16 +17,20 @@ var titleState = {
 		game.add.existing(self.pressStart);
 		self.pressStart.animations.add('blink', [0, 1], 2);
 
-		self.creditsButton = game.add.sprite(self.world.centerX , 500, 'buttons');
+		self.creditsButton = game.add.sprite(self.world.centerX , 550, 'buttons');
 		self.creditsButton.anchor.setTo(0.5, 0);
 		self.creditsButton.frame = 2;
 		game.add.existing(self.creditsButton);
 		//handle button click
 		self.creditsButton.inputEnabled = true;
 		self.creditsButton.events.onInputDown.add(
-			function(){game.state.start('credits', true, false)}, this);
+			function(){
+				game.state.start('credits', true, false);
+				titlebgm.fadeOut(1000);
+				titlebgm.stop();
+			}, this);
 		//button text
-		self.creditsLabel = self.game.add.text(self.world.centerX, 515,
+		self.creditsLabel = self.game.add.text(self.world.centerX, 565,
 			"credits",
 			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
     self.creditsLabel.anchor.setTo(0.5, 0);
