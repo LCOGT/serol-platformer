@@ -23,6 +23,7 @@ var loadState={
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
 		game.load.image('level_select', 'assets/level_select.png');
 		game.load.image('button', 'assets/button.png');
+		game.load.image('instructions', 'assets/L1_instructions.png');
     game.load.image('background', 'assets/background_day_large.png');
 		game.load.image('gameOverScreen', 'assets/game_over.png');
 		game.load.image('endless_bg', 'assets/ground_long.png');
@@ -34,6 +35,10 @@ var loadState={
 		game.load.audio('game_over', 'assets/audio/game_over.mp3');
 		game.load.audio('jump', 'assets/audio/jump.mp3');
 		game.load.audio('lose_life', 'assets/audio/lose_life.mp3');
+		game.load.audio('title_bgm', 'assets/audio/serol_start.mp3');
+		game.load.audio('menu_bgm', 'assets/audio/serol_level_select.mp3');
+		game.load.audio('credits_bgm', 'assets/audio/serol_credits.mp3');
+		game.load.audio('levelone_bgm', 'assets/audio/serol_level1.mp3');
 
  	},
  	create: function(){

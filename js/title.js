@@ -1,7 +1,12 @@
+var counterVal = 0;
+var lifeCount = 3;
+var endGame = false;
 var titleState = {
 	pressStart: null,
 	create: function (){
 		var self = this;
+		titlebgm = game.add.audio('title_bgm', 1, true);
+		titlebgm.play();
 		game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
 		self.pressStart = game.add.sprite(340, 350, 'start');
 		self.pressStart.scale.x = 1.5;
@@ -16,7 +21,15 @@ var titleState = {
 		var self = this;
 		self.pressStart.animations.play('blink');
 		if (game.input.activePointer.isDown) {
-			game.state.start('menu');
+			titlebgm.fadeOut(1000);
+			titlebgm.stop();
+			game.state.start('instructions', true, false);
+			if (endGame === true) {
+				endGame = false;
+				lifeCount = 3;
+				counterVal = 0;
+				jinglePlayed = false;
+			}
 		}
 	}
 }

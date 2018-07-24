@@ -3,11 +3,9 @@
 
 //Made using Brian Greig's YouTube tutorials
 //https://www.youtube.com/watch?v=mBEVHWUelWs
-var counterVal = 0;
-var lifeCount = 3;
-var endGame = false;
-var pauseTime = 8;
-var grav = 40;
+var pauseTime;
+var grav;
+var v;
 var playState1 = {
   counter: null,
   lives: null,
@@ -17,16 +15,20 @@ var playState1 = {
   batteries: null,
   create: function(){
       var self = this;
+      pauseTime = 8;
+      grav = 40;
+      v = 20;
       //sounds setup
       collect_sfx = game.add.audio('collect_t');
       gain_life_sfx = game.add.audio('gain_life');
-      game_over_sfx = game.add.audio('game_over', 1, false);
+      // lvl1bgm = game.add.audio('levelone_bgm', 0.8, true);
       jump_sfx = game.add.audio('jump');
       lose_life_sfx = game.add.audio('lose_life');
       //background setup
-      game.stage.backgroundColor = '#D3D3D3';
+      game.stage.backgroundColor = '#000000';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
       game.world.setBounds(0, 0, 1024, 545);
+      // lvl1bgm.play();
 
       //add Counter
       self.counter = new Counter(counterVal);
@@ -35,6 +37,7 @@ var playState1 = {
       //add Lives
       self.lives = new Lives(3);
       game.add.existing(self.lives);
+      self.lives.updateLife(lifeCount);
 
 
       //add Serol object
@@ -68,6 +71,7 @@ var playState1 = {
             }else {
               pauseTime = 0.0005
             }
+            v = v + 5;
 
           },this);
       }, this);
@@ -119,35 +123,34 @@ var playState1 = {
 
     //endgame sequence
     if (endGame === true){
-      var gameOverScreen = game.add.sprite(game.world.centerX, game.world.centerY, 'gameOverScreen');
-      gameOverScreen.anchor.setTo(0.5, 0.425);
-      gameOverScreen.alpha = 0;
-
+      //remove all objects
+      lvl1bgm.fadeOut(2000);
       game.time.events.remove(generateTetrominos);
       game.time.events.remove(generateJunk);
       game.time.events.remove(generateBatteries);
-
+      //put Serol to sleep
       self.player.animations.stop('staticBob');
       self.player.play('sleeping');
       self.player.body.velocity.x = 0;
       self.player.body.velocity.y = 0;
       self.lives.frame = 0;
+      self.tetrominos.destroy(true, true);
+      self.junkItems.destroy(true, true);
+      self.batteries.destroy(true, true);
       // game_over_sfx.play();
 
+      // game.camera.fade(#000000, 4000);
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
-          game.add.tween(gameOverScreen).to( { alpha: 1 },
-             2000,
-             Phaser.Easing.Linear.None,
-             true,
-             0,
-             1000,
-             true);
-        },
-        this);
+          lvl1bgm.stop();
+          game.state.start('gameOver', true, false);
+        },this);
+
     }
+
     },
 };
+
 
 function Player(x, y) {
 
@@ -247,6 +250,7 @@ function Junk(){
   //enable physics
   game.physics.enable(junk, Phaser.Physics.ARCADE);
   junk.body.gravity.y = 50;
+  junk.body.velocity.y = v;
 
   //junk methods
   junk.getCaught = function(){
