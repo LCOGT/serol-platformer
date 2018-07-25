@@ -5,6 +5,7 @@ var q = new Queue();
 var choices = ["tetromino", "junk"];
 var counterVal1 = 0;
 var cursors;
+var overlap;
 var playState2 = {
   telescopes: null,
   playerLayer: null,
@@ -79,19 +80,54 @@ var playState2 = {
       if(e.keyCode == Phaser.Keyboard.DOWN){
         var removed = q.shift();
         if (removed.valueOf()==="tetromino"){
-          console.log("tetromino dequeued");
+          console.log("tetromino lost");
+          counterVal1--;
+          self.counter.updateScore(counterVal1);
           q.enqueue(choose(choices));
           self.pipe.updatePipe(q.toString());
         }
-        //up key logic
         else if(removed.valueOf()==="junk"){
-          console.log("junk dequeued");
+          console.log("junk thrown out");
+          counterVal1++;
+          self.counter.updateScore(counterVal1);
           q.enqueue(choose(choices));
           self.pipe.updatePipe(q.toString());
         }
         console.log(q.toString());
-      } else if (e.keyCode == Phaser.Keyboard.UP){
-        console.log("Up pressed");
+      }
+
+      //up key logic
+      else if (e.keyCode == Phaser.Keyboard.UP){
+        // console.log("Up pressed");
+        var removed = q.shift();
+        if ((removed.valueOf()==="tetromino") && (overlap == true)){
+          console.log("tetromino sent");
+          counterVal1++;
+          self.counter.updateScore(counterVal1);
+          q.enqueue(choose(choices));
+          self.pipe.updatePipe(q.toString());
+        }
+        else if ((removed.valueOf()==="tetromino") && (overlap == false)){
+          console.log("tetromino lost");
+          counterVal1--;
+          self.counter.updateScore(counterVal1);
+          q.enqueue(choose(choices));
+          self.pipe.updatePipe(q.toString());
+        }
+        else if ((removed.valueOf()==="junk") && (overlap == true)){
+          console.log("junk sent (oh no)");
+          counterVal1--;
+          self.counter.updateScore(counterVal1);
+          q.enqueue(choose(choices));
+          self.pipe.updatePipe(q.toString());
+        }
+        else if ((removed.valueOf()==="junk") && (overlap == false)){
+          console.log("junk can't be sent");
+          counterVal1++;
+          self.counter.updateScore(counterVal1);
+          q.enqueue(choose(choices));
+          self.pipe.updatePipe(q.toString());
+        }
       }
     };
 
@@ -99,6 +135,7 @@ var playState2 = {
 
   update: function(){
     var self = this;
+    overlap = false;
     text.text = 'Overlapping: false';
     skyBg.tilePosition.x -= 0.5;
     runnerBg.tilePosition.x -= 3;
@@ -117,6 +154,7 @@ var playState2 = {
     // }, this);
     game.physics.arcade.overlap(self.telescopes, self.player, function(){
       text.text = 'Overlapping: true';
+      overlap = true;
     });
 
 
