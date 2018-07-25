@@ -37,7 +37,15 @@ var titleState = {
     self.creditsLabel.align = 'center';
 
 
-		game.input.activePointer.capture = true;
+		self.input.activePointer.capture = true;
+		// self.input.keyboard.onUpCallback = function( input ){
+    //   //press space logic
+    //   if(input.keyCode == Phaser.Keyboard.SPACEBAR){
+		// 		titlebgm.fadeOut(1000);
+		// 		titlebgm.stop();
+    //     game.state.start('menu', true, false);
+    //   }
+		// }
 
 	},
 	update: function(){
@@ -46,7 +54,7 @@ var titleState = {
 		if (game.input.activePointer.isDown) {
 			titlebgm.fadeOut(1000);
 			titlebgm.stop();
-			game.state.start('menu', true, false);
+			game.state.start('leveltwo', true, false);
 			if (endGame === true) {
 				endGame = false;
 				lifeCount = 3;

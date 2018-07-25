@@ -45,7 +45,9 @@ var playState2 = {
 
     //add sprite layers
     self.telescopes = game.add.group();
+    self.telescopes.enableBody = true;
     self.playerLayer = game.add.group();
+    self.playerLayer.enableBody = true;
     // self.obstacles = game.add.group();
     // self.rivers = game.add.group();
 
@@ -97,23 +99,26 @@ var playState2 = {
 
   update: function(){
     var self = this;
-
+    text.text = 'Overlapping: false';
     skyBg.tilePosition.x -= 0.5;
     runnerBg.tilePosition.x -= 3;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
-    game.world.bringToTop(self.playerLayer);
 
-    self.telescopes.forEach(function(telescope){
-      if (checkOverlap(telescope, self.player))
-      {
-          text.text = 'Overlapping: true';
-      }
-      else
-      {
-          text.text = 'Overlapping: false';
-      }
-    }, this);
+    // self.telescopes.forEach(function(telescope){
+      // if (checkOverlap(self.telescopes, self.player))
+      // {
+      //
+      // }
+      // else
+      // {
+      //     text.text = 'Overlapping: false';
+      // }
+    // }, this);
+    game.physics.arcade.overlap(self.telescopes, self.player, function(){
+      text.text = 'Overlapping: true';
+    });
+
 
   },
 
@@ -249,4 +254,9 @@ function checkOverlap(spriteA, spriteB) {
 
     return Phaser.Rectangle.intersects(boundsA, boundsB);
 
+}
+function onOverlap(spriteA, spriteB){
+  var self = this;
+  spriteA.kill();
+  self.text.text = 'Overlapping: true';
 }
