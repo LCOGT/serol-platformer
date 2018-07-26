@@ -1,9 +1,10 @@
 /*
 Level 2
 */
-//checking repo
+var xPositions = [100, 200, 300, 400, 500, 600, 700, 800];
+var sprites = [];
 var q = new Queue();
-var choices = ["tetromino", "junk"];
+var choices = ['tetromino', 'junk'];
 var counterVal1 = 0;
 var cursors;
 var overlap;
@@ -66,6 +67,12 @@ var playState2 = {
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
+    for(var i in xPositions) {
+      var sprite = new QueueSprite(xPositions[i], 200, (choose(choices)));
+      console.log(sprite.key);
+      sprites.push(sprite);
+    }
+
     // generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
     //   self.rivers.create(River());
     // }, this);
@@ -79,6 +86,9 @@ var playState2 = {
     game.input.keyboard.onUpCallback = function( e ){
       //down key logic
       if(e.keyCode == Phaser.Keyboard.DOWN){
+        var removedSprite = sprites.shift();
+        console.log(removedSprite.key);
+        console.log(sprites.length);
         var removed = q.shift();
         if (removed.valueOf()==="tetromino"){
           console.log("tetromino lost");
@@ -142,26 +152,12 @@ var playState2 = {
     runnerBg.tilePosition.x -= 3;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
-
-    // self.telescopes.forEach(function(telescope){
-      // if (checkOverlap(self.telescopes, self.player))
-      // {
-      //
-      // }
-      // else
-      // {
-      //     text.text = 'Overlapping: false';
-      // }
-    // }, this);
+    //check overlap
     game.physics.arcade.overlap(self.telescopes, self.player, function(){
       text.text = 'Overlapping: true';
       overlap = true;
     });
-
-
   },
-
-
 };
 
 function Player1(x, y) {
@@ -251,16 +247,14 @@ function Pipe(string){
   }
   return pipe;
 };
-
+//queue object
 function Queue(){
   var queue = [];
 
   queue.enqueue = function(item){
     queue.push(item);
   }
-  // queue.dequeue = function(){
-  //   return queue.shift().valueOf();
-  // }
+
   queue.peek = function(){
     if (queue.length <0){
       console.log(null);
@@ -277,10 +271,18 @@ function Queue(){
   }
   return queue;
 }
+//queue sprite object
+function QueueSprite(x, y, spriteRef){
+  var queueSprite = game.add.sprite(x, y, spriteRef);
+  if (spriteRef == 'tetromino'){
+    queueSprite.frame = Math.floor(Math.random() * 60);
+  }else if(spriteRef == 'junk'){
+    queueSprite.frame = Math.floor(Math.random() * 6);
+  }
+  return queueSprite;
+}
 
-// function IsNumeric(val) {
-//     return !isNaN(parseInt(val));
-// }
+//other useful functions
 function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
   return choices[index];
