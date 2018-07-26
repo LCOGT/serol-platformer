@@ -2,7 +2,6 @@
 Level 2
 */
 var xPositions = [100, 200, 300, 400, 500, 600, 700, 800];
-var sprites = [];
 var q = new Queue();
 var choices = ['tetromino', 'junk'];
 var counterVal1 = 0;
@@ -25,19 +24,17 @@ var playState2 = {
     cursors = game.input.keyboard.createCursorKeys();
     text = game.add.text(500, 500, 'Overlapping: false', { fill: '#ffffff' });
 
-
-    q.enqueue("tetromino");
-    q.enqueue("junk");
-    q.enqueue("tetromino");
-    q.enqueue("tetromino");
-    q.enqueue("junk");
-    q.enqueue("junk");
+    //initial queue
+    for(var i in xPositions) {
+      var sprite = new QueueSprite(xPositions[i], 600, (choose(choices)));
+      q.enqueue(sprite);
+    }
     q.peek();
     //console.log(typeof q);
 
     //add pipe content
-    self.pipe = new Pipe(q.toString());
-    game.add.existing(self.pipe);
+    // self.pipe = new Pipe(q.toString());
+    // game.add.existing(self.pipe);
 
     //add Counter
     self.counter = new Counter(counterVal1);
@@ -67,12 +64,6 @@ var playState2 = {
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
-    for(var i in xPositions) {
-      var sprite = new QueueSprite(xPositions[i], 200, (choose(choices)));
-      console.log(sprite.key);
-      sprites.push(sprite);
-    }
-
     // generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
     //   self.rivers.create(River());
     // }, this);
@@ -86,22 +77,20 @@ var playState2 = {
     game.input.keyboard.onUpCallback = function( e ){
       //down key logic
       if(e.keyCode == Phaser.Keyboard.DOWN){
-        var removedSprite = sprites.shift();
-        console.log(removedSprite.key);
-        console.log(sprites.length);
+        console.log(q.length);
         var removed = q.shift();
         if (removed.valueOf()==="tetromino"){
           console.log("tetromino lost");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-          q.enqueue(choose(choices));
-          self.pipe.updatePipe(q.toString());
+          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
+          updatePositions(q, xPositions);
         }
         else if(removed.valueOf()==="junk"){
           console.log("junk thrown out");
           counterVal1++;
           self.counter.updateScore(counterVal1);
-          q.enqueue(choose(choices));
+          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
           self.pipe.updatePipe(q.toString());
         }
         console.log(q.toString());
@@ -115,21 +104,21 @@ var playState2 = {
           console.log("tetromino sent");
           counterVal1++;
           self.counter.updateScore(counterVal1);
-          q.enqueue(choose(choices));
+          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
           self.pipe.updatePipe(q.toString());
         }
         else if ((removed.valueOf()==="tetromino") && (overlap == false)){
           console.log("tetromino lost");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-          q.enqueue(choose(choices));
+          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
           self.pipe.updatePipe(q.toString());
         }
         else if ((removed.valueOf()==="junk") && (overlap == true)){
           console.log("junk sent (oh no)");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-          q.enqueue(choose(choices));
+          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
           self.pipe.updatePipe(q.toString());
         }
         else if ((removed.valueOf()==="junk") && (overlap == false)){
@@ -234,19 +223,21 @@ function River(){
   return river;
 }
 
-function Pipe(string){
-  var pipe = game.add.text(100, 580, ("Queue: "+ string), {
-    font: "32px 'Press Start 2P'",
-    fill: "#ffffff",
-    align: "center"
-  });
+//text based pipe test
+// function Pipe(string){
+//   var pipe = game.add.text(100, 580, ("Queue: "+ string), {
+//     font: "32px 'Press Start 2P'",
+//     fill: "#ffffff",
+//     align: "center"
+//   });
+//
+//   pipe.updatePipe = function(value){
+//     var self = this;
+//     self.setText("Queue: " + value);
+//   }
+//   return pipe;
+// };
 
-  pipe.updatePipe = function(value){
-    var self = this;
-    self.setText("Queue: " + value);
-  }
-  return pipe;
-};
 //queue object
 function Queue(){
   var queue = [];
@@ -271,9 +262,15 @@ function Queue(){
   }
   return queue;
 }
+function updatePositions(elementArray, posArray){
+  for (var i in elementArray){
+    i.body.position.x = posArray[i];
+  }
+}
 //queue sprite object
 function QueueSprite(x, y, spriteRef){
   var queueSprite = game.add.sprite(x, y, spriteRef);
+  queueSprite.anchor.setTo(0.5, 0.5);
   if (spriteRef == 'tetromino'){
     queueSprite.frame = Math.floor(Math.random() * 60);
   }else if(spriteRef == 'junk'){
