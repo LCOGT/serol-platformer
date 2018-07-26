@@ -19,14 +19,14 @@ var playState2 = {
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
-    pipeImage = game.add.sprite(10, 540, 'pipe')
+    pipeImage = game.add.sprite(10, 520, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
     cursors = game.input.keyboard.createCursorKeys();
     text = game.add.text(500, 500, 'Overlapping: false', { fill: '#ffffff' });
 
     //initial queue
     for(var i in xPositions) {
-      var sprite = new QueueSprite(xPositions[i], 600, (choose(choices)));
+      var sprite = new QueueSprite(xPositions[i], 585, (choose(choices)));
       q.enqueue(sprite);
     }
     q.peek();
@@ -80,7 +80,7 @@ var playState2 = {
         console.log(q.length);
         var removed = q.shift();
         console.log(removed.key);
-        q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        q.enqueue(new QueueSprite(xPositions[7], 585, (choose(choices))));
         if (removed.key==='tetromino'){
           console.log("tetromino lost");
           counterVal1--;
