@@ -11,12 +11,12 @@ var loadState={
 		/*Load graphics assets */
 		//sprites
     game.load.spritesheet('serol', 'assets/serol_sprites_condensed.png', 138, 131);
-    game.load.spritesheet('tetromino', 'assets/tetris_pieces.png', 15, 15);
+    game.load.spritesheet('tetromino', 'assets/tetrominos.png', 75, 75);
 		game.load.spritesheet('start', 'assets/click_start.png', 219, 26);
-		game.load.spritesheet('junk', 'assets/random_objects.png', 52, 52);
+		game.load.spritesheet('junk', 'assets/junk.png', 75, 75);
 		game.load.spritesheet('lives', 'assets/batterylife.png', 32, 32);
 		game.load.spritesheet('1up', 'assets/battery.png', 64, 43);
-		game.load.spritesheet('telescope', 'assets/telescopes.png', 250, 250);
+		game.load.spritesheet('telescope', 'assets/telescopes.png', 168, 250);
 		game.load.spritesheet('river', 'assets/river.png', 124, 158);
 		game.load.spritesheet('obstacle', 'assets/obstacles.png', 135, 75);
 		game.load.spritesheet('buttons', 'assets/buttons.png', 242, 72);
