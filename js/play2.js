@@ -79,54 +79,46 @@ var playState2 = {
       if(e.keyCode == Phaser.Keyboard.DOWN){
         console.log(q.length);
         var removed = q.shift();
-        if (removed.valueOf()==="tetromino"){
+        console.log(removed.key);
+        q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        if (removed.key==='tetromino'){
           console.log("tetromino lost");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
-          updatePositions(q, xPositions);
         }
-        else if(removed.valueOf()==="junk"){
+        else if(removed.key==='junk'){
           console.log("junk thrown out");
           counterVal1++;
           self.counter.updateScore(counterVal1);
-          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
-          self.pipe.updatePipe(q.toString());
         }
-        console.log(q.toString());
       }
 
       //up key logic
       else if (e.keyCode == Phaser.Keyboard.UP){
         // console.log("Up pressed");
+        console.log(q.length);
         var removed = q.shift();
-        if ((removed.valueOf()==="tetromino") && (overlap == true)){
+        console.log(removed.key);
+        q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        if ((removed.key==='tetromino') && (overlap == true)){
           console.log("tetromino sent");
           counterVal1++;
           self.counter.updateScore(counterVal1);
-          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
-          self.pipe.updatePipe(q.toString());
         }
-        else if ((removed.valueOf()==="tetromino") && (overlap == false)){
+        else if ((removed.key==='tetromino') && (overlap == false)){
           console.log("tetromino lost");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
-          self.pipe.updatePipe(q.toString());
         }
-        else if ((removed.valueOf()==="junk") && (overlap == true)){
+        else if ((removed.key==='junk') && (overlap == true)){
           console.log("junk sent (oh no)");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-          q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
-          self.pipe.updatePipe(q.toString());
         }
-        else if ((removed.valueOf()==="junk") && (overlap == false)){
+        else if ((removed.key==='junk') && (overlap == false)){
           console.log("junk can't be sent");
           counterVal1++;
           self.counter.updateScore(counterVal1);
-          q.enqueue(choose(choices));
-          self.pipe.updatePipe(q.toString());
         }
       }
     };
