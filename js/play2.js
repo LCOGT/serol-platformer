@@ -27,7 +27,7 @@ var playState2 = {
     //initial queue
     for(var i in xPositions) {
       var sprite = new QueueSprite(xPositions[i], 585, (choose(choices)));
-      q.enqueue(sprite);
+      q.push(sprite);
     }
     q.peek();
     //console.log(typeof q);
@@ -80,7 +80,6 @@ var playState2 = {
         console.log(q.length);
         var removed = q.shift();
         console.log(removed.key);
-        q.enqueue(new QueueSprite(xPositions[7], 585, (choose(choices))));
         if (removed.key==='tetromino'){
           console.log("tetromino lost");
           counterVal1--;
@@ -91,6 +90,10 @@ var playState2 = {
           counterVal1++;
           self.counter.updateScore(counterVal1);
         }
+        removed.destroy();
+        q.push(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        console.log(q,xPositions);
+        updatePositions(q,xPositions);
       }
 
       //up key logic
@@ -99,9 +102,7 @@ var playState2 = {
         console.log(q.length);
         var removed = q.shift();
         console.log(removed.key);
-        q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
-        console.log(q,xPositions);
-        updatePositions(q,xPositions);
+
         if ((removed.key==='tetromino') && (overlap == true)){
           console.log("tetromino sent");
           counterVal1++;
@@ -122,6 +123,10 @@ var playState2 = {
           counterVal1++;
           self.counter.updateScore(counterVal1);
         }
+        removed.destroy();
+        q.push(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        console.log(q,xPositions);
+        updatePositions(q,xPositions);
       }
     };
 
