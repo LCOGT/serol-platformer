@@ -2,7 +2,7 @@
 Level 2
 */
 var xPositions = [100, 200, 300, 400, 500, 600, 700, 800];
-var q = new Queue();
+var q = [];
 var choices = ['tetromino', 'junk'];
 var counterVal1 = 0;
 var cursors;
@@ -29,7 +29,6 @@ var playState2 = {
       var sprite = new QueueSprite(xPositions[i], 585, (choose(choices)));
       q.push(sprite);
     }
-    q.peek();
     //console.log(typeof q);
 
     //add pipe content
@@ -91,7 +90,7 @@ var playState2 = {
           self.counter.updateScore(counterVal1);
         }
         removed.destroy();
-        q.push(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
         console.log(q,xPositions);
         updatePositions(q,xPositions);
       }
@@ -124,7 +123,7 @@ var playState2 = {
           self.counter.updateScore(counterVal1);
         }
         removed.destroy();
-        q.push(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
         console.log(q,xPositions);
         updatePositions(q,xPositions);
       }
@@ -237,30 +236,6 @@ function River(){
 //   return pipe;
 // };
 
-//queue object
-function Queue(){
-  var queue = [];
-
-  queue.enqueue = function(item){
-    queue.push(item);
-  }
-
-  queue.peek = function(){
-    if (queue.length <0){
-      console.log(null);
-    }else{
-      console.log(queue[0]);
-    }
-
-  }
-  queue.disp = function(){
-    console.log(queue);
-  }
-  queue.flush = function(){
-    queue = [];
-  }
-  return queue;
-}
 function updatePositions(elementArray, posArray){
 
   for (var i=0;elementArray.length;i++){
