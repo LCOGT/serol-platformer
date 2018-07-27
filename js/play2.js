@@ -100,6 +100,8 @@ var playState2 = {
         var removed = q.shift();
         console.log(removed.key);
         q.enqueue(new QueueSprite(xPositions[7], 600, (choose(choices))));
+        console.log(q,xPositions);
+        updatePositions(q,xPositions);
         if ((removed.key==='tetromino') && (overlap == true)){
           console.log("tetromino sent");
           counterVal1++;
@@ -255,8 +257,10 @@ function Queue(){
   return queue;
 }
 function updatePositions(elementArray, posArray){
-  for (var i in elementArray){
-    i.body.position.x = posArray[i];
+
+  for (var i=0;elementArray.length;i++){
+    console.log(i)
+    elementArray[i].position.x = posArray[i];
   }
 }
 //queue sprite object
