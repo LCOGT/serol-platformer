@@ -7,6 +7,8 @@ var choices = ['tetromino', 'junk'];
 var counterVal1 = 0;
 var cursors;
 var overlap;
+var runspeed = -200;
+var bgSpeed = 3;
 var playState2 = {
   telescopes: null,
   playerLayer: null,
@@ -50,8 +52,10 @@ var playState2 = {
     // self.obstacles = game.add.group();
     // self.rivers = game.add.group();
 
-    generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
-      self.telescopes.add(Telescope(choose([0,2,4])));
+    generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
+      self.telescopes.add(Telescope(choose([0,2,4]), runspeed));
+      runspeed = runspeed * 1.05;
+      bgSpeed = bgSpeed * 1.05;
     }, this);
 
     //add Serol
@@ -136,7 +140,7 @@ var playState2 = {
     overlap = false;
     text.text = 'Overlapping: false';
     skyBg.tilePosition.x -= 0.5;
-    runnerBg.tilePosition.x -= 3;
+    runnerBg.tilePosition.x -= bgSpeed;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
     //check overlap
@@ -202,14 +206,14 @@ function Obstacle(){
   return obstacle;
 }
 
-function Telescope(frame){
+function Telescope(frame, v){
   var telescope = game.add.sprite(1500, 520, 'telescope');
   telescope.frame = frame;
   telescope.anchor.setTo(0.5, 1);
   telescope.scale.setTo(1.7, 1.7);
 
   game.physics.enable(telescope, Phaser.Physics.ARCADE);
-  telescope.body.velocity.x = -180;
+  telescope.body.velocity.x = v;
   return telescope;
 }
 
