@@ -203,8 +203,10 @@ function Obstacle(){
 }
 
 function Telescope(frame){
-  var telescope = game.add.sprite(1000, 250, 'telescope');
+  var telescope = game.add.sprite(1500, 520, 'telescope');
   telescope.frame = frame;
+  telescope.anchor.setTo(0.5, 1);
+  telescope.scale.setTo(1.7, 1.7);
 
   game.physics.enable(telescope, Phaser.Physics.ARCADE);
   telescope.body.velocity.x = -180;
