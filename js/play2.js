@@ -51,7 +51,7 @@ var playState2 = {
     // self.rivers = game.add.group();
 
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
-      self.telescopes.add(Telescope());
+      self.telescopes.add(Telescope(choose([0,2,4])));
     }, this);
 
     //add Serol
@@ -202,9 +202,9 @@ function Obstacle(){
   return obstacle;
 }
 
-function Telescope(){
+function Telescope(frame){
   var telescope = game.add.sprite(1000, 250, 'telescope');
-  telescope.frame = Math.floor(Math.random() * 6);
+  telescope.frame = frame;
 
   game.physics.enable(telescope, Phaser.Physics.ARCADE);
   telescope.body.velocity.x = -180;
@@ -221,20 +221,6 @@ function River(){
   return river;
 }
 
-//text based pipe test
-// function Pipe(string){
-//   var pipe = game.add.text(100, 580, ("Queue: "+ string), {
-//     font: "32px 'Press Start 2P'",
-//     fill: "#ffffff",
-//     align: "center"
-//   });
-//
-//   pipe.updatePipe = function(value){
-//     var self = this;
-//     self.setText("Queue: " + value);
-//   }
-//   return pipe;
-// };
 
 function updatePositions(elementArray, posArray){
 
