@@ -79,16 +79,24 @@ var playState2 = {
     //dequeueing using keyup
     game.input.keyboard.onUpCallback = function( e ){
       //down key logic
-      if(e.keyCode == Phaser.Keyboard.DOWN){
+      if(e.keyCode == Phaser.Keyboard.SPACEBAR){
         console.log(q.length);
         var removed = q.shift();
         console.log(removed.key);
-        if (removed.key==='tetromino'){
-          console.log("tetromino lost");
+        if ((removed.key==='tetromino') && (overlap == true)){
+              console.log("tetromino sent");
+              counterVal1++;
+              self.counter.updateScore(counterVal1);
+        } else if ((removed.key==='junk') && (overlap == true)){
+              console.log("junk sent (oh no)");
+              counterVal1--;
+              self.counter.updateScore(counterVal1);
+        }
+        if ((removed.key==='tetromino') && (overlap == false)){
+          console.log("tetromino lost (oh no)");
           counterVal1--;
           self.counter.updateScore(counterVal1);
-        }
-        else if(removed.key==='junk'){
+        } else if ((removed.key==='junk') && (overlap == false)){
           console.log("junk thrown out");
           counterVal1++;
           self.counter.updateScore(counterVal1);
@@ -100,37 +108,37 @@ var playState2 = {
       }
 
       //up key logic
-      else if (e.keyCode == Phaser.Keyboard.UP){
-        // console.log("Up pressed");
-        console.log(q.length);
-        var removed = q.shift();
-        console.log(removed.key);
-
-        if ((removed.key==='tetromino') && (overlap == true)){
-          console.log("tetromino sent");
-          counterVal1++;
-          self.counter.updateScore(counterVal1);
-        }
-        else if ((removed.key==='tetromino') && (overlap == false)){
-          console.log("tetromino lost");
-          counterVal1--;
-          self.counter.updateScore(counterVal1);
-        }
-        else if ((removed.key==='junk') && (overlap == true)){
-          console.log("junk sent (oh no)");
-          counterVal1--;
-          self.counter.updateScore(counterVal1);
-        }
-        else if ((removed.key==='junk') && (overlap == false)){
-          console.log("junk can't be sent");
-          counterVal1++;
-          self.counter.updateScore(counterVal1);
-        }
-        removed.destroy();
-        q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
-        console.log(q,xPositions);
-        updatePositions(q,xPositions);
-      }
+    //   else if (e.keyCode == Phaser.Keyboard.UP){
+    //     // console.log("Up pressed");
+    //     console.log(q.length);
+    //     var removed = q.shift();
+    //     console.log(removed.key);
+    //
+    //     if ((removed.key==='tetromino') && (overlap == true)){
+    //       console.log("tetromino sent");
+    //       counterVal1++;
+    //       self.counter.updateScore(counterVal1);
+    //     }
+    //     else if ((removed.key==='tetromino') && (overlap == false)){
+    //       console.log("tetromino lost");
+    //       counterVal1--;
+    //       self.counter.updateScore(counterVal1);
+    //     }
+    //     else if ((removed.key==='junk') && (overlap == true)){
+    //       console.log("junk sent (oh no)");
+    //       counterVal1--;
+    //       self.counter.updateScore(counterVal1);
+    //     }
+    //     else if ((removed.key==='junk') && (overlap == false)){
+    //       console.log("junk can't be sent");
+    //       counterVal1++;
+    //       self.counter.updateScore(counterVal1);
+    //     }
+    //     removed.destroy();
+    //     q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
+    //     console.log(q,xPositions);
+    //     updatePositions(q,xPositions);
+    //   }
     };
 
   },
@@ -175,7 +183,7 @@ function Player1(x, y) {
         player.body.velocity.x = hozMove;
         player.play('walkRight');
       }
-      if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && player.body.onFloor() && game.time.now > jumpTimer){
+      if (game.input.keyboard.isDown(Phaser.Keyboard.UP) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jump_sfx.play();
         jumpTimer = game.time.now + 900;
