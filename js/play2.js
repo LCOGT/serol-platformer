@@ -31,11 +31,16 @@ var playState2 = {
       var sprite = new QueueSprite(xPositions[i], 585, (choose(choices)));
       q.push(sprite);
     }
-    //console.log(typeof q);
+    //timer setup
+    self.startTime = new Date();
+		self.totalTime = 120;
+		self.timeElapsed = 0;
 
-    //add pipe content
-    // self.pipe = new Pipe(q.toString());
-    // game.add.existing(self.pipe);
+		self.createTimer();
+
+		self.gameTimer = game.time.events.loop(100, function(){
+				self.updateTimer();
+		    });
 
     //add Counter
     self.counter = new Counter(counterVal1);
@@ -106,46 +111,53 @@ var playState2 = {
         console.log(q,xPositions);
         updatePositions(q,xPositions);
       }
-
-      //up key logic
-    //   else if (e.keyCode == Phaser.Keyboard.UP){
-    //     // console.log("Up pressed");
-    //     console.log(q.length);
-    //     var removed = q.shift();
-    //     console.log(removed.key);
-    //
-    //     if ((removed.key==='tetromino') && (overlap == true)){
-    //       console.log("tetromino sent");
-    //       counterVal1++;
-    //       self.counter.updateScore(counterVal1);
-    //     }
-    //     else if ((removed.key==='tetromino') && (overlap == false)){
-    //       console.log("tetromino lost");
-    //       counterVal1--;
-    //       self.counter.updateScore(counterVal1);
-    //     }
-    //     else if ((removed.key==='junk') && (overlap == true)){
-    //       console.log("junk sent (oh no)");
-    //       counterVal1--;
-    //       self.counter.updateScore(counterVal1);
-    //     }
-    //     else if ((removed.key==='junk') && (overlap == false)){
-    //       console.log("junk can't be sent");
-    //       counterVal1++;
-    //       self.counter.updateScore(counterVal1);
-    //     }
-    //     removed.destroy();
-    //     q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
-    //     console.log(q,xPositions);
-    //     updatePositions(q,xPositions);
-    //   }
     };
-
   },
+  createTimer: function(){
+
+    var self = this;
+  	self.timeLabel = self.game.add.text(game.world.centerX, 20,
+			"00:00",
+			{font: "40px 'Press Start 2P'", fill: "#ffffff"});
+    self.timeLabel.anchor.setTo(0.5, 0);
+    self.timeLabel.align = 'center';
+
+	},
+	updateTimer: function(){
+
+    var self = this;
+
+    var currentTime = new Date();
+    var timeDifference = self.startTime.getTime() - currentTime.getTime();
+
+    //Time elapsed in seconds
+    self.timeElapsed = Math.abs(timeDifference / 1000);
+
+    //Time remaining in seconds
+    var timeRemaining = self.totalTime - self.timeElapsed;
+
+    //Convert seconds into minutes and seconds
+    var minutes = Math.floor(timeRemaining / 60);
+    var seconds = Math.floor(timeRemaining) - (60 * minutes);
+
+    //Display minutes, add a 0 to the start if less than 10
+    var result = (minutes < 10) ? "0" + minutes : minutes;
+
+    //Display seconds, add a 0 to the start if less than 10
+    result += (seconds < 10) ? ":0" + seconds : ":" + seconds;
+
+    self.timeLabel.text = result;
+
+	},
 
   update: function(){
     var self = this;
     overlap = false;
+
+    if(self.timeElapsed >= self.totalTime){
+		game.state.start('title', true, false);
+		}
+
     text.text = 'Overlapping: false';
     skyBg.tilePosition.x -= 0.5;
     runnerBg.tilePosition.x -= bgSpeed;
