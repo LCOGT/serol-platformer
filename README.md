@@ -10,3 +10,9 @@ This game only works if a web server is running.
 
 ## To run the game locally:
 * type `http://localhost:8000/` into the browser URL bar
+
+## Production Deployment
+
+The LCO Jenkins build server will automatically synchronize the contents of
+this repository with the AWS S3 bucket that hosts https://serolgame.lco.global/.
+This only happens for tagged releases on the "master" branch.
