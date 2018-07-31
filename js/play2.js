@@ -61,7 +61,7 @@ var playState2 = {
     // self.rivers = game.add.group();
 
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
-      self.telescopes.add(Telescope(choose([0,2,4]), runspeed));
+      self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
       runspeed = runspeed * 1.05;
       bgSpeed = bgSpeed * 1.05;
     }, this);

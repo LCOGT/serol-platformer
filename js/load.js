@@ -16,8 +16,8 @@ var loadState={
 		game.load.spritesheet('junk', 'assets/junk.png', 75, 75);
 		game.load.spritesheet('lives', 'assets/batterylife.png', 32, 32);
 		game.load.spritesheet('1up', 'assets/battery.png', 64, 43);
-		game.load.spritesheet('telescope', 'assets/telescopes.png', 168, 250);
-		game.load.spritesheet('river', 'assets/river.png', 124, 158);
+		game.load.spritesheet('telescope', 'assets/telescopes_highlight.png', 250, 250);
+		game.load.spritesheet('river', 'assets/river.png', 166, 179);
 		game.load.spritesheet('obstacle', 'assets/obstacles.png', 135, 75);
 		game.load.spritesheet('buttons', 'assets/buttons.png', 242, 72);
 		game.load.spritesheet('people', 'assets/credits.png', 160, 412);
