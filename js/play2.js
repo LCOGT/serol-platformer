@@ -90,20 +90,20 @@ var playState2 = {
         console.log(removed.key);
         if ((removed.key==='tetromino') && (overlap == true)){
               console.log("tetromino sent");
-              counterVal1++;
+              counterVal1 += 10;
               self.counter.updateScore(counterVal1);
         } else if ((removed.key==='junk') && (overlap == true)){
               console.log("junk sent (oh no)");
-              counterVal1--;
+              counterVal1 -= 5;
               self.counter.updateScore(counterVal1);
         }
         if ((removed.key==='tetromino') && (overlap == false)){
           console.log("tetromino lost (oh no)");
-          counterVal1--;
+          // counterVal1--;
           self.counter.updateScore(counterVal1);
         } else if ((removed.key==='junk') && (overlap == false)){
           console.log("junk thrown out");
-          counterVal1++;
+          // counterVal1++;
           self.counter.updateScore(counterVal1);
         }
         removed.destroy();
