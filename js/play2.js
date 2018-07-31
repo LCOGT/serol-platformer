@@ -7,8 +7,8 @@ var choices = ['tetromino', 'junk'];
 var counterVal1 = 0;
 var cursors;
 var overlap;
-var runspeed = -200;
-var bgSpeed = 3;
+var runspeed;
+var bgSpeed;
 var playState2 = {
   telescopes: null,
   playerLayer: null,
@@ -17,6 +17,9 @@ var playState2 = {
   counter: null,
   create: function(){
     var self = this;
+    //constants
+    runspeed = -200;
+    bgSpeed = 3;
     jump_sfx = game.add.audio('jump');
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
