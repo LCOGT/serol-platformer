@@ -57,7 +57,7 @@ var playState2 = {
     self.telescopes.enableBody = true;
     self.playerLayer = game.add.group();
     self.playerLayer.enableBody = true;
-    // self.obstacles = game.add.group();
+    self.obstacles = game.add.group();
     // self.rivers = game.add.group();
 
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
@@ -79,10 +79,10 @@ var playState2 = {
     //   self.rivers.create(River());
     // }, this);
 
-    // generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
-    //   //keep adding tetrominos to the group
-    //   self.obstacles.create(Obstacle());
-    // }, this);
+    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
+      //keep adding tetrominos to the group
+      self.obstacles.create(Obstacle(runspeed));
+    }, this);
 
     //dequeueing using keyup
     game.input.keyboard.onUpCallback = function( e ){
@@ -240,12 +240,12 @@ function Player1(x, y) {
   return player;
 };
 
-function Obstacle(){
+function Obstacle(v){
   var obstacle = game.add.sprite(1000, 450, 'obstacle');
   obstacle.frame = Math.floor(Math.random() * 5);
   //enable physics
   game.physics.enable(obstacle, Phaser.Physics.ARCADE);
-  obstacle.body.velocity.x = -180;
+  obstacle.body.velocity.x = v;
 
   //methods
   obstacle.goOffScreen = function(){
