@@ -167,8 +167,19 @@ var playState2 = {
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
     //check overlap
-    game.physics.arcade.overlap(self.telescopes, self.player, function(){
+    game.physics.arcade.overlap(self.player, self.telescopes, function(player,telescope){
       text.text = 'Overlapping: true';
+      console.log(telescope.frame);
+      if (telescope.frame == 0){
+        telescope.frame = 2;
+        console.log(telescope.frame);
+      }
+      if (telescope.frame == 4){
+        telescope.frame = 6;
+      }
+      if (telescope.frame == 8){
+        telescope.frame = 10;
+      }
       overlap = true;
     });
   },
@@ -274,18 +285,4 @@ function QueueSprite(x, y, spriteRef){
 function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
   return choices[index];
-}
-
-function checkOverlap(spriteA, spriteB) {
-
-    var boundsA = spriteA.getBounds();
-    var boundsB = spriteB.getBounds();
-
-    return Phaser.Rectangle.intersects(boundsA, boundsB);
-
-}
-function onOverlap(spriteA, spriteB){
-  var self = this;
-  spriteA.kill();
-  self.text.text = 'Overlapping: true';
 }
