@@ -4,7 +4,7 @@ Level 2
 var xPositions = [100, 200, 300, 400, 500, 600, 700, 800];
 var q = [];
 var choices = ['tetromino', 'junk'];
-var counterVal1 = 0;
+var counterVal1;
 var cursors;
 var overlap;
 var runspeed;
@@ -18,6 +18,7 @@ var playState2 = {
   create: function(){
     var self = this;
     //constants
+    counterVal1 = 0;
     runspeed = -200;
     bgSpeed = 3;
     jump_sfx = game.add.audio('jump');
