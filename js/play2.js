@@ -155,6 +155,7 @@ var playState2 = {
 
   update: function(){
     var self = this;
+    var whence = game.time.now;
     overlap = false;
 
     if(self.timeElapsed >= self.totalTime){
@@ -167,12 +168,11 @@ var playState2 = {
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
     //check overlap
+
     game.physics.arcade.overlap(self.player, self.telescopes, function(player,telescope){
       text.text = 'Overlapping: true';
-      console.log(telescope.frame);
       if (telescope.frame == 0){
         telescope.frame = 2;
-        console.log(telescope.frame);
       }
       if (telescope.frame == 4){
         telescope.frame = 6;
@@ -181,7 +181,24 @@ var playState2 = {
         telescope.frame = 10;
       }
       overlap = true;
+      telescope.overlapToken = whence;
     });
+    //example code to adapt
+    self.telescopes.forEach(function (telescope) {
+        if (telescope.overlapToken && telescope.overlapToken !== whence) {
+            // was overlapping it is no longer overlapping
+            if (telescope.frame == 2){
+              telescope.frame = 0;
+            }
+            if (telescope.frame == 6){
+              telescope.frame = 4;
+            }
+            if (telescope.frame == 10){
+              telescope.frame = 8;
+            }
+            telescope.overlapToken = 0;
+        }
+    }, null, true);
   },
 };
 
