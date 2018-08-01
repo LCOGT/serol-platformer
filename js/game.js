@@ -20,6 +20,7 @@ game.state.add('gameOver', gameOver);
 game.state.add('levelone', playState1);
 game.state.add('leveltwo', playState2);
 game.state.add('hiScores', hiScores);
+game.state.add('level2Complete', level2Complete);
 
 //call the boot state
 game.state.start('boot');

@@ -32,6 +32,7 @@ var loadState={
 		game.load.image('endless_bg', 'assets/ground_long.png');
 		game.load.image('endless_sky', 'assets/night_sky_bg.png');
 		game.load.image('pipe', 'assets/pipe.png');
+		game.load.image('lvl2_complete', 'assets/L2_complete.png');
 		//audio
 		game.load.audio('collect_t', 'assets/audio/collect_t.mp3');
 		game.load.audio('gain_life', 'assets/audio/gain_life.mp3');

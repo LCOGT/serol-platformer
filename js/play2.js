@@ -159,7 +159,7 @@ var playState2 = {
     overlap = false;
 
     if(self.timeElapsed >= self.totalTime){
-		game.state.start('title', true, false);
+		game.state.start('level2Complete', true, false);
 		}
 
     skyBg.tilePosition.x -= 0.5;
