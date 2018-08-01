@@ -27,7 +27,6 @@ var playState2 = {
     pipeImage = game.add.sprite(10, 520, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
     cursors = game.input.keyboard.createCursorKeys();
-    text = game.add.text(500, 500, 'Overlapping: false', { fill: '#ffffff' });
 
     //initial queue
     for(var i in xPositions) {
@@ -162,7 +161,6 @@ var playState2 = {
 		game.state.start('title', true, false);
 		}
 
-    text.text = 'Overlapping: false';
     skyBg.tilePosition.x -= 0.5;
     runnerBg.tilePosition.x -= bgSpeed;
     self.player.body.velocity.x = 0;
@@ -170,7 +168,6 @@ var playState2 = {
     //check overlap
 
     game.physics.arcade.overlap(self.player, self.telescopes, function(player,telescope){
-      text.text = 'Overlapping: true';
       if (telescope.frame == 0){
         telescope.frame = 2;
       }
