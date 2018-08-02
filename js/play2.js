@@ -76,12 +76,12 @@ var playState2 = {
     self.player.body.gravity.y = 3000;
 
     generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
-      self.rivers.create(River(runspeed));
+      self.rivers.add(River(runspeed));
     }, this);
 
     generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
       //keep adding tetrominos to the group
-      self.obstacles.create(Obstacle(runspeed));
+      self.obstacles.add(Obstacle(runspeed));
     }, this);
 
     //dequeueing using keyup
@@ -181,7 +181,6 @@ var playState2 = {
       overlap = true;
       telescope.overlapToken = whence;
     });
-    //example code to adapt
     self.telescopes.forEach(function (telescope) {
         if (telescope.overlapToken && telescope.overlapToken !== whence) {
             // was overlapping it is no longer overlapping
@@ -197,6 +196,24 @@ var playState2 = {
             telescope.overlapToken = 0;
         }
     }, null, true);
+
+    //eliminate telescope - obstacle overlapping
+    game.physics.arcade.overlap(self.obstacles, self.telescopes,
+      function(obstacle,telescope){
+        obstacle.kill();
+    });
+    //eliminate telescome - river overlapping
+    game.physics.arcade.overlap(self.rivers, self.telescopes,
+      function(river,telescope){
+        river.kill();
+    });
+    //eliminate obstacle - river overlapping
+    game.physics.arcade.overlap(self.rivers, self.obstacles,
+      function(river, obstacle){
+        river.kill();
+    });
+
+    //bring pipe and queue to top layer
     game.world.bringToTop(pipeImage);
     q.forEach(function(item) {
         game.world.bringToTop(item);
