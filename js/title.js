@@ -36,16 +36,7 @@ var titleState = {
     self.creditsLabel.anchor.setTo(0.5, 0);
     self.creditsLabel.align = 'center';
 
-
 		self.input.activePointer.capture = true;
-		// self.input.keyboard.onUpCallback = function( input ){
-    //   //press space logic
-    //   if(input.keyCode == Phaser.Keyboard.SPACEBAR){
-		// 		titlebgm.fadeOut(1000);
-		// 		titlebgm.stop();
-    //     game.state.start('menu', true, false);
-    //   }
-		// }
 
 	},
 	update: function(){

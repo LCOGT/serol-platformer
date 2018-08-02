@@ -57,8 +57,8 @@ var playState2 = {
     self.telescopes.enableBody = true;
     self.playerLayer = game.add.group();
     self.playerLayer.enableBody = true;
-    // self.obstacles = game.add.group();
-    // self.rivers = game.add.group();
+    self.obstacles = game.add.group();
+    self.rivers = game.add.group();
 
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
       self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
@@ -75,14 +75,14 @@ var playState2 = {
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
-    // generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
-    //   self.rivers.create(River());
-    // }, this);
+    generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
+      self.rivers.add(River(runspeed));
+    }, this);
 
-    // generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
-    //   //keep adding tetrominos to the group
-    //   self.obstacles.create(Obstacle());
-    // }, this);
+    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+      //keep adding tetrominos to the group
+      self.obstacles.add(Obstacle(runspeed));
+    }, this);
 
     //dequeueing using keyup
     game.input.keyboard.onUpCallback = function( e ){
@@ -181,7 +181,6 @@ var playState2 = {
       overlap = true;
       telescope.overlapToken = whence;
     });
-    //example code to adapt
     self.telescopes.forEach(function (telescope) {
         if (telescope.overlapToken && telescope.overlapToken !== whence) {
             // was overlapping it is no longer overlapping
@@ -196,6 +195,28 @@ var playState2 = {
             }
             telescope.overlapToken = 0;
         }
+    }, null, true);
+
+    //eliminate telescope - obstacle overlapping
+    game.physics.arcade.overlap(self.obstacles, self.telescopes,
+      function(obstacle,telescope){
+        obstacle.kill();
+    });
+    //eliminate telescome - river overlapping
+    game.physics.arcade.overlap(self.rivers, self.telescopes,
+      function(river,telescope){
+        river.kill();
+    });
+    //eliminate obstacle - river overlapping
+    game.physics.arcade.overlap(self.rivers, self.obstacles,
+      function(river, obstacle){
+        river.kill();
+    });
+
+    //bring pipe and queue to top layer
+    game.world.bringToTop(pipeImage);
+    q.forEach(function(item) {
+        game.world.bringToTop(item);
     }, null, true);
   },
 };
@@ -240,12 +261,12 @@ function Player1(x, y) {
   return player;
 };
 
-function Obstacle(){
+function Obstacle(v){
   var obstacle = game.add.sprite(1000, 450, 'obstacle');
   obstacle.frame = Math.floor(Math.random() * 5);
   //enable physics
   game.physics.enable(obstacle, Phaser.Physics.ARCADE);
-  obstacle.body.velocity.x = -180;
+  obstacle.body.velocity.x = v;
 
   //methods
   obstacle.goOffScreen = function(){
@@ -266,13 +287,13 @@ function Telescope(frame, v){
   return telescope;
 }
 
-function River(){
-  var river = game.add.sprite(1000, 482, 'river');
+function River(v){
+  var river = game.add.sprite(1000, 462, 'river');
   river.animations.add('flow', [0, 1, 2], 4, true);
 
   river.animations.play('flow');
   game.physics.enable(river, Phaser.Physics.ARCADE);
-  river.body.velocity.x = -180;
+  river.body.velocity.x = v;
   return river;
 }
 
