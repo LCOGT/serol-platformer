@@ -58,7 +58,7 @@ var playState2 = {
     self.playerLayer = game.add.group();
     self.playerLayer.enableBody = true;
     self.obstacles = game.add.group();
-    // self.rivers = game.add.group();
+    self.rivers = game.add.group();
 
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
       self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
@@ -75,11 +75,11 @@ var playState2 = {
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
-    // generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 14, function() {
-    //   self.rivers.create(River());
-    // }, this);
+    generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
+      self.rivers.create(River(runspeed));
+    }, this);
 
-    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
+    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
       //keep adding tetrominos to the group
       self.obstacles.create(Obstacle(runspeed));
     }, this);
@@ -197,6 +197,10 @@ var playState2 = {
             telescope.overlapToken = 0;
         }
     }, null, true);
+    game.world.bringToTop(pipeImage);
+    q.forEach(function(item) {
+        game.world.bringToTop(item);
+    }, null, true);
   },
 };
 
@@ -266,13 +270,13 @@ function Telescope(frame, v){
   return telescope;
 }
 
-function River(){
-  var river = game.add.sprite(1000, 482, 'river');
+function River(v){
+  var river = game.add.sprite(1000, 462, 'river');
   river.animations.add('flow', [0, 1, 2], 4, true);
 
   river.animations.play('flow');
   game.physics.enable(river, Phaser.Physics.ARCADE);
-  river.body.velocity.x = -180;
+  river.body.velocity.x = v;
   return river;
 }
 
