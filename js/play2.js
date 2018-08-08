@@ -28,7 +28,9 @@ var playState2 = {
     pipeImage = game.add.sprite(10, 520, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
     cursors = game.input.keyboard.createCursorKeys();
-
+    //sounds
+    gain_life_sfx = game.add.audio('gain_life');
+    lose_life_sfx = game.add.audio('lose_life');
     //initial queue
     for(var i in xPositions) {
       var sprite = new QueueSprite(xPositions[i], 585, (choose(choices)));
@@ -51,6 +53,7 @@ var playState2 = {
 
     self.lives = new Lives(3);
     game.add.existing(self.lives);
+    self.lives.updateLife(lifeCount);
 
     //add sprite layers
     self.telescopes = game.add.group();
@@ -76,7 +79,7 @@ var playState2 = {
     }, this);
 
     generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 20, function() {
-      self.telescopes.add(Battery(2));
+      self.batteries.add(Battery(2));
     }, this);
 
     generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
@@ -170,6 +173,20 @@ var playState2 = {
     runnerBg.tilePosition.x -= bgSpeed;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
+
+    //check life count
+    if (lifeCount <= 0){
+      lifeCount = 0;
+      endGame = true;
+    }
+    //check score
+    if (counterVal1 < 0){
+      lifeCount --;
+      self.lives.updateLife(lifeCount);
+      counterVal1 = 0;
+      self.counter.updateScore(counterVal1);
+    }
+
     //check overlap
 
     game.physics.arcade.overlap(self.player, self.telescopes, function(player,telescope){
@@ -215,6 +232,21 @@ var playState2 = {
     game.physics.arcade.overlap(self.rivers, self.obstacles,
       function(river, obstacle){
         river.kill();
+    });
+    game.physics.arcade.overlap(self.player, self.batteries, function(player, battery){
+      battery.kill();
+      gain_life_sfx.play();
+      if (lifeCount >= 3){
+        lifeCount = 3;
+      }else{
+        lifeCount++;
+      }
+      self.lives.updateLife(lifeCount);
+    });
+    game.physics.arcade.overlap(self.obstacles, self.player, function(p,j){
+      lose_life_sfx.play();
+      lifeCount--;
+      self.lives.updateLife(lifeCount);
     });
 
     //bring pipe and queue to top layer
