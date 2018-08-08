@@ -78,7 +78,7 @@ var playState1 = {
 
       generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 10, function() {
         //keep adding batteries to the group
-        self.batteries.add(Battery());
+        self.batteries.add(Battery(1));
       }, this);
 
     },
@@ -228,9 +228,6 @@ function Tetromino() {
   //tetromino attributes
   var tetromino = game.add.sprite(game.world.randomX, -50, 'tetromino');
   tetromino.frame = Math.floor(Math.random() * 60);
-  //scaling tetrominos
-  tetromino.scale.x = 4;
-  tetromino.scale.y = 4;
   //enabling physics for fall
   game.physics.enable(tetromino, Phaser.Physics.ARCADE);
   tetromino.body.gravity.y = grav;
@@ -303,11 +300,20 @@ function Lives(i){
 }
 
 //battery 1up function here:
-function Battery(){
-  var battery = game.add.sprite(game.world.randomX, -40, '1up');
-  battery.frame = 0;
-  game.physics.enable(battery, Phaser.Physics.ARCADE);
-  battery.body.gravity.y = 50;
+function Battery(mode){
+  var battery;
+  if (mode == 1) {
+    battery = game.add.sprite(game.world.randomX, -40, '1up');
+    battery.frame = 0;
+    game.physics.enable(battery, Phaser.Physics.ARCADE);
+    battery.body.gravity.y = 50;
+  } else if (mode == 2){
+    battery = game.add.sprite(1000, 300, '1up');
+    battery.frame = 0;
+    game.physics.enable(battery, Phaser.Physics.ARCADE);
+    battery.body.velocity.x = -50;
+  }
+
 
   battery.getCaught = function(){
     var self = this;

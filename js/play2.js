@@ -59,15 +59,9 @@ var playState2 = {
     self.playerLayer.enableBody = true;
     self.obstacles = game.add.group();
     self.rivers = game.add.group();
-
-    generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
-      self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
-      runspeed = runspeed * 1.05;
-      bgSpeed = bgSpeed * 1.05;
-    }, this);
+    self.batteries = game.add.group();
 
     //add Serol
-
     self.player = new Player1(100, 350);
     self.playerLayer.create(self.player);
     //activate physics for Serol
@@ -75,11 +69,21 @@ var playState2 = {
     self.player.body.collideWorldBounds = true;
     self.player.body.gravity.y = 3000;
 
+    generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
+      self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
+      runspeed = runspeed * 1.05;
+      bgSpeed = bgSpeed * 1.05;
+    }, this);
+
+    generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 20, function() {
+      self.telescopes.add(Battery(2));
+    }, this);
+
     generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
       self.rivers.add(River(runspeed));
     }, this);
 
-    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+    generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
       //keep adding tetrominos to the group
       self.obstacles.add(Obstacle(runspeed));
     }, this);

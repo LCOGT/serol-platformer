@@ -17,24 +17,25 @@ var titleState = {
 		game.add.existing(self.pressStart);
 		self.pressStart.animations.add('blink', [0, 1], 2);
 
-		self.creditsButton = game.add.sprite(self.world.centerX , 550, 'buttons');
-		self.creditsButton.anchor.setTo(0.5, 0);
-		self.creditsButton.frame = 2;
-		game.add.existing(self.creditsButton);
+		// self.creditsButton = game.add.sprite(self.world.centerX , 550, 'buttons');
+		// self.creditsButton.anchor.setTo(0.5, 0);
+		// self.creditsButton.frame = 1;
+		// game.add.existing(self.creditsButton);
+
+		//button text
+		self.creditsLabel = self.game.add.text(self.world.centerX, 565,
+			"[credits]",
+			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
+    self.creditsLabel.anchor.setTo(0.5, 0);
+    self.creditsLabel.align = 'center';
 		//handle button click
-		self.creditsButton.inputEnabled = true;
-		self.creditsButton.events.onInputDown.add(
+		self.creditsLabel.inputEnabled = true;
+		self.creditsLabel.events.onInputDown.add(
 			function(){
 				game.state.start('credits', true, false);
 				titlebgm.fadeOut(1000);
 				titlebgm.stop();
 			}, this);
-		//button text
-		self.creditsLabel = self.game.add.text(self.world.centerX, 565,
-			"credits",
-			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
-    self.creditsLabel.anchor.setTo(0.5, 0);
-    self.creditsLabel.align = 'center';
 
 		self.input.activePointer.capture = true;
 
@@ -45,7 +46,7 @@ var titleState = {
 		if (game.input.activePointer.isDown) {
 			titlebgm.fadeOut(1000);
 			titlebgm.stop();
-			game.state.start('leveltwo', true, false);
+			game.state.start('menu', true, false);
 			if (endGame === true) {
 				endGame = false;
 				lifeCount = 3;
