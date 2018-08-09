@@ -20,10 +20,10 @@ var playState2 = {
     //constants
     counterVal1 = 0;
     runspeed = -200;
-    bgSpeed = 3;
     jump_sfx = game.add.audio('jump');
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
+
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
     pipeImage = game.add.sprite(10, 520, 'pipe')
     game.world.setBounds(0, 0, 1024, 520);
@@ -75,7 +75,6 @@ var playState2 = {
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
       self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
       runspeed = runspeed * 1.05;
-      bgSpeed = bgSpeed * 1.05;
     }, this);
 
     generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 20, function() {
@@ -169,8 +168,8 @@ var playState2 = {
 		game.state.start('level2Complete', true, false);
 		}
 
-    skyBg.tilePosition.x -= 0.5;
-    runnerBg.tilePosition.x -= bgSpeed;
+    skyBg.autoScroll(-100, 0);
+    runnerBg.autoScroll(runspeed, 0);;
     self.player.body.velocity.x = 0;
     self.player.movePlayer();
 
@@ -285,6 +284,42 @@ var playState2 = {
     q.forEach(function(item) {
         game.world.bringToTop(item);
     }, null, true);
+
+    //endgame sequence
+    if (endGame === true){
+      //remove all objects
+      //lvl2bgm.fadeOut(2000);
+      game.time.events.remove(generateTelescopes);
+      game.time.events.remove(generateObstacles);
+      game.time.events.remove(generateBatteries);
+      self.player.body.velocity.x = 0;
+      self.player.body.velocity.y = 0;
+      self.lives.frame = 0;
+      skyBg.autoScroll(0, 0);
+      runnerBg.autoScroll(0, 0);
+      //stop telescopes
+      self.telescopes.forEach(function (telescope) {
+          telescope.body.velocity.x = 0;
+      }, null, true);
+      //stop obstacles
+      self.obstacles.forEach(function (obstacle) {
+          obstacle.body.velocity.x = 0;
+      }, null, true);
+      //stop rivers
+      self.rivers.forEach(function (river) {
+          river.body.velocity.x = 0;
+      }, null, true);
+
+
+
+      // game.camera.fade(#000000, 4000);
+      game.time.events.add(Phaser.Timer.SECOND * 2,
+        function(){
+          // lvl2bgm.stop();
+          game.state.start('gameOver', true, false);
+        },this);
+
+    }
   },
 };
 
@@ -292,6 +327,7 @@ function Player1(x, y) {
 
   //serol attributes
   var player = game.add.sprite(x, y, 'serol');
+  player.anchor.setTo(0.5,0);
 
   player.invincible = false;
 
@@ -321,6 +357,12 @@ function Player1(x, y) {
       jumpTimer = game.time.now + 900;
       player.animations.stop('walkRight');
       player.animations.play('staticRight');
+    }
+    if (endGame == true){
+      if(player.scale.x == 1){
+        player.scale.x *= -1;
+      }
+      player.animations.play('sleeping');
     }
     // if(player.invincible == true){
     //   player.animations.play('invincibleWalk');
