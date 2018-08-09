@@ -243,10 +243,17 @@ var playState2 = {
       }
       self.lives.updateLife(lifeCount);
     });
-    game.physics.arcade.overlap(self.obstacles, self.player, function(p,j){
-      lose_life_sfx.play();
-      lifeCount--;
-      self.lives.updateLife(lifeCount);
+    game.physics.arcade.overlap(self.obstacles, self.player, function(p,o){
+      if (!p.invincible) {
+        //We only damage the player if not invincible
+        lose_life_sfx.play();
+        lifeCount--;
+        self.lives.updateLife(lifeCount);
+        //we toggle invincibility
+        p.toggleInvincible();
+        //and then we add a timer to restore the player to a vulnerable state
+        game.time.events.add(2000, p.toggleInvincible, this);
+       }
     });
 
     //bring pipe and queue to top layer
@@ -261,6 +268,8 @@ function Player1(x, y) {
 
   //serol attributes
   var player = game.add.sprite(x, y, 'serol');
+
+  player.invincible = false;
 
   player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 6, true);
   player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 6, true);
@@ -291,7 +300,9 @@ function Player1(x, y) {
         player.animations.play('walkRight');
       }
   };
-
+  player.toggleInvincible = function() {
+    player.invincible = !player.invincible;
+  }
 
 
   return player;
