@@ -245,19 +245,29 @@ var playState2 = {
     });
     //serol and obstacles collision
     game.physics.arcade.overlap(self.obstacles, self.player, function(p,o){
-      if (!p.invincible) {
-        //We only damage the player if not invincible
-        lose_life_sfx.play();
-        lifeCount--;
-        self.lives.updateLife(lifeCount);
-        //we toggle invincibility
-        p.toggleInvincible();
-        //and then we add a timer to restore the player to a vulnerable state
-        game.time.events.add(2000, p.toggleInvincible, this);
-       }
+      if(o.body.touching.up && p.body.touching.down){
+
+          // in this case just jump again
+          p.body.velocity.y =  -1000;
+      }
+      else{
+          // any other way to collide on an enemy will make serol lose lives
+          if (!p.invincible) {
+            //We only damage the player if not invincible
+            lose_life_sfx.play();
+            lifeCount--;
+            self.lives.updateLife(lifeCount);
+            //we toggle invincibility
+            p.toggleInvincible();
+            //and then we add a timer to restore the player to a vulnerable state
+            game.time.events.add(2000, p.toggleInvincible, this);
+           }
+      }
+
     });
     //serol and rivers collision
     game.physics.arcade.overlap(self.rivers, self.player, function(p,r){
+
       if (!p.invincible) {
         //We only damage the player if not invincible
         lose_life_sfx.play();
@@ -388,3 +398,11 @@ function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
   return choices[index];
 }
+// handling collision between enemy and hero
+        game.physics.arcade.collide(this.hero, this.enemy, function(hero, enemy){
+
+            // hero is stomping the enemy if:
+            // hero is touching DOWN
+            // enemy is touching UP
+
+        }, null, this);
