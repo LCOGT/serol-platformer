@@ -278,6 +278,7 @@ function Player1(x, y) {
   player.animations.add('staticRight', [18, 19, 20, 21], 4, true);
   player.animations.add('staticLeft', [24, 25, 26, 27], 4, true);
   player.animations.add('sleeping', [28, 29, 28, 29], 2, true);
+  player.animations.add('invincibleWalk', [22, 7, 22, 9, 22, 11], 6, true)
 
   player.movePlayer = function(){
     var hozMove = 400;
@@ -290,15 +291,19 @@ function Player1(x, y) {
         player.body.velocity.x = hozMove;
         player.play('walkRight');
       }
-      if (game.input.keyboard.isDown(Phaser.Keyboard.UP) && player.body.onFloor() && game.time.now > jumpTimer){
-        player.body.velocity.y = vertMove;
-        jump_sfx.play();
-        jumpTimer = game.time.now + 900;
-        player.animations.stop('walkRight');
-        player.animations.play('staticRight');
-      } else {
-        player.animations.play('walkRight');
-      }
+    if (game.input.keyboard.isDown(Phaser.Keyboard.UP) && player.body.onFloor() && game.time.now > jumpTimer){
+      player.body.velocity.y = vertMove;
+      jump_sfx.play();
+      jumpTimer = game.time.now + 900;
+      player.animations.stop('walkRight');
+      player.animations.play('staticRight');
+    }
+    // if(player.invincible == true){
+    //   player.animations.play('invincibleWalk');
+    // }
+    else {
+    player.animations.play('walkRight');
+    }
   };
   player.toggleInvincible = function() {
     player.invincible = !player.invincible;
