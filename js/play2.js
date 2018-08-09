@@ -243,7 +243,21 @@ var playState2 = {
       }
       self.lives.updateLife(lifeCount);
     });
+    //serol and obstacles collision
     game.physics.arcade.overlap(self.obstacles, self.player, function(p,o){
+      if (!p.invincible) {
+        //We only damage the player if not invincible
+        lose_life_sfx.play();
+        lifeCount--;
+        self.lives.updateLife(lifeCount);
+        //we toggle invincibility
+        p.toggleInvincible();
+        //and then we add a timer to restore the player to a vulnerable state
+        game.time.events.add(2000, p.toggleInvincible, this);
+       }
+    });
+    //serol and rivers collision
+    game.physics.arcade.overlap(self.rivers, self.player, function(p,r){
       if (!p.invincible) {
         //We only damage the player if not invincible
         lose_life_sfx.play();
