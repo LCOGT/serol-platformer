@@ -80,10 +80,61 @@ var playState1 = {
         //keep adding batteries to the group
         self.batteries.add(Battery(1));
       }, this);
+      //timer
+      self.startTime = new Date();
+  		self.totalTime = 120;
+  		self.timeElapsed = 0;
+
+  		self.createTimer();
+
+  		self.gameTimer = game.time.events.loop(100, function(){
+  				self.updateTimer();
+  		    });
 
     },
+    createTimer: function(){
+
+      var self = this;
+    	self.timeLabel = self.game.add.text(game.world.centerX, 10,
+  			"00:00",
+  			{font: "40px 'Press Start 2P'", fill: "#ffffff"});
+      self.timeLabel.anchor.setTo(0.5, 0);
+      self.timeLabel.align = 'center';
+
+  	},
+  	updateTimer: function(){
+
+      var self = this;
+
+      var currentTime = new Date();
+      var timeDifference = self.startTime.getTime() - currentTime.getTime();
+
+      //Time elapsed in seconds
+      self.timeElapsed = Math.abs(timeDifference / 1000);
+
+      //Time remaining in seconds
+      var timeRemaining = self.totalTime - self.timeElapsed;
+
+      //Convert seconds into minutes and seconds
+      var minutes = Math.floor(timeRemaining / 60);
+      var seconds = Math.floor(timeRemaining) - (60 * minutes);
+
+      //Display minutes, add a 0 to the start if less than 10
+      var result = (minutes < 10) ? "0" + minutes : minutes;
+
+      //Display seconds, add a 0 to the start if less than 10
+      result += (seconds < 10) ? ":0" + seconds : ":" + seconds;
+
+      self.timeLabel.text = result;
+
+  	},
     update: function(){
       var self = this;
+      //timer elapsed
+      if(self.timeElapsed >= self.totalTime){
+        lvl1bgm.stop();
+  		  game.state.start('leveltwo', true, false);
+  		}
       //initial state of Serol
       self.player.body.velocity.x = 0;
 
