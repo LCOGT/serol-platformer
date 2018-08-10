@@ -82,7 +82,7 @@ var playState1 = {
       }, this);
       //timer
       self.startTime = new Date();
-  		self.totalTime = 120;
+  		self.totalTime = 20;
   		self.timeElapsed = 0;
 
   		self.createTimer();
@@ -133,7 +133,7 @@ var playState1 = {
       //timer elapsed
       if(self.timeElapsed >= self.totalTime){
         lvl1bgm.stop();
-  		  game.state.start('leveltwo', true, false);
+  		  game.state.start('level1Complete', true, false);
   		}
       //initial state of Serol
       self.player.body.velocity.x = 0;
