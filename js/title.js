@@ -1,10 +1,11 @@
-var counterVal = 0;
+var counterVal;
 var lifeCount = 3;
 var endGame = false;
 var titleState = {
 	pressStart: null,
 	create: function (){
 		var self = this;
+		counterVal = 0
 		titlebgm = game.add.audio('title_bgm', 1, true);
 		titlebgm.play();
 		game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');

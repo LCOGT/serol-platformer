@@ -4,7 +4,6 @@ Level 2
 var xPositions = [100, 200, 300, 400, 500, 600, 700, 800];
 var q = [];
 var choices = ['tetromino', 'junk'];
-var counterVal1;
 var cursors;
 var overlap;
 var runspeed;
@@ -48,7 +47,7 @@ var playState2 = {
 		    });
 
     //add Counter
-    self.counter = new Counter(counterVal1);
+    self.counter = new Counter(counterVal);
     game.add.existing(self.counter);
 
     self.lives = new Lives(3);
@@ -99,12 +98,12 @@ var playState2 = {
         console.log(removed.key);
         if ((removed.key==='tetromino') && (overlap == true)){
               console.log("tetromino sent");
-              counterVal1 += 10;
-              self.counter.updateScore(counterVal1);
+              counterVal += 10;
+              self.counter.updateScore(counterVal);
         } else if ((removed.key==='junk') && (overlap == true)){
               console.log("junk sent (oh no)");
-              counterVal1 -= 5;
-              self.counter.updateScore(counterVal1);
+              counterVal -= 5;
+              self.counter.updateScore(counterVal);
         }
         if ((removed.key==='tetromino') && (overlap == false)){
           console.log("tetromino lost (oh no)");
@@ -113,7 +112,7 @@ var playState2 = {
         } else if ((removed.key==='junk') && (overlap == false)){
           console.log("junk thrown out");
           // counterVal1++;
-          self.counter.updateScore(counterVal1);
+          self.counter.updateScore(counterVal);
         }
         removed.destroy();
         q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
@@ -183,7 +182,7 @@ var playState2 = {
       lifeCount --;
       self.lives.updateLife(lifeCount);
       counterVal1 = 0;
-      self.counter.updateScore(counterVal1);
+      self.counter.updateScore(counterVal);
     }
 
     //check overlap

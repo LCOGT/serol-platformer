@@ -30,7 +30,7 @@ var level2Complete = {
 
     game.time.events.add(Phaser.Timer.SECOND,
       function(){
-        score = game.add.text(game.world.centerX, 500, ("Your score: " + counterVal1), {
+        score = game.add.text(game.world.centerX, 500, ("Your score: " + counterVal), {
           font: "32px 'Press Start 2P'",
           fill: "#ffffff",
           align: "center"
