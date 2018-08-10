@@ -20,6 +20,8 @@ var playState2 = {
     counterVal1 = 0;
     runspeed = -200;
     jump_sfx = game.add.audio('jump');
+    lvl2bgm = game.add.audio('leveltwo_bgm');
+    lvl2bgm.play();
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
 
@@ -164,7 +166,8 @@ var playState2 = {
     overlap = false;
 
     if(self.timeElapsed >= self.totalTime){
-		game.state.start('level2Complete', true, false);
+      lvl2bgm.stop();
+		  game.state.start('level2Complete', true, false);
 		}
 
     skyBg.autoScroll(-100, 0);
@@ -314,7 +317,7 @@ var playState2 = {
       // game.camera.fade(#000000, 4000);
       game.time.events.add(Phaser.Timer.SECOND * 2,
         function(){
-          // lvl2bgm.stop();
+          lvl2bgm.stop();
           game.state.start('gameOver', true, false);
         },this);
 
