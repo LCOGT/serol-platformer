@@ -1,8 +1,8 @@
-// var jinglePlayed = false;
 var level2Complete = {
 	create: function (){
 		var self = this;
-    // jingle = game.add.audio('game_over');
+    jingle = game.add.audio('lvl_complete');
+		completeJinglePlayed = false;
     self.lvlCompleteScreen = game.add.sprite(
       game.world.centerX,
       game.world.centerY,
@@ -15,10 +15,10 @@ var level2Complete = {
 	},
 	update: function(){
 		var self = this;
-    // if (jinglePlayed == false){
-    //   jingle.play();
-    //   jinglePlayed = true;
-    // }
+    if (completeJinglePlayed == false){
+      jingle.play();
+      completeJinglePlayed = true;
+    }
 
     game.add.tween(self.lvlCompleteScreen).to( { alpha: 1 },
        500,
@@ -40,7 +40,7 @@ var level2Complete = {
      this);
 
 		if (game.input.activePointer.isDown) {
-			game.state.start('title', true, false);
+			game.state.start('hiScores', true, false);
 
 		}
 	}

@@ -38,7 +38,7 @@ var playState2 = {
     }
     //timer setup
     self.startTime = new Date();
-		self.totalTime = 120;
+		self.totalTime = 20;
 		self.timeElapsed = 0;
 
 		self.createTimer();

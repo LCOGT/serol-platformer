@@ -44,6 +44,8 @@ var loadState={
 		game.load.audio('menu_bgm', 'assets/audio/serol_level_select.mp3');
 		game.load.audio('credits_bgm', 'assets/audio/serol_credits.mp3');
 		game.load.audio('levelone_bgm', 'assets/audio/serol_level1.mp3');
+		game.load.audio('lvl_complete', 'assets/audio/serol_level_complete.mp3');
+		game.load.audio('leveltwo_bgm', 'assets/audio/serol_level2.mp3')
 
  	},
  	create: function(){
