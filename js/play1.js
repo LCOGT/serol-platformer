@@ -180,8 +180,8 @@ var playState1 = {
       game.time.events.remove(generateJunk);
       game.time.events.remove(generateBatteries);
       //put Serol to sleep
-      self.player.animations.stop('staticBob');
-      self.player.play('sleeping');
+      // self.player.animations.stop('staticBob');
+      // self.player.play('sleeping');
       self.player.body.velocity.x = 0;
       self.player.body.velocity.y = 0;
       self.lives.frame = 0;
@@ -249,6 +249,10 @@ function Player(x, y) {
         jumpTimer = game.time.now + 900;
         player.animations.play('static');
       }
+      if (endGame == true){
+        facing = "none";
+        player.animations.play('sleeping');
+      }
 
     //facing check
     if (facing == "left") {
@@ -267,7 +271,8 @@ function Player(x, y) {
 
     } else if (facing === 'front' && player.body.onFloor()){
         player.play('staticBob');
-    } else{
+    }
+    else if (facing === 'front' && !player.body.onFloor()){
       player.play('static');
     }
   }

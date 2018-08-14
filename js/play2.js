@@ -334,11 +334,7 @@ function Player1(x, y) {
   player.invincible = false;
 
   player.animations.add('walkRight', [6, 7, 8, 9, 10, 11], 6, true);
-  player.animations.add('walkLeft', [12, 13, 14, 15, 16, 17], 6, true);
-  player.animations.add('staticBob', [30, 31, 30, 31, 32, 33], 4, true);
-  player.animations.add('static', [1, 1], 4, true);
   player.animations.add('staticRight', [18, 19, 20, 21], 4, true);
-  player.animations.add('staticLeft', [24, 25, 26, 27], 4, true);
   player.animations.add('sleeping', [28, 29, 28, 29], 2, true);
   player.animations.add('invincibleWalk', [22, 7, 22, 9, 22, 11], 6, true)
 
