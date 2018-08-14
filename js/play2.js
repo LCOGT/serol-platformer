@@ -18,6 +18,7 @@ var playState2 = {
     var self = this;
     //constants
     counterVal1 = 0;
+    lifeCount = 3;
     runspeed = -200;
     jump_sfx = game.add.audio('jump');
     lvl2bgm = game.add.audio('leveltwo_bgm');
