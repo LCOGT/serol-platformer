@@ -18,6 +18,7 @@ var playState1 = {
       pauseTime = 8;
       grav = 40;
       v = 20;
+      var interval = 1.5;
       //sounds setup
       collect_sfx = game.add.audio('collect_t');
       gain_life_sfx = game.add.audio('gain_life');
@@ -58,8 +59,21 @@ var playState1 = {
         //keep adding tetrominos to the group
         self.tetrominos.add(Tetromino());
         grav = grav + 5;
-
       }, this);
+
+      game.time.events.add(Phaser.Timer.SECOND * 41 , function () {
+        generateMoreTetrominos = game.time.events.loop(Phaser.Timer.SECOND * 1.5, function() {
+          //keep adding tetrominos to the group
+          self.tetrominos.add(Tetromino());
+        }, this);
+      },this);
+
+      game.time.events.add(Phaser.Timer.SECOND * 80 , function () {
+        generateEvenMoreTetrominos = game.time.events.loop(Phaser.Timer.SECOND * 1.5, function() {
+          //keep adding tetrominos to the group
+          self.tetrominos.add(Tetromino());
+        }, this);
+      },this);
 
       generateJunk = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
         //keep adding junk to the group
@@ -67,7 +81,7 @@ var playState1 = {
           function() {
             self.junkItems.add(Junk());
             if (pauseTime > 0.0005){
-              pauseTime = parseFloat((pauseTime - 0.025).toFixed(4));
+              pauseTime = parseFloat((pauseTime - 0.05).toFixed(4));
             }else {
               pauseTime = 0.0005
             }
@@ -76,13 +90,64 @@ var playState1 = {
           },this);
       }, this);
 
+      game.time.events.add(Phaser.Timer.SECOND * 41 , function () {
+        generateMoreJunk = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+          //keep adding junk to the group
+          game.time.events.add(Phaser.Timer.SECOND * pauseTime,
+            function() {
+              self.junkItems.add(Junk());
+              if (pauseTime > 0.0005){
+                pauseTime = parseFloat((pauseTime - 0.05).toFixed(4));
+              }else {
+                pauseTime = 0.0005
+              }
+              v = v + 5;
+
+            },this);
+        }, this);
+      },this);
+
+      game.time.events.add(Phaser.Timer.SECOND * 80 , function () {
+        generateEvenMoreJunk = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+          //keep adding junk to the group
+          game.time.events.add(Phaser.Timer.SECOND * pauseTime,
+            function() {
+              self.junkItems.add(Junk());
+              if (pauseTime > 0.0005){
+                pauseTime = parseFloat((pauseTime - 0.05).toFixed(4));
+              }else {
+                pauseTime = 0.0005
+              }
+              // v = v + 5;
+
+            },this);
+        }, this);
+      },this);
+
+      game.time.events.add(Phaser.Timer.SECOND * 100 , function () {
+        nuclearMode = game.time.events.loop(Phaser.Timer.SECOND * 2, function() {
+          //keep adding junk to the group
+          game.time.events.add(Phaser.Timer.SECOND * pauseTime,
+            function() {
+              self.junkItems.add(Junk());
+              if (pauseTime > 0.0005){
+                pauseTime = parseFloat((pauseTime - 0.05).toFixed(4));
+              }else {
+                pauseTime = 0.0005
+              }
+              v = v + 5;
+
+            },this);
+        }, this);
+      },this);
+
       generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 10, function() {
         //keep adding batteries to the group
         self.batteries.add(Battery(1));
       }, this);
       //timer
       self.startTime = new Date();
-  		self.totalTime = 20;
+  		self.totalTime = 120;
   		self.timeElapsed = 0;
 
   		self.createTimer();
