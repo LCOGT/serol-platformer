@@ -41,7 +41,7 @@ var level1Complete = {
      this);
 
 		if (game.input.activePointer.isDown) {
-			game.state.start('leveltwo', true, false);
+			game.state.start('instructions2', true, false);
 
 		}
 	}

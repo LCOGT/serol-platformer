@@ -21,8 +21,6 @@ var playState2 = {
     lifeCount = 3;
     runspeed = -200;
     jump_sfx = game.add.audio('jump');
-    lvl2bgm = game.add.audio('leveltwo_bgm');
-    lvl2bgm.play();
     //set up background
     skyBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_sky');
 

@@ -1,10 +1,10 @@
-var instructions = {
+var instructions2 = {
 	create: function (){
 		var self = this;
-		game.add.tileSprite(0, 0, 1024, 640, 'instructions');
+		game.add.tileSprite(0, 0, 1024, 640, 'instructions2');
 		game.input.activePointer.capture = true;
-    lvl1bgm = game.add.audio('levelone_bgm', 0.8, true);
-    lvl1bgm.play();
+		lvl2bgm = game.add.audio('leveltwo_bgm');
+    lvl2bgm.play();
 	},
 	update: function(){
 		var self = this;
@@ -15,7 +15,7 @@ var instructions = {
     //   }
 		// }
 		if (game.input.activePointer.isDown) {
-			game.state.start('levelone', true, false);
+			game.state.start('leveltwo', true, false);
 
 		}
 	}
