@@ -53,25 +53,19 @@ var credits = {
     self.edwardLabel.anchor.setTo(0.5, 0);
     self.edwardLabel.align = 'center';
 
-    //back button
-    self.backButton = game.add.sprite(self.world.centerX , 550, 'buttons');
-		self.backButton.anchor.setTo(0.5, 0);
-		self.backButton.frame = 2;
-		game.add.existing(self.backButton);
-		//handle button click
-		self.backButton.inputEnabled = true;
-		self.backButton.events.onInputDown.add(
+		//button text
+		self.backLabel = self.game.add.text(self.world.centerX, 565,
+			"[back]",
+			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
+    self.backLabel.anchor.setTo(0.5, 0);
+    self.backLabel.align = 'center';
+		self.backLabel.inputEnabled = true;
+		self.backLabel.events.onInputDown.add(
 			function(){
 				creditsbgm.fadeOut(1000);
 				creditsbgm.stop();
         game.state.start('title', true, false);
 			}, this);
-		//button text
-		self.creditsLabel = self.game.add.text(self.world.centerX, 565,
-			"back",
-			{font: "30px 'Press Start 2P'", fill: "#ffffff"});
-    self.creditsLabel.anchor.setTo(0.5, 0);
-    self.creditsLabel.align = 'center';
 
 	},
 	update: function(){
