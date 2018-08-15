@@ -23,6 +23,7 @@ var loadState={
 		game.load.spritesheet('people', 'assets/credits.png', 160, 412);
 		//backgrounds and screens
 		game.load.image('titlescreen', 'assets/titlescreenlarge.png');
+		game.load.image('fullscreen', 'assets/fullscreen.png');
 		game.load.image('level_select', 'assets/level_select.png');
 		game.load.image('button', 'assets/button.png');
 		game.load.image('instructions1', 'assets/L1_instructions.png');

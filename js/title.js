@@ -5,10 +5,16 @@ var titleState = {
 	pressStart: null,
 	create: function (){
 		var self = this;
-		counterVal = 0
+		counterVal = 0;
+		if (endGame === true) {
+			endGame = false;
+			lifeCount = 3;
+			counterVal = 0;
+			jinglePlayed = false;
+		}
 		titlebgm = game.add.audio('title_bgm', 1, true);
 		titlebgm.play();
-		game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
+		self.titlescreen = game.add.tileSprite(0, 0, 1024, 640, 'titlescreen');
 
 		self.pressStart = game.add.sprite(self.world.centerX, 350, 'start');
 		self.pressStart.scale.x = 1.5;
@@ -38,22 +44,40 @@ var titleState = {
 				titlebgm.stop();
 			}, this);
 
-		self.input.activePointer.capture = true;
+		//fullscreen setting
+		// Maintain aspect ratio
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+		//button to activate fullscreen
+		self.fullscreenButon = game.add.sprite(980, 10, 'fullscreen');
+		self.fullscreenButon.anchor.setTo(0.5, 0);
+		self.fullscreenButon.scale.y = 0.1;
+		self.fullscreenButon.scale.x = 0.1;
+		game.add.existing(self.fullscreenButon);
+		self.fullscreenButon.inputEnabled = true;
+		self.fullscreenButon.events.onInputDown.add(
+			function(){
+				if (game.scale.isFullScreen)
+    {
+        game.scale.stopFullScreen();
+    }
+    else
+    {
+        game.scale.startFullScreen(false);
+    }
+			},this);
+
+		self.titlescreen.inputEnabled = true;
+		self.titlescreen.events.onInputDown.add(
+			function(){
+				titlebgm.fadeOut(1000);
+				titlebgm.stop();
+				game.state.start('instructions1', true, false);
+			},this);
+			// self.input.activePointer.capture = true;
 
 	},
 	update: function(){
 		var self = this;
 		self.pressStart.animations.play('blink');
-		if (game.input.activePointer.isDown) {
-			titlebgm.fadeOut(1000);
-			titlebgm.stop();
-			game.state.start('instructions1', true, false);
-			if (endGame === true) {
-				endGame = false;
-				lifeCount = 3;
-				counterVal = 0;
-				jinglePlayed = false;
-			}
-		}
 	}
 }

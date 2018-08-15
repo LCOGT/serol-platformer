@@ -166,7 +166,7 @@ var playState2 = {
 
     if(self.timeElapsed >= self.totalTime){
       lvl2bgm.stop();
-		  game.state.start('level2Complete', true, false);
+		  game.state.start('level2Complete');
 		}
 
     skyBg.autoScroll(-100, 0);
