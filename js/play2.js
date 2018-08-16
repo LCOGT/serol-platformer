@@ -17,7 +17,6 @@ var playState2 = {
   create: function(){
     var self = this;
     //constants
-    counterVal1 = 0;
     lifeCount = 3;
     runspeed = -200;
     jump_sfx = game.add.audio('jump');
@@ -108,11 +107,9 @@ var playState2 = {
         }
         if ((removed.key==='tetromino') && (overlap == false)){
           console.log("tetromino lost (oh no)");
-          // counterVal1--;
-          self.counter.updateScore(counterVal1);
+          self.counter.updateScore(counterVal);
         } else if ((removed.key==='junk') && (overlap == false)){
           console.log("junk thrown out");
-          // counterVal1++;
           self.counter.updateScore(counterVal);
         }
         removed.destroy();
@@ -180,10 +177,11 @@ var playState2 = {
       endGame = true;
     }
     //check score
-    if (counterVal1 < 0){
+    if (counterVal < 0){
       lifeCount --;
+      lose_life_sfx.play();
       self.lives.updateLife(lifeCount);
-      counterVal1 = 0;
+      counterVal = 0;
       self.counter.updateScore(counterVal);
     }
 
