@@ -93,9 +93,12 @@ var playState2 = {
       self.batteries.add(Battery(2));
     }, this);
 
-    generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
-      self.rivers.add(River(runspeed));
-    }, this);
+    game.time.events.add(Phaser.Timer.SECOND * 4, function () {
+      generateRivers = game.time.events.loop(Phaser.Timer.SECOND * 4, function() {
+        self.rivers.add(River(runspeed));
+      }, this);
+    });
+
 
     generateObstacles = game.time.events.loop(Phaser.Timer.SECOND * 3, function() {
       //keep adding tetrominos to the group
