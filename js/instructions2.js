@@ -3,7 +3,7 @@ var instructions2 = {
 		var self = this;
 		game.add.tileSprite(0, 0, 1024, 640, 'instructions2');
 		game.input.activePointer.capture = true;
-		lvl2bgm = game.add.audio('leveltwo_bgm',true);
+		lvl2bgm = game.add.audio('leveltwo_bgm',0.8,true);
     lvl2bgm.play();
 	},
 	update: function(){
