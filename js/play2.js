@@ -310,7 +310,7 @@ var playState2 = {
       self.rivers.forEach(function (river) {
           river.body.velocity.x = 0;
       }, null, true);
-
+      q = [];
 
 
       // game.camera.fade(#000000, 4000);
