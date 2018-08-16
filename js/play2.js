@@ -74,8 +74,19 @@ var playState2 = {
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
       self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
       runspeed = runspeed * 1.05;
-      console.log('telescopes: '+ self.telescopes.countLiving());
-      console.log('dead telescopes: '+ self.telescopes.countDead());
+      self.telescopes.forEach(function (telescope) {
+        //set speed of all to runspeed
+        telescope.body.velocity.x = runspeed;
+      }, null, true);
+      self.rivers.forEach(function (river) {
+        //set speed of all to runspeed
+        river.body.velocity.x = runspeed;
+      }, null, true);
+      self.obstacles.forEach(function (obstacle) {
+        //set speed of all to runspeed
+        obstacle.body.velocity.x = runspeed;
+      }, null, true);
+
     }, this);
 
     generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 20, function() {
@@ -95,9 +106,9 @@ var playState2 = {
     game.input.keyboard.onUpCallback = function( e ){
       //down key logic
       if(e.keyCode == Phaser.Keyboard.SPACEBAR){
-        console.log(q.length);
+        // console.log(q.length);
         var removed = q.shift();
-        console.log(removed.key);
+        // console.log(removed.key);
         if ((removed.key==='tetromino') && (overlap == true)){
               console.log("tetromino sent");
               counterVal += 10;
@@ -116,7 +127,7 @@ var playState2 = {
         }
         removed.destroy();
         q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
-        console.log(q,xPositions);
+        // console.log(q,xPositions);
         updatePositions(q,xPositions);
       }
     };
@@ -203,10 +214,6 @@ var playState2 = {
       telescope.overlapToken = whence;
     });
     self.telescopes.forEach(function (telescope) {
-      telescope.events.onOutOfBounds.add( function(){
-        self.telescopes.removeChildAt(0);
-        telescope.kill();
-      }, this );
         if (telescope.overlapToken && telescope.overlapToken !== whence) {
             // was overlapping it is no longer overlapping
             if (telescope.frame == 2){
@@ -403,7 +410,7 @@ function Telescope(frame, v){
 
   game.physics.enable(telescope, Phaser.Physics.ARCADE);
   telescope.body.velocity.x = v;
-
+  telescope.outOfBoundsKill = true;
   return telescope;
 }
 
@@ -421,7 +428,7 @@ function River(v){
 function updatePositions(elementArray, posArray){
 
   for (var i=0;elementArray.length;i++){
-    console.log(i)
+    // console.log(i)
     elementArray[i].position.x = posArray[i];
   }
 }
