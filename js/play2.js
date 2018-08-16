@@ -16,6 +16,9 @@ var playState2 = {
   counter: null,
   create: function(){
     var self = this;
+    game.input.gamepad.start();
+    pad1 = game.input.gamepad.pad1;
+    game.input.onDown.add(dump, this);
     //constants
     lifeCount = 3;
     runspeed = -200;
@@ -134,6 +137,38 @@ var playState2 = {
         updatePositions(q,xPositions);
       }
     };
+
+    game.input.gamepad.onUpCallback = function( e, value ){
+      //down key logic
+      console.log('any button pressed');
+      console.log(e.buttonCode);
+      if(e.buttonCode === Phaser.Gamepad.XBOX360_A){
+        // console.log(q.length);
+        console.log('yellow pressed');
+        var removed = q.shift();
+        // console.log(removed.key);
+        if ((removed.key==='tetromino') && (overlap == true)){
+              console.log("tetromino sent");
+              counterVal += 10;
+              self.counter.updateScore(counterVal);
+        } else if ((removed.key==='junk') && (overlap == true)){
+              console.log("junk sent (oh no)");
+              counterVal -= 5;
+              self.counter.updateScore(counterVal);
+        }
+        if ((removed.key==='tetromino') && (overlap == false)){
+          console.log("tetromino lost (oh no)");
+          self.counter.updateScore(counterVal);
+        } else if ((removed.key==='junk') && (overlap == false)){
+          console.log("junk thrown out");
+          self.counter.updateScore(counterVal);
+        }
+        removed.destroy();
+        q.push(new QueueSprite(xPositions[7], 585, (choose(choices))));
+        // console.log(q,xPositions);
+        updatePositions(q,xPositions);
+      }
+    };
   },
   createTimer: function(){
 
@@ -176,6 +211,15 @@ var playState2 = {
     var self = this;
     var whence = game.time.now;
     overlap = false;
+    //check gamepad connectivity
+    // if (game.input.gamepad.supported && game.input.gamepad.active && pad1.connected)
+    // {
+    //     console.log('gamepad connected');
+    // }
+    // else
+    // {
+    //     console.log('gamepad not connected');
+    // }
 
     if(self.timeElapsed >= self.totalTime){
       lvl2bgm.stop();
@@ -355,14 +399,14 @@ function Player1(x, y) {
     var hozMove = 400;
     var vertMove = -1000;
     var jumpTimer = 0;
-    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)||pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT)){
           player.body.velocity.x = -hozMove;
           player.play('walkRight');
-      } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+      } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)||pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT)){
         player.body.velocity.x = hozMove;
         player.play('walkRight');
       }
-    if (game.input.keyboard.isDown(Phaser.Keyboard.UP) && player.body.onFloor() && game.time.now > jumpTimer){
+    if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||pad1.isDown(Phaser.Gamepad.XBOX360_B))&& player.body.onFloor() && game.time.now > jumpTimer){
       player.body.velocity.y = vertMove;
       jump_sfx.play();
       jumpTimer = game.time.now + 900;
@@ -460,6 +504,7 @@ function choose(choices) {
             // enemy is touching UP
 
         }, null, this);
-function goodbye(obj) {
-  obj.kill();
+function dump() {
+
+    console.log(pad1._axes[0]);
 }
