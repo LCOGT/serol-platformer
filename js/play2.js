@@ -496,14 +496,6 @@ function choose(choices) {
   var index = Math.floor(Math.random() * choices.length);
   return choices[index];
 }
-// handling collision between enemy and hero
-        game.physics.arcade.collide(this.hero, this.enemy, function(hero, enemy){
-
-            // hero is stomping the enemy if:
-            // hero is touching DOWN
-            // enemy is touching UP
-
-        }, null, this);
 function dump() {
 
     console.log(pad1._axes[0]);
