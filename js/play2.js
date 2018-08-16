@@ -74,6 +74,8 @@ var playState2 = {
     generateTelescopes = game.time.events.loop(Phaser.Timer.SECOND * 5, function() {
       self.telescopes.add(Telescope(choose([0,4,8]), runspeed));
       runspeed = runspeed * 1.05;
+      console.log('telescopes: '+ self.telescopes.countLiving());
+      console.log('dead telescopes: '+ self.telescopes.countDead());
     }, this);
 
     generateBatteries = game.time.events.loop(Phaser.Timer.SECOND * 20, function() {
@@ -201,6 +203,10 @@ var playState2 = {
       telescope.overlapToken = whence;
     });
     self.telescopes.forEach(function (telescope) {
+      telescope.events.onOutOfBounds.add( function(){
+        self.telescopes.removeChildAt(0);
+        telescope.kill();
+      }, this );
         if (telescope.overlapToken && telescope.overlapToken !== whence) {
             // was overlapping it is no longer overlapping
             if (telescope.frame == 2){
@@ -397,6 +403,7 @@ function Telescope(frame, v){
 
   game.physics.enable(telescope, Phaser.Physics.ARCADE);
   telescope.body.velocity.x = v;
+
   return telescope;
 }
 
@@ -443,3 +450,6 @@ function choose(choices) {
             // enemy is touching UP
 
         }, null, this);
+function goodbye(obj) {
+  obj.kill();
+}
