@@ -71,7 +71,7 @@ var titleState = {
 			function(){
 				titlebgm.fadeOut(1000);
 				titlebgm.stop();
-				game.state.start('instructions1', true, false);
+				game.state.start('instructions2', true, false);
 			},this);
 			// self.input.activePointer.capture = true;
 

@@ -28,7 +28,12 @@ var playState2 = {
 
     runnerBg = game.add.tileSprite(0, 0, 1024, 640, 'endless_bg');
     pipeImage = game.add.sprite(10, 520, 'pipe')
-    game.world.setBounds(0, 0, 1024, 520);
+    stagePlatform = game.add.sprite(game.world.centerX, 640, 'stage');
+    stagePlatform.anchor.setTo(0.5, 1);
+    this.game.physics.arcade.enable(stagePlatform);
+    stagePlatform.enableBody = true;
+    stagePlatform.body.immovable = true;
+    game.world.setBounds(0, 0, 1024, 640);
     cursors = game.input.keyboard.createCursorKeys();
     //sounds
     gain_life_sfx = game.add.audio('gain_life');
@@ -220,6 +225,7 @@ var playState2 = {
     // {
     //     console.log('gamepad not connected');
     // }
+    self.game.physics.arcade.collide(self.player, stagePlatform, touchingFloor, null, this);
 
     if(self.timeElapsed >= self.totalTime){
       lvl2bgm.stop();
@@ -406,7 +412,7 @@ function Player1(x, y) {
         player.body.velocity.x = hozMove;
         player.play('walkRight');
       }
-    if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||game.input.keyboard.isDown(Phaser.Keyboard.W)||pad1.isDown(Phaser.Gamepad.XBOX360_B))&& player.body.onFloor() && game.time.now > jumpTimer){
+    if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||game.input.keyboard.isDown(Phaser.Keyboard.W)||pad1.isDown(Phaser.Gamepad.XBOX360_B))&& player.body.touching.down && game.time.now > jumpTimer){
       player.body.velocity.y = vertMove;
       jump_sfx.play();
       jumpTimer = game.time.now + 900;

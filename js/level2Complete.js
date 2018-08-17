@@ -7,7 +7,7 @@ var level2Complete = {
       game.world.centerX,
       game.world.centerY,
       'lvl2_complete');
-      self.lvlCompleteScreen.anchor.setTo(0.5, 0.41);
+      self.lvlCompleteScreen.anchor.setTo(0.5, 0.5);
       self.lvlCompleteScreen.alpha = 0;
 
 		game.input.activePointer.capture = true;

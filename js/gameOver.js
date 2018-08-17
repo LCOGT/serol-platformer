@@ -7,7 +7,7 @@ var gameOver = {
       game.world.centerX,
       game.world.centerY,
       'gameOverScreen');
-      self.gameOverScreen.anchor.setTo(0.5, 0.425);
+      self.gameOverScreen.anchor.setTo(0.5, 0.5);
       self.gameOverScreen.alpha = 0;
 
 		game.input.activePointer.capture = true;
