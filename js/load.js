@@ -26,6 +26,7 @@ var loadState={
 		game.load.image('fullscreen', 'assets/fullscreen.png');
 		game.load.image('level_select', 'assets/level_select.png');
 		game.load.image('button', 'assets/button.png');
+		game.load.image('stage', 'assets/stage_blank.png');
 		game.load.image('instructions1', 'assets/L1_instructions.png');
 		game.load.image('instructions2', 'assets/L2_instructions.png');
     game.load.image('background', 'assets/background_day_large.png');

@@ -30,7 +30,12 @@ var playState1 = {
       //background setup
       game.stage.backgroundColor = '#000000';
       bgImage = game.add.tileSprite(0, 0, 1024, 640, 'background');
-      game.world.setBounds(0, 0, 1024, 545);
+      stagePlatform = game.add.sprite(game.world.centerX, 640, 'stage');
+      stagePlatform.anchor.setTo(0.5, 0.8);
+      this.game.physics.arcade.enable(stagePlatform);
+      stagePlatform.enableBody = true;
+      stagePlatform.body.immovable = true;
+      game.world.setBounds(0, 0, 1024, 640);
       // lvl1bgm.play();
 
       //add Counter
@@ -51,6 +56,7 @@ var playState1 = {
       game.physics.enable(self.player, Phaser.Physics.ARCADE);
       self.player.body.collideWorldBounds = true;
       self.player.body.gravity.y = 3000;
+
 
       //sprite groups setup
       self.tetrominos = game.add.group();
@@ -197,6 +203,7 @@ var playState1 = {
   	},
     update: function(){
       var self = this;
+      self.game.physics.arcade.collide(self.player, stagePlatform, touchingFloor, null, this);
       //timer elapsed
       if(self.timeElapsed >= self.totalTime){
         lvl1bgm.stop();
@@ -310,7 +317,7 @@ function Player(x, y) {
         }
       }
 
-      if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||game.input.keyboard.isDown(Phaser.Keyboard.W)||pad1.isDown(Phaser.Gamepad.XBOX360_B)) && player.body.onFloor() && game.time.now > jumpTimer){
+      if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||game.input.keyboard.isDown(Phaser.Keyboard.W)||pad1.isDown(Phaser.Gamepad.XBOX360_B)) && player.body.touching.down && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jump_sfx.play();
         jumpTimer = game.time.now + 900;
@@ -443,4 +450,11 @@ function Battery(mode){
     self.kill();
   }
   return battery;
+}
+function touchingFloor(player, floor){
+    if (player.body.touching.down && floor.body.touching.up){
+        return true;
+    } else {
+        return false;
+    }
 }
