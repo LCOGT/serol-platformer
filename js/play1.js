@@ -17,7 +17,6 @@ var playState1 = {
       var self = this;
       game.input.gamepad.start();
       pad1 = game.input.gamepad.pad1;
-      game.input.onDown.add(dump, this);
       pauseTime = 8;
       grav = 40;
       v = 20;
@@ -295,14 +294,14 @@ function Player(x, y) {
     var vertMove = -1000;
     var jumpTimer = 0;
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)||pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT)){
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)||game.input.keyboard.isDown(Phaser.Keyboard.A)||pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT)){
           player.body.velocity.x = -hozMove;
 
           if (facing !== "left"){
             facing = "left";
           }
       }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)||pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT)){
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)||game.input.keyboard.isDown(Phaser.Keyboard.D)||pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT)){
         player.body.velocity.x = hozMove;
         //animation here?
 
@@ -311,7 +310,7 @@ function Player(x, y) {
         }
       }
 
-      if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||pad1.isDown(Phaser.Gamepad.XBOX360_B)) && player.body.onFloor() && game.time.now > jumpTimer){
+      if ((game.input.keyboard.isDown(Phaser.Keyboard.UP)||game.input.keyboard.isDown(Phaser.Keyboard.W)||pad1.isDown(Phaser.Gamepad.XBOX360_B)) && player.body.onFloor() && game.time.now > jumpTimer){
         player.body.velocity.y = vertMove;
         jump_sfx.play();
         jumpTimer = game.time.now + 900;
