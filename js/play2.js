@@ -16,6 +16,7 @@ var playState2 = {
   counter: null,
   create: function(){
     var self = this;
+    endGame = false;
     game.input.gamepad.start();
     pad1 = game.input.gamepad.pad1;
     game.input.onDown.add(dump, this);
