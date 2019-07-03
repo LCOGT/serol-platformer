@@ -12,8 +12,27 @@ class Boot extends Phaser.Scene {
 	}
 
 	preload() {
+		//fonts
+
+		//images
+			//titlescreen
 		this.load.image("titleScreen", "assets/images/titlescreenlarge.png");
 		this.load.image("fullscreen", "assets/images/fullscreen.png");
+			//credits
+		this.load.image("creditsBg", "assets/images/credits_bg.png");
+			//instructions
+			//level 1
+		//spritesheets
+		this.load.spritesheet("start", "assets/images/click_start.png", {
+			frameWidth: 219,
+			frameHeight: 26
+		});
+		this.load.spritesheet("people", "assets/images/credits.png", {
+			frameWidth: 160,
+			frameHeight: 412
+		});
+		//sounds
+
 	}
 
 	create() {
