@@ -62,10 +62,11 @@ class Title extends Phaser.Scene {
 
         //     this.scene.start('instructions1');
 
-        // }, this);
+		// }, this);
+		this.pressStart.anims.play('blink',true);
 	}
 
 	update() {
-		this.pressStart.anims.play('blink',true);
+		
 	}
 }
