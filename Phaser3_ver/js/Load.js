@@ -29,7 +29,7 @@
 // 		game.load.image('stage', 'assets/stage_blank.png');
 // 		game.load.image('instructions1', 'assets/L1_instructions.png');
 // 		game.load.image('instructions2', 'assets/L2_instructions.png');
-//     game.load.image('background', 'assets/background_day_large.png');
+//      game.load.image('background', 'assets/background_day_large.png');
 // 		game.load.image('night_background', 'assets/credits_bg.png');
 // 		game.load.image('lvl1_complete', 'assets/L1_complete.png');
 // 		game.load.image('gameOverScreen', 'assets/game_over.png');

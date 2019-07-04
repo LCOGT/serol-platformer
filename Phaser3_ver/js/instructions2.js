@@ -1,22 +1,25 @@
-var instructions2 = {
-	create: function (){
-		var self = this;
-		game.add.tileSprite(0, 0, 1024, 640, 'instructions2');
-		game.input.activePointer.capture = true;
-		lvl2bgm = game.add.audio('leveltwo_bgm',0.8,true);
-    lvl2bgm.play();
-	},
-	update: function(){
-		var self = this;
-		// self.input.keyboard.onUpCallback = function( input ){
-    //   //press space logic
-    //   if(input.keyCode == Phaser.Keyboard.SPACEBAR){
-		// 		game.state.start('levelone', true, false);
-    //   }
-		// }
-		if (game.input.activePointer.isDown) {
-			game.state.start('leveltwo', true, false);
+//Instructions2.js
+class Instructions2 extends Phaser.Scene {
+	constructor() {
+		super("instructions2");
+	}
 
-		}
+	create() {
+        //background
+		this.lvl2InstBg = this.add.image(0,0,"instructions2");
+		this.lvl2InstBg.setOrigin(0,0);
+		
+		//start level when bg is clicked
+		this.input.once('pointerdown', function (event) {
+            console.log('From Instructions 2 to Level 2');
+            this.scene.start('level2');
+		}, this);
+		//start level when space is pressed
+
+		//TODO: audio controls
+	}
+
+	update() {
+		
 	}
 }

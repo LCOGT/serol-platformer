@@ -1,11 +1,5 @@
 //boot.js
 
-// var bootState = {
-// 	create: function () {
-// 		game.physics.startSystem(Phaser.Physics.ARCADE);
-// 		game.state.start('load');
-// 	}
-// };
 class Boot extends Phaser.Scene {
 	constructor() {
 		super("bootGame");
@@ -21,7 +15,12 @@ class Boot extends Phaser.Scene {
 			//credits
 		this.load.image("creditsBg", "assets/images/credits_bg.png");
 			//instructions
+		this.load.image("instructions1", "assets/images/L1_instructions.png");
+		this.load.image("instructions2", "assets/images/L2_instructions.png");
 			//level 1
+		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
+			//level 2
+		this.load.image("endless_bg", "assets/images/ground_long.png");
 		//spritesheets
 		this.load.spritesheet("start", "assets/images/click_start.png", {
 			frameWidth: 219,
@@ -31,6 +30,16 @@ class Boot extends Phaser.Scene {
 			frameWidth: 160,
 			frameHeight: 412
 		});
+		this.load.spritesheet("serol", "assets/images/serol_sprites_condensed.png", {
+			frameWidth: 138,
+			frameHeight: 131
+		});
+		this.load.spritesheet('lives', 'assets/batterylife.png', {
+			frameWidth: 32,
+			frameHeight: 32
+		});
+
+
 		//sounds
 
 	}
