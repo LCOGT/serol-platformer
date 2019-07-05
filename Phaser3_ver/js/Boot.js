@@ -19,6 +19,8 @@ class Boot extends Phaser.Scene {
 		this.load.image("instructions2", "assets/images/L2_instructions.png");
 			//level 1
 		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
+		this.load.image("stage", "assets/images/stage_blank.png");
+
 			//level 2
 		this.load.image("endless_bg", "assets/images/ground_long.png");
 		//spritesheets
@@ -34,10 +36,15 @@ class Boot extends Phaser.Scene {
 			frameWidth: 138,
 			frameHeight: 131
 		});
-		this.load.spritesheet('lives', 'assets/batterylife.png', {
+		this.load.spritesheet('lives', 'assets/images/batterylife.png', {
 			frameWidth: 32,
 			frameHeight: 32
 		});
+		this.load.spritesheet('tetromino', 'assets/images/tetrominos.png', {
+			frameWidth: 75,
+			frameHeight: 75
+		});
+
 
 
 		//sounds

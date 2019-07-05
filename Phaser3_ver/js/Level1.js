@@ -2,27 +2,43 @@ class Level1 extends Phaser.Scene {
 	constructor() {
 		super("level1");
 	}
-
+  grav = 40;
 	create() {
     //background
     console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
-    // this.bgImage = this.add.tileSprite(0, 0, 1024, 640, 'lvl1Bg');
-    // this.bgImage.setOrigin(0,0);
-    //TODO: spawn Serol and add controls
+    //floor platform
+    this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
+    this.physics.add.existing(this.stagePlatform, true);
+    this.stagePlatform.enableBody = true;
+    this.stagePlatform.body.immovable = true;
 
     //spawning serol
-    this.serol = new Serol(this, 250, 50)	
+    this.serol = new Serol(this, 250, 50);
+    this.physics.add.existing(this.serol);
     this.serol.anims.play('staticBob',true);
-
-    //enabling controls
+    //colliding with floor platform
+    this.physics.add.collider(this.stagePlatform, this.serol);
+    
+    //enabling serol controls
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.serol.setCollideWorldBounds(true);
 
+    //spawning tetrominos
+    this.tet1 = new Tetromino(this, 250, 50);
+    this.physics.add.existing(this.tet1);
+    this.tet1.body.setAllowGravity(false);
+    this.tet1.body.moves = true;
+
+    //enabling collisions between serol and tetrominos
+    this.physics.add.collider(this.tet1, this.serol);
+
+    
   }
 
 	update() {
     this.movePlayerManager();
+    this.tetFall(this.tet1, 20);
   }
   
   movePlayerManager(){
@@ -41,6 +57,26 @@ class Level1 extends Phaser.Scene {
     if(this.cursorKeys.up.isDown && this.serol.body.onFloor()) {
       this.serol.setVelocityY(-gameSettings.playerYSpeed);
     }
+  }
+  //falling tetrominos
+  tetFall(tetromino, accel) {
+    tetromino.body.setAcceleration(0,accel);
+    if (tetromino.y > config.height) {
+      this.tetReset(tetromino);
+    } else if (tetromino.y < 0){
+      this.tetReset(tetromino);
+    }
+    if (tetromino.x > config.width) {
+      this.tetReset(tetromino);
+    } else if (tetromino.x < 0){
+      this.tetReset(tetromino);
+    }
+  }
+  tetReset(tetromino) {
+    tetromino.y = 0;
+    var randomX = Phaser.Math.Between(0, config.width);
+    tetromino.x = randomX;
+    tetromino.setFrame(Phaser.Math.Between(0, 59));
   }
 }
 
@@ -109,6 +145,15 @@ class Serol extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     // this.lives.follow(this)
+  }
+}
+
+/*tetromino class*/
+class Tetromino extends Phaser.GameObjects.Sprite {
+  constructor(scene, x=0, y=0, texture = 'tetromino', frame = Phaser.Math.Between(0, 60)) {
+    super(scene,x,y,texture,frame)
+    scene.add.existing(this)
+    scene.events.on('update', this.update, this)
   }
 }
 
