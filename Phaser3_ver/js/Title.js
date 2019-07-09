@@ -46,7 +46,7 @@ class Title extends Phaser.Scene {
 		this.pressStart.anims.play('blink',true);
 
 		//credits text
-		this.creditsLabel = this.add.text(config.width/2, 565, "[credits]", {font:"25px Arial", fill: "yellow"}).setInteractive();
+		this.creditsLabel = this.add.bitmapText(config.width/2, 550, "pixelFont", "[credits]", 60).setOrigin(0.5,0).setInteractive();
 		this.creditsLabel.on('pointerdown', function (event) {
 			console.log("Title to credits");
 			//TODO: add audio controls

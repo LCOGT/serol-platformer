@@ -16,40 +16,18 @@ class Credits extends Phaser.Scene {
     this.edward = this.add.sprite(950, 550, 'people').setOrigin(0.5, 1);
     
     //title
-    this.creditsTitle = this.add.text(config.width/2, 50, ("Credits"), {
-      font: "48px Arial",
-      fill: "#ffb600",
-      align: "center"
-    }).setOrigin(0.5,0);
+    this.creditsTitle = this.add.bitmapText(config.width/2, 50, "pixelFont", "Credits", 80).setOrigin(0.5,0).setCenterAlign();
     
     //labels
-    this.ronnieLabel = this.add.text(120, 50, ("Veronika\nKravchenko"), {
-      font: "20px Arial",
-      fill: "#00fcf4",
-      align: "center"
-    }).setOrigin(0.5,0);
-    this.aliceLabel = this.add.text(270, 100, ("Alice\nHopkinson"), {
-      font: "20px Arial",
-      fill: "#fff311",
-      align: "center"
-    }).setOrigin(0.5,0);  
-    this.sarahLabel = this.add.text(800, 100, ("Sarah Eve\nRoberts"), {
-      font: "20px Arial",
-      fill: "#d60c3b",
-      align: "center"
-    }).setOrigin(0.5,0);
-    this.edwardLabel = this.add.text(950, 50, ("Edward\nGomez"), {
-      font: "20px Arial",
-      fill: "#00ff6e",
-      align: "center"
-    }).setOrigin(0.5,0);
+    this.ronnieLabel = this.add.bitmapText(120, 50, "pixelFont", "Veronika\nKravchenko", 40).setOrigin(0.5,0).setCenterAlign();
+    this.aliceLabel = this.add.bitmapText(270, 100, "pixelFont", "Alice\nHopkinson", 40).setOrigin(0.5,0).setCenterAlign();
+    this.sarahLabel = this.add.bitmapText(800, 100, "pixelFont", "Sarah Eve\nRoberts", 40).setOrigin(0.5,0).setCenterAlign();
+    this.edwardLabel = this.add.bitmapText(950, 50, "pixelFont", "Edward\nGomez", 40).setOrigin(0.5,0).setCenterAlign();
+
+
     
     //back
-    this.backLabel = this.add.text(config.width/2, 565, ("[back]"), {
-      font: "48px Arial",
-      fill: "#ffffff",
-      align: "center"
-    }).setOrigin(0.5,0).setInteractive();
+    this.backLabel = this.add.bitmapText(config.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setInteractive();
     this.backLabel.on('pointerdown', function (event) {
       console.log("Credits to title");
       // 				creditsbgm.fadeOut(1000);

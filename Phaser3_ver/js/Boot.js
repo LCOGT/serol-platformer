@@ -7,7 +7,7 @@ class Boot extends Phaser.Scene {
 
 	preload() {
 		//fonts
-
+		this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
 		//images
 			//titlescreen
 		this.load.image("titleScreen", "assets/images/titlescreenlarge.png");

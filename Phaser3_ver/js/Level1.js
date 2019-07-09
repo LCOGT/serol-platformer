@@ -3,10 +3,15 @@ class Level1 extends Phaser.Scene {
 		super("level1");
 	}
   grav = 40;
+  score = 0;
+  lives = 3;
 	create() {
     //background
     console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
+    //score label
+    this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE " + this.score  , 60);
+    this.livesLabel = this.add.bitmapText(800, 5, "pixelFont", "LIVES " + this.lives  , 60);
     //floor platform
     this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
     this.physics.add.existing(this.stagePlatform, true);
@@ -34,11 +39,6 @@ class Level1 extends Phaser.Scene {
     this.tetrominos.add(this.tet1);
     this.tetrominos.add(this.tet2);
 
-    this.tetrominos.getChildren().forEach(function (tetromino) {
-      tetromino.body.setAllowGravity(false);
-      tetromino.body.moves = true;
-      tetromino.body.setGravityY(this.grav);
-    }, this);
     //spawning junk
     this.junk1 = new Junk(this, 200, 50);
     this.junk2 = new Junk(this, 550, 50);
@@ -47,19 +47,14 @@ class Level1 extends Phaser.Scene {
     this.junkItems.add(this.junk1);
     this.junkItems.add(this.junk2);
 
-    // this.junkItems.getChildren().forEach(function (junk) {
-    //   junk.body.setAllowGravity(false);
-    //   junk.body.moves = true;
-    //   junk.body.setGravityY(this.grav);
-    // }, this);
     //spawning 1ups
     this.oneUp = new OneUp(this, 700, 50);
     this.physics.world.enable(this.oneUp);
 
     //enabling overlap between serol and tetrominos
     this.physics.add.overlap(this.serol, this.tetrominos, this.catchTetromino, null, this);
-    this.physics.add.overlap(this.serol, this.junkItems, this.catchTetromino, null, this);
-    this.physics.add.overlap(this.serol, this.oneUp, this.catchTetromino, null, this);
+    this.physics.add.overlap(this.serol, this.junkItems, this.catchJunk, null, this);
+    this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
 
     
   }
@@ -131,6 +126,21 @@ class Level1 extends Phaser.Scene {
   }
   catchTetromino(serol,tetromino){
     this.itemReset(tetromino);
+    //increase score
+    this.score += 10;
+    this.scoreLabel.text = "SCORE " + this.score;
+  }
+  catchJunk(serol,junkItem){
+    this.itemReset(junkItem);
+    //decrease life count
+    this.lives--;
+    this.livesLabel.text = "LIVES " + this.lives;
+  }
+  catchOneUp(serol,oneUp){
+    this.itemReset(oneUp);
+    //increase life count
+    this.lives++;
+    this.livesLabel.text = "LIVES " + this.lives;
   }
 }
 
