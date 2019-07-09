@@ -22,10 +22,13 @@ var config = {
   physics: {
     default: 'arcade',
     arcade: {
-        gravity: {y: 3000},
+        gravity: {y: 0},
         debug: true
     }
   },
+  input: {
+    gamepad: true
+  }
 
 };
 

@@ -16,67 +16,121 @@ class Level1 extends Phaser.Scene {
     //spawning serol
     this.serol = new Serol(this, 250, 50);
     this.physics.add.existing(this.serol);
+    this.serol.body.setGravityY(3000);
     this.serol.anims.play('staticBob',true);
+    this.serol.setCollideWorldBounds(true);
     //colliding with floor platform
     this.physics.add.collider(this.stagePlatform, this.serol);
     
     //enabling serol controls
     this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.serol.setCollideWorldBounds(true);
+    this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
 
     //spawning tetrominos
-    this.tet1 = new Tetromino(this, 250, 50);
-    this.physics.add.existing(this.tet1);
-    this.tet1.body.setAllowGravity(false);
-    this.tet1.body.moves = true;
+    this.tet1 = new Tetromino(this, 360, 50);
+    this.tet2 = new Tetromino(this, 450, 50);
 
-    //enabling collisions between serol and tetrominos
-    this.physics.add.collider(this.tet1, this.serol);
+    this.tetrominos = this.physics.add.group();
+    this.tetrominos.add(this.tet1);
+    this.tetrominos.add(this.tet2);
+
+    this.tetrominos.getChildren().forEach(function (tetromino) {
+      tetromino.body.setAllowGravity(false);
+      tetromino.body.moves = true;
+      tetromino.body.setGravityY(this.grav);
+    }, this);
+    //spawning junk
+    this.junk1 = new Junk(this, 200, 50);
+    this.junk2 = new Junk(this, 550, 50);
+
+    this.junkItems = this.physics.add.group();
+    this.junkItems.add(this.junk1);
+    this.junkItems.add(this.junk2);
+
+    // this.junkItems.getChildren().forEach(function (junk) {
+    //   junk.body.setAllowGravity(false);
+    //   junk.body.moves = true;
+    //   junk.body.setGravityY(this.grav);
+    // }, this);
+    //spawning 1ups
+    this.oneUp = new OneUp(this, 700, 50);
+    this.physics.world.enable(this.oneUp);
+
+    //enabling overlap between serol and tetrominos
+    this.physics.add.overlap(this.serol, this.tetrominos, this.catchTetromino, null, this);
+    this.physics.add.overlap(this.serol, this.junkItems, this.catchTetromino, null, this);
+    this.physics.add.overlap(this.serol, this.oneUp, this.catchTetromino, null, this);
 
     
   }
 
 	update() {
     this.movePlayerManager();
-    this.tetFall(this.tet1, 20);
+    this.itemFall(this.tet1, 20);
+    this.itemFall(this.tet2, 15);
+    this.itemFall(this.junk1, 20);
+    this.itemFall(this.junk2, 15);
+    this.itemFall(this.oneUp, 30);
   }
   
   movePlayerManager(){
-    if (this.cursorKeys.left.isDown) {
+    let pad = Phaser.Input.Gamepad.Gamepad;
+
+    if (this.input.gamepad.total){
+      pad = this.input.gamepad.getPad(0);
+    }
+    if (this.cursorKeys.left.isDown|| this.wasdKeys.A.isDown|| pad.left) {
       this.serol.setVelocityX(-gameSettings.playerXSpeed);
       this.serol.anims.play('walkLeft',true);
     }
-    else if(this.cursorKeys.right.isDown) {
+    else if(this.cursorKeys.right.isDown|| this.wasdKeys.D.isDown|| pad.right) {
       this.serol.setVelocityX(gameSettings.playerXSpeed);
       this.serol.anims.play('walkRight',true);
     }
     else {
-      this.serol.anims.play('staticBob',true)
+      this.serol.anims.play('staticBob',true);
       this.serol.setVelocityX(0);
     }
-    if(this.cursorKeys.up.isDown && this.serol.body.onFloor()) {
+    if((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.serol.body.onFloor()) {
       this.serol.setVelocityY(-gameSettings.playerYSpeed);
     }
   }
-  //falling tetrominos
-  tetFall(tetromino, accel) {
-    tetromino.body.setAcceleration(0,accel);
-    if (tetromino.y > config.height) {
-      this.tetReset(tetromino);
-    } else if (tetromino.y < 0){
-      this.tetReset(tetromino);
+  //falling items
+  itemFall(item, accel) {
+    //set acceleration
+    item.body.setAcceleration(0,accel);
+    //reset item when it falls beyond the world boundary (top/bottom)
+    if (item.y > config.height) {
+      this.itemReset(item);
+    } else if (item.y < 0){
+      this.itemReset(item);
     }
-    if (tetromino.x > config.width) {
-      this.tetReset(tetromino);
-    } else if (tetromino.x < 0){
-      this.tetReset(tetromino);
+    //reset item when it falls beyond the world boundary (left/right)
+    if (item.x > config.width) {
+      this.itemReset(item);
+    } else if (item.x < 0){
+      this.itemReset(item);
     }
   }
-  tetReset(tetromino) {
-    tetromino.y = 0;
+  itemReset(item) {
+    item.y = 0;
     var randomX = Phaser.Math.Between(0, config.width);
-    tetromino.x = randomX;
-    tetromino.setFrame(Phaser.Math.Between(0, 59));
+    item.x = randomX;
+    console.log(item.texture.key);
+    if (item.texture.key == "tetromino") {
+      item.setTexture("tetromino", Phaser.Math.Between(0, 59));
+    }
+    else if (item.texture.key == "junk") {
+      item.setTexture("junk", Phaser.Math.Between(0, 5));
+    }
+    else if (item.texture.key == "1up") {
+      item.setTexture("1up", 0);
+    }
+    
+    
+  }
+  catchTetromino(serol,tetromino){
+    this.itemReset(tetromino);
   }
 }
 
@@ -149,8 +203,24 @@ class Serol extends Phaser.Physics.Arcade.Sprite {
 }
 
 /*tetromino class*/
-class Tetromino extends Phaser.GameObjects.Sprite {
+class Tetromino extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x=0, y=0, texture = 'tetromino', frame = Phaser.Math.Between(0, 60)) {
+    super(scene,x,y,texture,frame)
+    scene.add.existing(this)
+    scene.events.on('update', this.update, this)
+  }
+}
+/*junk class*/
+class Junk extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x=0, y=0, texture = 'junk', frame = Phaser.Math.Between(0, 5)) {
+    super(scene,x,y,texture,frame)
+    scene.add.existing(this)
+    scene.events.on('update', this.update, this)
+  }
+}
+/*1up class*/
+class OneUp extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x=0, y=0, texture = '1up', frame = 0) {
     super(scene,x,y,texture,frame)
     scene.add.existing(this)
     scene.events.on('update', this.update, this)
