@@ -17,6 +17,7 @@ var config = {
     Credits,
     Instructions1,
     Level1,
+    Level1Complete,
     Instructions2,
     Level2],
   physics: {

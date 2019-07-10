@@ -20,6 +20,7 @@ class Boot extends Phaser.Scene {
 			//level 1
 		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
 		this.load.image("stage", "assets/images/stage_blank.png");
+		this.load.image('lvl1_complete', 'assets/images/L1_complete.png');
 
 			//level 2
 		this.load.image("endless_bg", "assets/images/ground_long.png");
@@ -52,9 +53,9 @@ class Boot extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 43
 		});
-		this.load.spritesheet('charge', 'assets/images/batterylife.png', {
-			frameWidth: 32,
-			frameHeight: 32
+		this.load.spritesheet('charge', 'assets/images/batterylife1.png', {
+			frameWidth: 28,
+			frameHeight: 12
 		});
 		
 		//sounds

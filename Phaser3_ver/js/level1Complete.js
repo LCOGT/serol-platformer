@@ -1,48 +1,23 @@
-var completeJinglePlayed;
-var level1Complete = {
-	create: function (){
-		var self = this;
-    jingle = game.add.audio('lvl_complete');
-		completeJinglePlayed = false;
-    self.lvlCompleteScreen = game.add.sprite(
-      game.world.centerX,
-      game.world.centerY,
-      'lvl1_complete');
-      self.lvlCompleteScreen.anchor.setTo(0.5, 0.5);
-      self.lvlCompleteScreen.alpha = 0;
+//level1Complete.js
+class Level1Complete extends Phaser.Scene {
+	constructor() {
+		super("level1Complete");
+	}
 
-		game.input.activePointer.capture = true;
+	preload() {
+	}
 
-	},
-	update: function(){
-		var self = this;
-    if (completeJinglePlayed == false){
-      jingle.play();
-      completeJinglePlayed = true;
-    }
+	create() {
+		//background
+		this.lvl1CompleteBg = this.add.image(0,0,"lvl1_complete").setOrigin(0,0).setInteractive();
+		this.lvl1CompleteBg.on('pointerdown', function (event) {
+			console.log("lvl1 Complete to lvl2 instructions");
+			this.scene.start('instructions2');
+		  }, this);
+	}
 
-    game.add.tween(self.lvlCompleteScreen).to( { alpha: 1 },
-       500,
-       Phaser.Easing.Linear.None,
-       true,
-       0,
-       500,
-       true);
-
-    game.time.events.add(Phaser.Timer.SECOND,
-      function(){
-        score = game.add.text(game.world.centerX, 500, ("Your score: " + counterVal), {
-          font: "32px 'Press Start 2P'",
-          fill: "#110077",
-          align: "center"
-        });
-        score.anchor.setTo(0.5, 0);
-     },
-     this);
-
-		if (game.input.activePointer.isDown) {
-			game.state.start('instructions2', true, false);
-
-		}
+	update() {
+		
 	}
 }
+

@@ -13,7 +13,7 @@ class Level1 extends Phaser.Scene {
     this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score  , 60);
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives  , 60);
     // this.lifeGauge = this.add.sprite(950, -30, 'charge').setOrigin(0.5, 0).setScale(4);
-    this.lifeGauge = new LifeGauge(this, 950, -30).setOrigin(0.5, 0).setScale(4);
+    this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4);
     //floor platform
     this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
     this.physics.add.existing(this.stagePlatform, true);
@@ -58,7 +58,9 @@ class Level1 extends Phaser.Scene {
     this.physics.add.overlap(this.serol, this.junkItems, this.catchJunk, null, this);
     this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
 
-    
+    //level timer
+    this.timedEvent = this.time.delayedCall(120000, this.lvlOneComplete, [], this);
+
   }
 
 	update() {
@@ -159,6 +161,9 @@ class Level1 extends Phaser.Scene {
     this.lifeGauge.updateLife(this.lives);
 
   }
+  lvlOneComplete(){
+    this.scene.start('level1Complete');
+  }
 }
 
 /* Serol Class */
@@ -220,12 +225,9 @@ class Serol extends Phaser.Physics.Arcade.Sprite {
       frameRate: 4,
       repeat: -1
     });
-
-    // this.lives = new Lives(scene)
   }
 
   update() {
-    // this.lives.follow(this)
   }
 }
 
