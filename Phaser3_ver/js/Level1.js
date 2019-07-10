@@ -9,9 +9,11 @@ class Level1 extends Phaser.Scene {
     //background
     console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
-    //score label
-    this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE " + this.score  , 60);
-    this.livesLabel = this.add.bitmapText(800, 5, "pixelFont", "LIVES " + this.lives  , 60);
+    //score label and life gauge
+    this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score  , 60);
+    this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives  , 60);
+    // this.lifeGauge = this.add.sprite(950, -30, 'charge').setOrigin(0.5, 0).setScale(4);
+    this.lifeGauge = new LifeGauge(this, 950, -30).setOrigin(0.5, 0).setScale(4);
     //floor platform
     this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
     this.physics.add.existing(this.stagePlatform, true);
@@ -40,7 +42,7 @@ class Level1 extends Phaser.Scene {
     this.tetrominos.add(this.tet2);
 
     //spawning junk
-    this.junk1 = new Junk(this, 200, 50);
+    this.junk1 = new Junk(this, 100, 50);
     this.junk2 = new Junk(this, 550, 50);
 
     this.junkItems = this.physics.add.group();
@@ -133,14 +135,29 @@ class Level1 extends Phaser.Scene {
   catchJunk(serol,junkItem){
     this.itemReset(junkItem);
     //decrease life count
-    this.lives--;
+    if ( this.lives <= 0){
+      this.lives = 0;
+      //endgame sequence
+    }else{
+      this.lives--;
+    }
     this.livesLabel.text = "LIVES " + this.lives;
+    //update lives gauge
+    this.lifeGauge.updateLife(this.lives);
+
   }
   catchOneUp(serol,oneUp){
     this.itemReset(oneUp);
     //increase life count
-    this.lives++;
+    if (this.lives >= 3){
+      this.lives = 3;
+    }else{
+      this.lives++;
+    }
     this.livesLabel.text = "LIVES " + this.lives;
+    //update lives gauge
+    this.lifeGauge.updateLife(this.lives);
+
   }
 }
 
@@ -238,15 +255,13 @@ class OneUp extends Phaser.Physics.Arcade.Sprite {
 }
 
 /* Battery health bar Class */
-class Lives extends Phaser.GameObjects.Sprite {
-  constructor(scene, x = 0, y = 0, texture = 'lives') {
-    super(scene, x, y, texture)
-
+class LifeGauge extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x = 0, y = 0, texture = 'charge', frame = 3) {
+    super(scene,x,y,texture,frame)
     scene.add.existing(this)
+    scene.events.on('update', this.update, this)
   }
-
-  follow(serol) {
-    this.setX(serol.x)
-    this.setY(serol.y - 50)
+  updateLife(i){
+    this.setFrame(i);
   }
 }
