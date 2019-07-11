@@ -1,10 +1,14 @@
 class Level1 extends Phaser.Scene {
 	constructor() {
 		super("level1");
-	}
+  }
+  xCoords = [64,128,192,256,320,384,448,512,576,640,704,769,833,897,961];
   grav = 40;
   score = 0;
   lives = 3;
+  timeLeft;
+  minutes;
+  seconds;
 	create() {
     //background
     console.log('Loading bg...');
@@ -12,8 +16,11 @@ class Level1 extends Phaser.Scene {
     //score label and life gauge
     this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score  , 60);
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives  , 60);
-    // this.lifeGauge = this.add.sprite(950, -30, 'charge').setOrigin(0.5, 0).setScale(4);
     this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4);
+    //timer setup
+    this.timedEvent = this.time.delayedCall(120000, this.lvlOneComplete, [], this);
+    this.timerLabel = this.add.bitmapText(424, 15, "pixelFont", "00:00 ", 100);
+    console.log(this.timerLabel.getTextBounds());
     //floor platform
     this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
     this.physics.add.existing(this.stagePlatform, true);
@@ -21,7 +28,7 @@ class Level1 extends Phaser.Scene {
     this.stagePlatform.body.immovable = true;
 
     //spawning serol
-    this.serol = new Serol(this, 250, 50);
+    this.serol = new Serol(this, 512, 50);
     this.physics.add.existing(this.serol);
     this.serol.body.setGravityY(3000);
     this.serol.anims.play('staticBob',true);
@@ -34,32 +41,29 @@ class Level1 extends Phaser.Scene {
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
 
     //spawning tetrominos
-    this.tet1 = new Tetromino(this, 360, 50);
-    this.tet2 = new Tetromino(this, 450, 50);
+    this.tet1 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
+    this.tet2 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
 
     this.tetrominos = this.physics.add.group();
     this.tetrominos.add(this.tet1);
     this.tetrominos.add(this.tet2);
 
     //spawning junk
-    this.junk1 = new Junk(this, 100, 50);
-    this.junk2 = new Junk(this, 550, 50);
+    this.junk1 = new Junk(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
+    this.junk2 = new Junk(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
 
     this.junkItems = this.physics.add.group();
     this.junkItems.add(this.junk1);
     this.junkItems.add(this.junk2);
 
     //spawning 1ups
-    this.oneUp = new OneUp(this, 700, 50);
+    this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
     this.physics.world.enable(this.oneUp);
 
     //enabling overlap between serol and tetrominos
     this.physics.add.overlap(this.serol, this.tetrominos, this.catchTetromino, null, this);
     this.physics.add.overlap(this.serol, this.junkItems, this.catchJunk, null, this);
     this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
-
-    //level timer
-    this.timedEvent = this.time.delayedCall(120000, this.lvlOneComplete, [], this);
 
   }
 
@@ -70,6 +74,9 @@ class Level1 extends Phaser.Scene {
     this.itemFall(this.junk1, 20);
     this.itemFall(this.junk2, 15);
     this.itemFall(this.oneUp, 30);
+    //update timer
+    this.updateTimer();
+    //increase gravity gradually
   }
   
   movePlayerManager(){
@@ -101,20 +108,12 @@ class Level1 extends Phaser.Scene {
     //reset item when it falls beyond the world boundary (top/bottom)
     if (item.y > config.height) {
       this.itemReset(item);
-    } else if (item.y < 0){
-      this.itemReset(item);
-    }
-    //reset item when it falls beyond the world boundary (left/right)
-    if (item.x > config.width) {
-      this.itemReset(item);
-    } else if (item.x < 0){
-      this.itemReset(item);
     }
   }
   itemReset(item) {
+    item.setVelocityY(0);
     item.y = 0;
-    var randomX = Phaser.Math.Between(0, config.width);
-    item.x = randomX;
+    item.x = this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))];
     console.log(item.texture.key);
     if (item.texture.key == "tetromino") {
       item.setTexture("tetromino", Phaser.Math.Between(0, 59));
@@ -159,7 +158,20 @@ class Level1 extends Phaser.Scene {
     this.livesLabel.text = "LIVES " + this.lives;
     //update lives gauge
     this.lifeGauge.updateLife(this.lives);
-
+  }
+  zeroPad(number,size){
+    var stringNumber = String(number);
+    while(stringNumber.length < (size || 2)){
+      stringNumber = "0" + stringNumber;
+    }
+    return stringNumber;
+  }
+  updateTimer(){
+    this.timeLeft = ((120000 - this.timedEvent.delay*this.timedEvent.getProgress())/1000).toFixed(0);
+    this.seconds = Math.floor(this.timeLeft % 60); //Seconds to display
+    this.minutes = Math.floor(this.timeLeft / 60); //Minutes to display
+    this.timeFormatted = (this.zeroPad(this.minutes,2)+":"+this.zeroPad(this.seconds,2));
+    this.timerLabel.setText(this.timeFormatted);
   }
   lvlOneComplete(){
     this.scene.start('level1Complete');
