@@ -1,15 +1,22 @@
+var endgame = false;
+
 class Level1 extends Phaser.Scene {
 	constructor() {
 		super("level1");
   }
   xCoords = [64,128,192,256,320,384,448,512,576,640,704,769,833,897,961];
+  angles = [90, 0, -90];
   grav = 40;
   score = 0;
   lives = 3;
   timeLeft;
   minutes;
   seconds;
+  fallAfterReset;
 	create() {
+    endgame = false;
+    this.score = 0;
+    this.lives = 3;
     //background
     console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
@@ -20,7 +27,6 @@ class Level1 extends Phaser.Scene {
     //timer setup
     this.timedEvent = this.time.delayedCall(120000, this.lvlOneComplete, [], this);
     this.timerLabel = this.add.bitmapText(424, 15, "pixelFont", "00:00 ", 100);
-    console.log(this.timerLabel.getTextBounds());
     //floor platform
     this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
     this.physics.add.existing(this.stagePlatform, true);
@@ -42,7 +48,10 @@ class Level1 extends Phaser.Scene {
 
     //spawning tetrominos
     this.tet1 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
+    this.tet1.setOrigin(0.5,0.5);
     this.tet2 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
+    this.tet2.setOrigin(0.5,0.5);
+
 
     this.tetrominos = this.physics.add.group();
     this.tetrominos.add(this.tet1);
@@ -57,8 +66,15 @@ class Level1 extends Phaser.Scene {
     this.junkItems.add(this.junk2);
 
     //spawning 1ups
-    this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 0);
+    this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], 50);
     this.physics.world.enable(this.oneUp);
+    this.fallAfterSpawn = this.time.addEvent({
+      delay: 10000,
+      callback: ()=>{
+        this.itemFall(this.oneUp, 30);
+      },
+      loop: false
+  })
 
     //enabling overlap between serol and tetrominos
     this.physics.add.overlap(this.serol, this.tetrominos, this.catchTetromino, null, this);
@@ -73,7 +89,6 @@ class Level1 extends Phaser.Scene {
     this.itemFall(this.tet2, 15);
     this.itemFall(this.junk1, 20);
     this.itemFall(this.junk2, 15);
-    this.itemFall(this.oneUp, 30);
     //update timer
     this.updateTimer();
     //increase gravity gradually
@@ -93,12 +108,18 @@ class Level1 extends Phaser.Scene {
       this.serol.setVelocityX(gameSettings.playerXSpeed);
       this.serol.anims.play('walkRight',true);
     }
-    else {
+    else if(endgame == false) {
       this.serol.anims.play('staticBob',true);
       this.serol.setVelocityX(0);
     }
     if((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.serol.body.onFloor()) {
       this.serol.setVelocityY(-gameSettings.playerYSpeed);
+    }
+    if (endgame == true) {
+      this.serol.anims.play('sleep',true);
+      this.serol.setVelocityX(0);
+      this.serol.setVelocityY(0);
+      this.serol.setAccelerationY(3000);
     }
   }
   //falling items
@@ -112,18 +133,33 @@ class Level1 extends Phaser.Scene {
   }
   itemReset(item) {
     item.setVelocityY(0);
+    item.body.setAcceleration(0,0);
     item.y = 0;
     item.x = this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))];
     console.log(item.texture.key);
-    if (item.texture.key == "tetromino") {
-      item.setTexture("tetromino", Phaser.Math.Between(0, 59));
+    if (item.texture.key == "tetromino1") {
+      item.setTexture("tetromino1", Phaser.Math.Between(0, 31));
+      item.setAngle(this.angles[Math.round(Math.random() * (this.angles.length - 1))]);
+      if (item.angle == 90 || item.angle == -90){
+        item.setSize(68,34);
+      }
+      else if (item.angle == 0){
+        item.setSize(34,68);
+      }
     }
     else if (item.texture.key == "junk") {
       item.setTexture("junk", Phaser.Math.Between(0, 5));
     }
     else if (item.texture.key == "1up") {
       item.setTexture("1up", 0);
-    }
+      this.fallAfterReset = this.time.addEvent({
+        delay: 10000,
+        callback: ()=>{
+          this.itemFall(item, 30);
+        },
+        loop: true
+    })    
+  }
     
     
   }
@@ -136,9 +172,13 @@ class Level1 extends Phaser.Scene {
   catchJunk(serol,junkItem){
     this.itemReset(junkItem);
     //decrease life count
-    if ( this.lives <= 0){
+    if ( this.lives <= 1){
       this.lives = 0;
       //endgame sequence
+      endgame=true;
+      this.serol.anims.play('sleeping',true);
+      this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
+
     }else{
       this.lives--;
     }
@@ -232,9 +272,9 @@ class Serol extends Phaser.Physics.Arcade.Sprite {
     });
 
     scene.anims.create({
-      key: 'sleeping',
+      key: 'sleep',
       frames: scene.anims.generateFrameNumbers('serol', {frames: [28,29,28,29]}),
-      frameRate: 4,
+      frameRate: 2,
       repeat: -1
     });
   }
@@ -245,7 +285,7 @@ class Serol extends Phaser.Physics.Arcade.Sprite {
 
 /*tetromino class*/
 class Tetromino extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x=0, y=0, texture = 'tetromino', frame = Phaser.Math.Between(0, 60)) {
+  constructor(scene, x=0, y=0, texture = 'tetromino1', frame = Phaser.Math.Between(0, 31)) {
     super(scene,x,y,texture,frame)
     scene.add.existing(this)
     scene.events.on('update', this.update, this)

@@ -19,12 +19,14 @@ var config = {
     Level1,
     Level1Complete,
     Instructions2,
-    Level2],
+    Level2,
+    GameOver
+  ],
   physics: {
     default: 'arcade',
     arcade: {
         gravity: {y: 0},
-        debug: false
+        debug: true
     }
   },
   input: {

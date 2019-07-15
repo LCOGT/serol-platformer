@@ -24,6 +24,8 @@ class Boot extends Phaser.Scene {
 
 			//level 2
 		this.load.image("endless_bg", "assets/images/ground_long.png");
+			//game over
+		this.load.image("gameOver", "assets/images/game_over.png");
 		//spritesheets
 		this.load.spritesheet("start", "assets/images/click_start.png", {
 			frameWidth: 219,
@@ -41,13 +43,17 @@ class Boot extends Phaser.Scene {
 			frameWidth: 32,
 			frameHeight: 32
 		});
-		this.load.spritesheet('tetromino', 'assets/images/tetrominos.png', {
-			frameWidth: 75,
-			frameHeight: 75
+		this.load.spritesheet('tetromino1', 'assets/images/tet2x4.png', {
+			frameWidth: 34,
+			frameHeight: 68
 		});
-		this.load.spritesheet('junk', 'assets/images/junk.png', {
-			frameWidth: 75, 
-			frameHeight: 75
+		this.load.spritesheet('tetromino2', 'assets/images/tet4x2.png', {
+			frameWidth: 68,
+			frameHeight: 34
+		});
+		this.load.spritesheet('junk', 'assets/images/junk_items.png', {
+			frameWidth: 45, 
+			frameHeight: 60
 		});
 		this.load.spritesheet('1up', 'assets/images/battery.png', {
 			frameWidth: 64,

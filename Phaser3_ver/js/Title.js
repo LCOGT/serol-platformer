@@ -42,6 +42,10 @@ class Title extends Phaser.Scene {
 			repeat: -1
 		});
 		this.pressStart.setInteractive();
+		this.pressStart.on('pointerdown', function (event) {
+			console.log("Title to lvl1 instructions");
+			this.scene.start('instructions1');
+		  }, this);
 		//animations
 		this.pressStart.anims.play('blink',true);
 
