@@ -39,17 +39,9 @@ class Boot extends Phaser.Scene {
 			frameWidth: 138,
 			frameHeight: 131
 		});
-		this.load.spritesheet('lives', 'assets/images/batterylife.png', {
-			frameWidth: 32,
-			frameHeight: 32
-		});
 		this.load.spritesheet('tetromino1', 'assets/images/tet2x4.png', {
 			frameWidth: 34,
 			frameHeight: 68
-		});
-		this.load.spritesheet('tetromino2', 'assets/images/tet4x2.png', {
-			frameWidth: 68,
-			frameHeight: 34
 		});
 		this.load.spritesheet('junk', 'assets/images/junk_items.png', {
 			frameWidth: 45, 
