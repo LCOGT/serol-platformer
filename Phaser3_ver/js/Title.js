@@ -13,7 +13,7 @@ class Title extends Phaser.Scene {
 		this.titleBg = this.add.image(0,0,"titleScreen").setOrigin(0,0).setInteractive();
 		this.titleBg.on('pointerdown', function (event) {
 			console.log("Title to lvl1 instructions");
-			this.scene.start('instructions1');
+			this.scene.start('instructions2');
 		  }, this);
 		// //button to activate fullscreen
 		// this.fullscreenButton = this.add.image(980, 10, "fullscreen").setOrigin(0.5, 0).setScale(0.1).setInteractive();

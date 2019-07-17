@@ -14,6 +14,7 @@ class Level1Complete extends Phaser.Scene {
 			console.log("lvl1 Complete to lvl2 instructions");
 			this.scene.start('instructions2');
 		  }, this);
+		  this.cameras.main.fadeIn(2000);
 	}
 
 	update() {

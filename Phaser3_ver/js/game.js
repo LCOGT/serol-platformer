@@ -20,6 +20,7 @@ var config = {
     Level1Complete,
     Instructions2,
     Level2,
+    Level2Complete,
     GameOver
   ],
   physics: {
