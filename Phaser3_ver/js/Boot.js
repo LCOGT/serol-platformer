@@ -23,8 +23,11 @@ class Boot extends Phaser.Scene {
 		this.load.image('lvl1_complete', 'assets/images/L1_complete.png');
 
 			//level 2
+		this.load.image('endless_sky', 'assets/images/night_sky_bg.png');
 		this.load.image("endless_bg", "assets/images/ground_long.png");
 		this.load.image('lvl2_complete', 'assets/images/L2_complete.png');
+		this.load.image('pipe', 'assets/images/pipe.png');
+
 
 			//game over
 		this.load.image("gameOver", "assets/images/game_over.png");
