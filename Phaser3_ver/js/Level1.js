@@ -17,6 +17,7 @@ class Level1 extends Phaser.Scene {
     endgame = false;
     this.score = 0;
     this.lives = 3;
+    this.grav = 40;
     //background
     console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
@@ -60,10 +61,19 @@ class Level1 extends Phaser.Scene {
     this.tetrominos.add(this.tet2);
     this.itemFall(this.tet1, 20);
     this.itemFall(this.tet2, 15);
+    //adding new tetrominos
     this.moreTetrominos = this.time.addEvent({
       delay: 25000,
       callback: ()=>{
-        //add new tetrominos    
+        //add new tetrominos 
+        this.tetrominos.add(new Tetromino(
+          this, 
+          this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))],
+           -20)
+           .setOrigin(0.5,0.5));
+        //call item fall on the latest addition 
+        this.children = this.tetrominos.getChildren();
+        this.itemFall(this.children[this.children.length - 1], this.grav);
       },
       loop: true
     })
@@ -79,9 +89,24 @@ class Level1 extends Phaser.Scene {
       callback: ()=>{
         this.itemFall(this.junk1, 20);
         this.itemFall(this.junk2, 30);
-      
       },
       loop: false
+    })
+    //adding more junk
+    this.moreJunk = this.time.addEvent({
+      delay: 26000,
+      callback: ()=>{
+        //add new junk 
+        this.junkItems.add(new Junk(
+          this, 
+          this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))],
+           -20)
+           .setOrigin(0.5,0.5));
+        //call item fall on the latest addition 
+        this.children = this.junkItems.getChildren();
+        this.itemFall(this.children[this.children.length - 1], this.grav);   
+      },
+      loop: true
     })
     //spawning 1ups
     this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -20);
@@ -190,6 +215,9 @@ class Level1 extends Phaser.Scene {
       this.lives = 0;
       //endgame sequence
       endgame=true;
+      this.tetrominos.clear(true, true);
+      this.junkItems.clear(true, true);
+      this.oneUp.destroy();
       this.serol.anims.play('sleeping',true);
       this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
 
