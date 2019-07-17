@@ -215,9 +215,17 @@ class Level1 extends Phaser.Scene {
       this.lives = 0;
       //endgame sequence
       endgame=true;
+      //stop timer
+      this.timedEvent.paused = true;
+      //remove delayed events
+      this.moreTetrominos.remove(false);
+      this.moreJunk.remove(false);
+      this.oneUpFallDelay.remove(false);
+      //remove object sprites
       this.tetrominos.clear(true, true);
       this.junkItems.clear(true, true);
       this.oneUp.destroy();
+      //put Serol to sleep
       this.serol.anims.play('sleeping',true);
       this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
 
