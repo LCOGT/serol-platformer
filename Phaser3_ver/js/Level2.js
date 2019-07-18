@@ -4,8 +4,8 @@ class Level2 extends Phaser.Scene {
 		super("level2");
 	}
 	pipePositions = [100, 200, 300, 400, 500, 600, 700, 800];
-	queue = [];
-	choices = ['tetromino1', 'junk'];
+	//queue = [];
+	choices = ['tetromino', 'junk'];
 	score = 0;
 	lives = 3;
 	timeLeft;
@@ -17,11 +17,10 @@ class Level2 extends Phaser.Scene {
 		this.lives = 3;
 		this.queue = [];
 		//sky
-
-		//mountains
 		this.sky = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'endless_sky');
 		this.sky.setOrigin(0,0);
 		this.sky.setScrollFactor(0);
+		//mountains
 		this.mountains = this.add.tileSprite(0, 0, game.config.width, game.config.height, "endless_bg");
 		this.mountains.setOrigin(0,0);
 		this.mountains.setScrollFactor(0);
@@ -34,22 +33,78 @@ class Level2 extends Phaser.Scene {
 		this.pipeBg = this.add.sprite(10, 520, 'pipe').setOrigin(0, 0);
 		//initial queue
 		for(var i in this.pipePositions) {
-			this.sprite = new QueueSprite(
-				this,
-				this.pipePositions[i], 
-				585,
-				(this.choices[Math.floor(Math.random() * this.choices.length)]),
-				Phaser.Math.Between(0, 31)
-				);
-			if (this.sprite.texture == 'tetromino1'){
-				this.sprite.setTexture("tetromino1", Phaser.Math.Between(0, 31));
+			var textureChoice = this.choices[Math.floor(Math.random() * this.choices.length)]
+			if (textureChoice == 'tetromino'){
+				this.sprite = new QueueSprite(
+					this,
+					this.pipePositions[i], 
+					585,
+					"tetromino",
+					Phaser.Math.Between(0, 31)
+					);
 			}
-			else if (this.sprite.texture == 'junk'){
-				this.sprite.setTexture("junk", Phaser.Math.Between(0, 5));
+			else if (textureChoice == 'junk'){
+				this.sprite = new QueueSprite(
+					this,
+					this.pipePositions[i], 
+					585,
+					"junk",
+					Phaser.Math.Between(0, 5)
+					);
 			}
 			this.queue.push(this.sprite);
 		  }
 		console.log(this.queue);
+		//dequeueing using keyup
+		this.input.keyboard.on('keyup_SPACE', function (event) {
+			var removed = this.queue.shift();
+			//consider the overlap
+			if ((removed.texture.key==='tetromino')/*&& (overlap == true)*/){
+				console.log("tetromino sent");
+				// counterVal += 10;
+				// self.counter.updateScore(counterVal);
+			} else if ((removed.texture.key==='junk') /*&& (overlap == true)*/){
+				console.log("junk sent");
+				// counterVal -= 5;
+				// self.counter.updateScore(counterVal);
+			}
+			// if ((removed.key==='tetromino') /*&& (overlap == true)*/){
+			// console.log("tetromino lost (oh no)");
+			// self.counter.updateScore(counterVal);
+			// } else if ((removed.key==='junk') /*&& (overlap == true)*/){
+			// console.log("junk thrown out");
+			// self.counter.updateScore(counterVal);
+			// }
+			removed.destroy();
+			var textureChoice = this.choices[Math.floor(Math.random() * this.choices.length)]
+			if (textureChoice == 'tetromino'){
+				this.queue.push(new QueueSprite(
+					this,
+					this.pipePositions[i], 
+					585,
+					"tetromino",
+					Phaser.Math.Between(0, 31)
+					));
+			}
+			else if (textureChoice == 'junk'){
+				this.queue.push(new QueueSprite(
+					this,
+					this.pipePositions[i], 
+					585,
+					"junk",
+					Phaser.Math.Between(0, 5)
+					));
+			}
+			// this.queue.push(new QueueSprite(
+			// 	this,
+			// 	this.pipePositions[i], 
+			// 	585,
+			// 	(this.choices[Math.floor(Math.random() * this.choices.length)]),
+			// 	Phaser.Math.Between(0, 31)));
+			// console.log(q,xPositions);
+			this.updatePositions(this.queue,this.pipePositions);
+
+		}, this);
 		//spawn Serol
 		this.serol = new Serol(this, 512, 50);
 		this.physics.add.existing(this.serol);
@@ -69,6 +124,7 @@ class Level2 extends Phaser.Scene {
 		this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score  , 60);
 		this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives  , 60);
 		this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4);
+		
 	}
 
 	update() {
@@ -76,9 +132,8 @@ class Level2 extends Phaser.Scene {
 		this.updateTimer();
 		this.mountains.tilePositionX += 0.5;
 		this.sky.tilePositionX += 0.2;
-
-
 	}
+
 	movePlayerManager(){
 		let pad = Phaser.Input.Gamepad.Gamepad;
 	
@@ -87,11 +142,9 @@ class Level2 extends Phaser.Scene {
 		}
 		if (this.cursorKeys.left.isDown|| this.wasdKeys.A.isDown|| pad.left) {
 		  this.serol.setVelocityX(-gameSettings.playerXSpeed);
-		//   this.serol.anims.play('walkLeft',true);
 		}
 		else if(this.cursorKeys.right.isDown|| this.wasdKeys.D.isDown|| pad.right) {
 		  this.serol.setVelocityX(gameSettings.playerXSpeed);
-		//   this.serol.anims.play('walkRight',true);
 		}
 		else if(endgame == false) {
 		  this.serol.anims.play('walkRight',true);
@@ -107,10 +160,10 @@ class Level2 extends Phaser.Scene {
 		  this.serol.setAccelerationY(3000);
 		}
 	  }
+
 	updatePositions(elementArray, posArray){
-		for (var i=0;elementArray.length;i++){
-		  // console.log(i)
-		  elementArray[i].position.x = posArray[i];
+		for (var i=0;i < elementArray.length;i++){
+		  elementArray[i].x = posArray[i];
 		}
 	}
 	
@@ -119,8 +172,9 @@ class Level2 extends Phaser.Scene {
 		while(stringNumber.length < (size || 2)){
 			stringNumber = "0" + stringNumber;
 		}
-	return stringNumber;
+		return stringNumber;
 	}
+
 	updateTimer(){
 		this.timeLeft = ((120000 - this.timedEvent.delay*this.timedEvent.getProgress())/1000).toFixed(0);
 		this.seconds = Math.floor(this.timeLeft % 60); //Seconds to display
@@ -128,25 +182,16 @@ class Level2 extends Phaser.Scene {
 		this.timeFormatted = (this.zeroPad(this.minutes,2)+":"+this.zeroPad(this.seconds,2));
 		this.timerLabel.setText(this.timeFormatted);
 	}
+
 	lvlTwoComplete(){
 		this.scene.start('level2Complete');
 	}
 }
 //queue sprite object
-	class QueueSprite extends Phaser.Physics.Arcade.Sprite{
-		constructor(scene, x=0, y=0, texture = null, frame = 0) {
-			super(scene,x,y,texture,frame)
-			scene.add.existing(this)
-			scene.events.on('update', this.update, this)
-		  }
-
-		
-		// var queueSprite = game.add.sprite(x, y, spriteRef);
-		// queueSprite.anchor.setTo(0.5, 0.5);
-		// if (spriteRef == 'tetromino'){
-		// queueSprite.frame = Math.floor(Math.random() * 60);
-		// }else if(spriteRef == 'junk'){
-		// queueSprite.frame = Math.floor(Math.random() * 6);
-		// }
-		// return queueSprite;
-  	}
+class QueueSprite extends Phaser.Physics.Arcade.Sprite{
+	constructor(scene, x=0, y=0, texture = null, frame = 0) {
+		super(scene,x,y,texture,frame)
+		scene.add.existing(this)
+		scene.events.on('update', this.update, this)
+	}
+}

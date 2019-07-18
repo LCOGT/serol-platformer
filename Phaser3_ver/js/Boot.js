@@ -48,6 +48,10 @@ class Boot extends Phaser.Scene {
 			frameWidth: 34,
 			frameHeight: 68
 		});
+		this.load.spritesheet('tetromino', 'assets/images/tetrominos.png', {
+			frameWidth: 75,
+			frameHeight: 75
+		});
 		this.load.spritesheet('junk', 'assets/images/junk_items.png', {
 			frameWidth: 45, 
 			frameHeight: 60
@@ -59,6 +63,18 @@ class Boot extends Phaser.Scene {
 		this.load.spritesheet('charge', 'assets/images/batterylife1.png', {
 			frameWidth: 28,
 			frameHeight: 12
+		});
+		this.load.spritesheet('telescope', 'assets/images/telescopes_highlight.png', {
+			frameWidth: 250,
+			frameHeight: 250
+		});
+		this.load.spritesheet('river', 'assets/images/river.png', {
+			frameWidth: 166,
+			frameHeight: 179
+		});
+		this.load.spritesheet('obstacle', 'assets/images/obstacles.png', {
+			frameWidth: 135,
+			frameHeight: 75
 		});
 		
 		//sounds
