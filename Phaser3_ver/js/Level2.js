@@ -1,4 +1,9 @@
 //Level2.js
+choices = ['tetromino', 'junk'];
+obstacleChoices = ['river', 'obstacle','obstacle'];
+teleFrames = [0,4,8];
+overlapping = false;
+
 class Level2 extends Phaser.Scene {
 	constructor() {
 		super("level2");
@@ -16,6 +21,12 @@ class Level2 extends Phaser.Scene {
     	this.score = 0;
 		this.lives = 3;
 		this.queue = [];
+		this.runSpeed = 1.5;
+		this.maxSpeed = 9.0;
+		this.minSpeed = 1.5;
+		this.oneUpSpeed = 0.7;
+		this.skySpeed = 0.2;
+
 		//sky
 		this.sky = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'endless_sky');
 		this.sky.setOrigin(0,0);
@@ -29,6 +40,52 @@ class Level2 extends Phaser.Scene {
 		this.physics.add.existing(this.stagePlatform, true);
 		this.stagePlatform.enableBody = true;
 		this.stagePlatform.body.immovable = true;
+		//telescopes
+		this.telescope = new Telescope(this, 1500, 520, 'telescope',this.choose([0,4,8])).setOrigin(0.5,1).setScale(1.7);
+		this.physics.world.enable(this.telescope);
+		this.telescope.body.setSize(250, 250);
+		this.telescope.on("overlapstart", function() {
+			overlapping = true;
+			if (this.frame.name == 0){
+				this.setFrame(2);
+			}
+			if (this.frame.name == 4){
+				this.setFrame(6);
+			}
+			if (this.frame.name == 8){
+				this.setFrame(10);
+			}
+		});
+		this.telescope.on("overlapend", function() {
+			overlapping = false;
+			if (this.frame.name == 2){
+				this.setFrame(0);
+			}
+			if (this.frame.name == 6){
+				this.setFrame(4);
+			}
+			if (this.frame.name == 10){
+				this.setFrame(8);
+			}
+		});
+		//obstacles and rivers
+		this.obstacle = new Obstacle(this,1000, 460,'obstacle',Math.round(Math.random() * 4)).setOrigin(0.5,0);
+		this.physics.world.enable(this.obstacle);
+		this.obstacle.body.immovable = true;
+		//batteries
+		this.oneUp = new OneUp(this, 2000, 350);
+    	this.physics.world.enable(this.oneUp);
+		//spawn Serol
+		this.serol = new Serol(this, 100, 350);
+		this.physics.add.existing(this.serol);
+		this.serol.body.setGravityY(3000);
+		this.serol.anims.play('walkRight',true);
+		this.serol.setCollideWorldBounds(true);
+		//Serol controls
+		this.cursorKeys = this.input.keyboard.createCursorKeys();
+		this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
+		//colliding with floor platform
+		this.physics.add.collider(this.stagePlatform, this.serol);
 		//pipe
 		this.pipeBg = this.add.sprite(10, 520, 'pipe').setOrigin(0, 0);
 		//initial queue
@@ -59,24 +116,21 @@ class Level2 extends Phaser.Scene {
 		this.input.keyboard.on('keyup_SPACE', function (event) {
 			var removed = this.queue.shift();
 			//consider the overlap
-			if ((removed.texture.key==='tetromino')/*&& (overlap == true)*/){
+			if ((removed.texture.key==='tetromino')&& (overlapping == true)){
 				console.log("tetromino sent");
-				// counterVal += 10;
-				// self.counter.updateScore(counterVal);
-			} else if ((removed.texture.key==='junk') /*&& (overlap == true)*/){
+				this.score += 10;
+				this.scoreLabel.text = "SCORE " + this.score;
+			} else if ((removed.texture.key==='junk') && (overlapping == true)){
 				console.log("junk sent");
-				// counterVal -= 5;
-				// self.counter.updateScore(counterVal);
+				if (this.score <= 0){
+					this.score = 0;
+				}else{
+					this.score -= 5;
+					this.scoreLabel.text = "SCORE " + this.score;
+				}
 			}
-			// if ((removed.key==='tetromino') /*&& (overlap == true)*/){
-			// console.log("tetromino lost (oh no)");
-			// self.counter.updateScore(counterVal);
-			// } else if ((removed.key==='junk') /*&& (overlap == true)*/){
-			// console.log("junk thrown out");
-			// self.counter.updateScore(counterVal);
-			// }
 			removed.destroy();
-			var textureChoice = this.choices[Math.floor(Math.random() * this.choices.length)]
+			var textureChoice = this.choose(choices);
 			if (textureChoice == 'tetromino'){
 				this.queue.push(new QueueSprite(
 					this,
@@ -95,27 +149,9 @@ class Level2 extends Phaser.Scene {
 					Phaser.Math.Between(0, 5)
 					));
 			}
-			// this.queue.push(new QueueSprite(
-			// 	this,
-			// 	this.pipePositions[i], 
-			// 	585,
-			// 	(this.choices[Math.floor(Math.random() * this.choices.length)]),
-			// 	Phaser.Math.Between(0, 31)));
-			// console.log(q,xPositions);
 			this.updatePositions(this.queue,this.pipePositions);
 
 		}, this);
-		//spawn Serol
-		this.serol = new Serol(this, 512, 50);
-		this.physics.add.existing(this.serol);
-		this.serol.body.setGravityY(3000);
-		this.serol.anims.play('walkRight',true);
-		this.serol.setCollideWorldBounds(true);
-		//Serol controls
-		this.cursorKeys = this.input.keyboard.createCursorKeys();
-		this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
-		//colliding with floor platform
-		this.physics.add.collider(this.stagePlatform, this.serol);
 
 		//timer setup
 		this.timedEvent = this.time.delayedCall(120000, this.lvlTwoComplete, [], this);
@@ -124,14 +160,79 @@ class Level2 extends Phaser.Scene {
 		this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score  , 60);
 		this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives  , 60);
 		this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4);
-		
+		//increasing runspeed
+		this.runspeedIncrease = this.time.addEvent({
+			delay: 3500,
+			callback: ()=>{
+			  this.runSpeed = this.runSpeed * 1.17;
+			  if (this.runSpeed > this.maxSpeed){
+				  this.runSpeed = this.maxSpeed;
+			  }
+			},
+			loop: true
+		})
+		//collisions
+		this.physics.add.overlap(this.telescope,this.serol);
+		this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
 	}
 
 	update() {
 		this.movePlayerManager();
 		this.updateTimer();
-		this.mountains.tilePositionX += 0.5;
-		this.sky.tilePositionX += 0.2;
+		this.sky.tilePositionX += this.skySpeed;
+		this.mountains.tilePositionX += this.runSpeed;
+		this.itemMove(this.telescope,this.runSpeed);
+		this.itemMove(this.obstacle,this.runSpeed);
+		this.itemMove(this.oneUp, this.oneUpSpeed);
+		// Treat 'embedded' as 'touching' also
+		if (this.telescope.body.embedded) {
+			this.telescope.body.touching.none = false
+		};
+
+		var touching = !this.telescope.body.touching.none;
+		var wasTouching = !this.telescope.body.wasTouching.none;
+	  
+		if (touching && !wasTouching) this.telescope.emit("overlapstart");
+		else if (!touching && wasTouching) this.telescope.emit("overlapend");
+		// handling collision between obstacle and serol
+		if (this.serol.alpha == 1){
+        this.physics.world.collide(this.serol, this.obstacle, function(serol, obstacle){
+ 
+            //obstacle is touching up and serol is touching down
+            if(obstacle.body.touching.up && serol.body.touching.down){
+                // in this case just jump again
+                this.serol.body.velocity.y =  -gameSettings.playerYSpeed;
+            }
+            else{
+				//Make Serol ivincible for a bit, then reset to normal
+				serol.alpha = 0.5
+
+				this.serolReset = this.time.addEvent({
+					delay: 2000,
+					callback: ()=>{
+						serol.alpha = 1;
+					},
+					loop: false
+				})
+				//slow down the scroll
+				if (this.runSpeed < this.minSpeed){
+					this.runSpeed = this.minSpeed;
+				}else{
+					this.runSpeed -= (this.runSpeed/3);
+				}
+				// any other way to collide with an obstacle will cause life loss
+				
+                if ( this.lives <= 1){
+					this.endgame();			  
+				  }else{
+					this.lives--;
+				  }
+				  this.livesLabel.text = "LIVES " + this.lives;
+				  //update lives gauge
+				  this.lifeGauge.updateLife(this.lives);
+            	}
+			}, null, this);
+		}	
 	}
 
 	movePlayerManager(){
@@ -154,13 +255,13 @@ class Level2 extends Phaser.Scene {
 		  this.serol.setVelocityY(-gameSettings.playerYSpeed);
 		}
 		if (endgame == true) {
-		  this.serol.anims.play('sleep',true);
-		  this.serol.setVelocityX(0);
-		  this.serol.setVelocityY(0);
-		  this.serol.setAccelerationY(3000);
+			this.serol.flipX = true;
+		  	this.serol.anims.play('sleep',true);
+		  	this.serol.setVelocityX(0);
+		  	this.serol.setVelocityY(0);
+		  	this.serol.setAccelerationY(3000);
 		}
 	  }
-
 	updatePositions(elementArray, posArray){
 		for (var i=0;i < elementArray.length;i++){
 		  elementArray[i].x = posArray[i];
@@ -182,10 +283,108 @@ class Level2 extends Phaser.Scene {
 		this.timeFormatted = (this.zeroPad(this.minutes,2)+":"+this.zeroPad(this.seconds,2));
 		this.timerLabel.setText(this.timeFormatted);
 	}
+	choose(choices) {
+		return choices[Math.floor(Math.random() * choices.length)];
+	}
+	itemMove(item, velocity) {
+		//set acceleration
+		item.x -= velocity;
+		if(item.frame.key == "1up"){
+			item.x -= this.oneUpSpeed;
+		}
+		//reset item when it falls beyond the world boundary (top/bottom)
+		if (item.x < -150) {
+		  this.itemReset(item);
+		}
+	}
 
+	itemReset(item) {
+		//set y depending on sprite
+		item.anims.stop();
+		// console.log(item.texture.key);
+		if (item.texture.key == "telescope") {
+			item.y = 520;
+		  	item.setTexture("telescope", this.choose(teleFrames));
+		  	item.x = config.width+200;
+		  	this.itemMove(item,this.runSpeed);
+		}
+		else if (item.texture.key == "obstacle"||item.texture.key == "river") {
+			item.y = 460;
+			item.setTexture(this.choose(obstacleChoices),0)
+			if (item.texture.key == 'obstacle'){
+				item.setTexture(this.choose(obstacleChoices),Phaser.Math.Between(0, 4))
+			}
+			else if (item.texture.key  == 'river'){
+				item.anims.play('flow');
+			}
+		//   item.setTexture("obstacle", Phaser.Math.Between(0, 4));
+		  item.x = config.width+200;
+		  this.itemMove(item,this.runSpeed);
+		}
+		else if (item.texture.key == "1up") {
+		  item.setTexture("1up", 0); 
+		  item.y = 350;
+		  item.x = config.width+500;
+		  this.itemMove(item, this.oneUpSpeed);
+		  }
+	}
+	riverCollide(serol,river){
+		//TODO: make Serol ivincible for a bit
+		serol.alpha = 0.5
+		this.serolReset = this.time.addEvent({
+			delay: 1500,
+			callback: ()=>{
+				serol.alpha = 1;
+			},
+			loop: false
+		})
+		// any other way to collide with an obstacle will cause life loss
+		
+		if ( this.lives <= 1){
+			this.endgame();	  
+		  }else{
+			this.lives--;
+		  }
+		  this.livesLabel.text = "LIVES " + this.lives;
+		  //update lives gauge
+		  this.lifeGauge.updateLife(this.lives);
+	}
+	domSubCollide(dom,sub){
+		this.itemReset(sub);
+	}
+	catchOneUp(serol,oneUp){
+		this.itemReset(oneUp);
+		//increase life count
+		if (this.lives >= 3){
+		  this.lives = 3;
+		}else{
+		  this.lives++;
+		}
+		this.livesLabel.text = "LIVES " + this.lives;
+		//update lives gauge
+		this.lifeGauge.updateLife(this.lives);
+	}
 	lvlTwoComplete(){
 		this.scene.start('level2Complete');
 	}
+	endgame(){
+		this.lives = 0;
+		//endgame sequence
+		endgame=true;
+		//stop timer
+		this.timedEvent.paused = true;
+		//remove delayed events
+		
+		//remove object sprites
+		this.runSpeed = 0;
+		this.oneUpSpeed = 0;
+		this.skySpeed = 0;
+		this.sky.tilePositionX = this.sky.tilePositionX;
+		//put Serol to sleep
+		this.serol.anims.play('sleeping',true);
+		this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
+	}
+	
 }
 //queue sprite object
 class QueueSprite extends Phaser.Physics.Arcade.Sprite{
@@ -193,5 +392,28 @@ class QueueSprite extends Phaser.Physics.Arcade.Sprite{
 		super(scene,x,y,texture,frame)
 		scene.add.existing(this)
 		scene.events.on('update', this.update, this)
+	}
+}
+//Telescope object
+class Telescope extends Phaser.Physics.Arcade.Sprite{
+	constructor(scene, x=0, y=0, texture = "telescope", frame = 0) {
+		super(scene,x,y,texture,frame)
+		scene.add.existing(this)
+		scene.events.on('update', this.update, this)
+	}	
+}
+/*Obstacle class*/
+class Obstacle extends Phaser.Physics.Arcade.Sprite {
+	constructor(scene, x=0, y=0, texture = null, frame = 0) {
+	  super(scene,x,y,texture,frame)
+	  scene.add.existing(this)
+	  scene.events.on('update', this.update, this)
+
+	  scene.anims.create({
+		key: 'flow',
+		frames: scene.anims.generateFrameNumbers('river', {frames: [0,1,2]}),
+		frameRate: 4,
+		repeat: -1
+	  });
 	}
 }

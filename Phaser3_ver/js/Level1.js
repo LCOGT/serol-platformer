@@ -117,7 +117,7 @@ class Level1 extends Phaser.Scene {
         this.itemFall(this.oneUp, 30);
       },
       loop: true
-  })
+    })
 
     //enabling overlap between serol and tetrominos
     this.physics.add.overlap(this.serol, this.tetrominos, this.catchTetromino, null, this);

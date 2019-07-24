@@ -68,13 +68,13 @@ class Boot extends Phaser.Scene {
 			frameWidth: 250,
 			frameHeight: 250
 		});
-		this.load.spritesheet('river', 'assets/images/river.png', {
-			frameWidth: 166,
-			frameHeight: 179
+		this.load.spritesheet('river', 'assets/images/river_bridge_lg.png', {
+			frameWidth: 104,
+			frameHeight: 126
 		});
-		this.load.spritesheet('obstacle', 'assets/images/obstacles.png', {
-			frameWidth: 135,
-			frameHeight: 75
+		this.load.spritesheet('obstacle', 'assets/images/obstacle.png', {
+			frameWidth: 104,
+			frameHeight: 49
 		});
 		
 		//sounds
