@@ -44,7 +44,7 @@ class Level1 extends Phaser.Scene {
     this.physics.add.existing(this.serol);
     this.serol.body.setGravityY(3000);
     this.serol.anims.play('staticBob',true);
-    this.serol.setCollideWorldBounds(true);
+    // this.serol.setCollideWorldBounds(true);
     //colliding with floor platform
     this.physics.add.collider(this.stagePlatform, this.serol);
     
@@ -132,6 +132,7 @@ class Level1 extends Phaser.Scene {
     this.movePlayerManager();
     //update timer
     this.updateTimer();
+    this.physics.world.wrap(this.serol);
   }
   
   movePlayerManager(){
