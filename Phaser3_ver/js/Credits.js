@@ -66,6 +66,17 @@ class Credits extends Phaser.Scene {
     this.alice.play("Alice");
     this.sarah.play("Sarah");
     this.edward.play("Edward");
-	}
+
+    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+  }
+  update(){
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+    {
+      console.log("Credits to title");
+      // 				creditsbgm.fadeOut(1000);
+      // 				creditsbgm.stop();
+			this.scene.start('gameTitle');
+    }
+  }
 }
 

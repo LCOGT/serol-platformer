@@ -14,11 +14,14 @@ class Instructions1 extends Phaser.Scene {
             this.scene.start('level1');
 		}, this);
 		//start level when space is pressed
-
+		this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 		//TODO: audio controls
 	}
 
 	update() {
-		
+		if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
+			console.log('From Instructions 1 to Level 1');
+            this.scene.start('level1');
+		}
 	}
 }
