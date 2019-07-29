@@ -1,10 +1,14 @@
 //Title.js
+var storyMode = false;
+var totalScore = 0;
 class Title extends Phaser.Scene {
 	constructor() {
 		super("gameTitle");
 	}
 
 	create() {
+        storyMode = false;
+        totalScore = 0;
 		//background
 		this.titleBg = this.add.image(0,0,"titleScreen").setOrigin(0,0);
 		// //button to activate fullscreen
@@ -62,6 +66,7 @@ class Title extends Phaser.Scene {
         });
         this.events.addListener('SELECT', payload => {
             if (activeText == 0){
+                storyMode = true;
                 console.log("Title to lvl1 instructions");
                 this.scene.start('instructions1');
             }

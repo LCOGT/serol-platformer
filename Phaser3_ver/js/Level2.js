@@ -10,6 +10,9 @@ class Level2 extends Phaser.Scene {
 	}
 	
 	create() {
+		if (storyMode == false){
+			totalScore = 0;
+		}
 		this.pipePositions = [100, 200, 300, 400, 500, 600, 700, 800];
 		//queue = [];
 		this.choices = ['tetromino', 'junk'];
@@ -367,6 +370,9 @@ class Level2 extends Phaser.Scene {
 		this.lifeGauge.updateLife(this.lives);
 	}
 	lvlTwoComplete(){
+		//save score
+		totalScore+=this.score;
+		//change scene
 		this.scene.start('level2Complete');
 	}
 	endgame(){
@@ -384,6 +390,9 @@ class Level2 extends Phaser.Scene {
 		this.sky.tilePositionX = this.sky.tilePositionX;
 		//put Serol to sleep
 		this.serol.anims.play('sleeping',true);
+		//save score
+		totalScore+=this.score;
+		//change scene
 		this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
 	}
 	
