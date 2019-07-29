@@ -6,14 +6,19 @@ var gameSettings = {
 
 var config = {
   type: Phaser.AUTO,
-  mode:Phaser.Scale.FIT,
-  width: 1024,
-  height: 640,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    parent: "SerolGame",
+    width: 1024,
+    height: 640
+  },
   backgroundColor: 0x000000,
   pixelArt: true,
   scene:[
     Boot, 
-    Title, 
+    Title,
+    LevelSelect, 
     Credits,
     Instructions1,
     Level1,

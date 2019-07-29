@@ -16,13 +16,13 @@ class Level1Complete extends Phaser.Scene {
 			this.scene.start('instructions2');
 		  }, this);
 		  this.cameras.main.fadeIn(2000);
-		this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+		this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
 	}
 
 	update() {
 		//change for story mode and separate levels
-		if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
+		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			console.log("lvl1 Complete to lvl2 instructions");
 			this.scene.start('instructions2');
 		}

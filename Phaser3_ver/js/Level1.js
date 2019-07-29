@@ -4,20 +4,20 @@ class Level1 extends Phaser.Scene {
 	constructor() {
 		super("level1");
   }
-  xCoords = [64,128,192,256,320,384,448,512,576,640,704,769,833,897,961];
-  angles = [90, 0, -90];
-  grav = 40;
-  score = 0;
-  lives = 3;
-  timeLeft;
-  minutes;
-  seconds;
-  fallAfterReset;
 	create() {
-    endgame = false;
+    this.xCoords = [64,128,192,256,320,384,448,512,576,640,704,769,833,897,961];
+    this.angles = [90, 0, -90];
+    this.grav = 40;
+    this.score = 0;
+    this.lives = 3;
+    this.timeLeft;
+    this.minutes;
+    this.seconds;
+    this.fallAfterReset;
     this.score = 0;
     this.lives = 3;
     this.grav = 40;
+    endgame = false;
     //background
     console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
@@ -29,12 +29,12 @@ class Level1 extends Phaser.Scene {
     this.timedEvent = this.time.delayedCall(120000, this.lvlOneComplete, [], this);
     this.timerLabel = this.add.bitmapText(424, 15, "pixelFont", "00:00 ", 100);
     //floor platform
-    this.stagePlatform = this.add.tileSprite(config.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
+    this.stagePlatform = this.add.tileSprite(config.scale.width/2, 640, 0, 0, 'stage').setOrigin(0.5, 0.8);
     this.physics.add.existing(this.stagePlatform, true);
     this.stagePlatform.enableBody = true;
     this.stagePlatform.body.immovable = true;
     //world boundareeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    this.boundary = this.add.tileSprite(config.width/2, config.height + 40, 0, 0, 'stage').setOrigin(0.5, 0);
+    this.boundary = this.add.tileSprite(config.scale.width/2, config.scale.height + 40, 0, 0, 'stage').setOrigin(0.5, 0);
     this.physics.add.existing(this.boundary, true);
     this.boundary.enableBody = true;
     this.boundary.body.immovable = true;
@@ -168,7 +168,7 @@ class Level1 extends Phaser.Scene {
     //set acceleration
     item.body.setAcceleration(0,accel);
     //reset item when it falls beyond the world boundary (top/bottom)
-    if (item.y > config.height) {
+    if (item.y > config.scale.height) {
       console.log(item.toString());
       this.itemReset(item);
     }

@@ -8,15 +8,17 @@ class Level2 extends Phaser.Scene {
 	constructor() {
 		super("level2");
 	}
-	pipePositions = [100, 200, 300, 400, 500, 600, 700, 800];
-	//queue = [];
-	choices = ['tetromino', 'junk'];
-	score = 0;
-	lives = 3;
-	timeLeft;
-	minutes;
-	seconds;
+	
 	create() {
+		this.pipePositions = [100, 200, 300, 400, 500, 600, 700, 800];
+		//queue = [];
+		this.choices = ['tetromino', 'junk'];
+		this.score = 0;
+		this.lives = 3;
+		this.timeLeft;
+		this.minutes;
+		this.seconds;
+
 		endgame = false;
     	this.score = 0;
 		this.lives = 3;
@@ -36,7 +38,7 @@ class Level2 extends Phaser.Scene {
 		this.mountains.setOrigin(0,0);
 		this.mountains.setScrollFactor(0);
 		//floor platform
-		this.stagePlatform = this.add.tileSprite(config.width/2, 620, 0, 0, 'stage').setOrigin(0.5, 0.8);
+		this.stagePlatform = this.add.tileSprite(config.scale.width/2, 620, 0, 0, 'stage').setOrigin(0.5, 0.8);
 		this.physics.add.existing(this.stagePlatform, true);
 		this.stagePlatform.enableBody = true;
 		this.stagePlatform.body.immovable = true;
@@ -305,7 +307,7 @@ class Level2 extends Phaser.Scene {
 		if (item.texture.key == "telescope") {
 			item.y = 520;
 		  	item.setTexture("telescope", this.choose(teleFrames));
-		  	item.x = config.width+200;
+		  	item.x = config.scale.width+200;
 		  	this.itemMove(item,this.runSpeed);
 		}
 		else if (item.texture.key == "obstacle"||item.texture.key == "river") {
@@ -318,13 +320,13 @@ class Level2 extends Phaser.Scene {
 				item.anims.play('flow');
 			}
 		//   item.setTexture("obstacle", Phaser.Math.Between(0, 4));
-		  item.x = config.width+200;
+		  item.x = config.scale.width+200;
 		  this.itemMove(item,this.runSpeed);
 		}
 		else if (item.texture.key == "1up") {
 		  item.setTexture("1up", 0); 
 		  item.y = 350;
-		  item.x = config.width+500;
+		  item.x = config.scale.width+500;
 		  this.itemMove(item, this.oneUpSpeed);
 		  }
 	}

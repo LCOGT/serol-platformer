@@ -14,6 +14,8 @@ class Boot extends Phaser.Scene {
 		this.load.image("fullscreen", "assets/images/fullscreen.png");
 			//credits
 		this.load.image("creditsBg", "assets/images/credits_bg.png");
+			//level select
+		this.load.image("level_select_bg", "assets/images/level_select_bg.png");
 			//instructions
 		this.load.image("instructions1", "assets/images/L1_instructions.png");
 		this.load.image("instructions2", "assets/images/L2_instructions.png");
@@ -21,14 +23,11 @@ class Boot extends Phaser.Scene {
 		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
 		this.load.image("stage", "assets/images/stage_blank.png");
 		this.load.image('lvl1_complete', 'assets/images/L1_complete.png');
-
 			//level 2
 		this.load.image('endless_sky', 'assets/images/night_sky_bg.png');
 		this.load.image("endless_bg", "assets/images/ground_long.png");
 		this.load.image('lvl2_complete', 'assets/images/L2_complete.png');
 		this.load.image('pipe', 'assets/images/pipe.png');
-
-
 			//game over
 		this.load.image("gameOver", "assets/images/game_over.png");
 		//spritesheets
@@ -75,6 +74,10 @@ class Boot extends Phaser.Scene {
 		this.load.spritesheet('obstacle', 'assets/images/obstacle.png', {
 			frameWidth: 104,
 			frameHeight: 49
+		});
+		this.load.spritesheet('level_icon', 'assets/images/level_select_icons.png', {
+			frameWidth: 171,
+			frameHeight: 171
 		});
 		
 		//sounds
