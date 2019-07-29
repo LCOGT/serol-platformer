@@ -8,6 +8,7 @@ class Level1 extends Phaser.Scene {
     this.xCoords = [64,128,192,256,320,384,448,512,576,640,704,769,833,897,961];
     this.angles = [90, 0, -90];
     this.grav = 40;
+    this.maxGrav = 300;
     this.score = 0;
     this.lives = 3;
     this.timeLeft;
@@ -75,7 +76,7 @@ class Level1 extends Phaser.Scene {
         this.children = this.tetrominos.getChildren();
         this.itemFall(this.children[this.children.length - 1], this.grav);
       },
-      loop: true
+      loop: 2
     })
 
     //spawning junk
@@ -106,7 +107,7 @@ class Level1 extends Phaser.Scene {
         this.children = this.junkItems.getChildren();
         this.itemFall(this.children[this.children.length - 1], this.grav);   
       },
-      loop: true
+      loop: 2
     })
     //spawning 1ups
     this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -20);
@@ -121,7 +122,11 @@ class Level1 extends Phaser.Scene {
 
     //enabling overlap between serol and tetrominos
     this.physics.add.overlap(this.serol, this.tetrominos, this.catchTetromino, null, this);
-    this.physics.add.overlap(this.serol, this.junkItems, this.catchJunk, null, this);
+    this.physics.add.overlap(this.serol, this.junkItems, function(serol,junk){
+      if (serol.alpha == 1){
+        this.catchJunk(serol,junk)
+      }
+    }, null, this);
     this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
 
     this.physics.add.overlap(this.boundary, this.tetrominos, this.dropTetromino, null, this);
@@ -188,7 +193,11 @@ class Level1 extends Phaser.Scene {
       else if (item.angle == 0){
         item.setSize(34,68);
       }
-      this.grav+=5;
+      if (this.grav <= this.maxGrav){
+        this.grav+=5;
+      }else{
+        this.grav = this.maxGrav;
+      }
       this.itemFall(item,this.grav);
       console.log(this.grav);
     }
@@ -211,6 +220,17 @@ class Level1 extends Phaser.Scene {
   catchJunk(serol,junkItem){
     this.itemReset(junkItem);
     console.log(junkItem.name);
+    //slow down item fall
+    this.grav *= (2/3);
+    //make Serol invincible for a bit
+    serol.alpha = 0.5
+		this.serolReset = this.time.addEvent({
+			delay: 2000,
+			callback: ()=>{
+				serol.alpha = 1;
+			},
+			loop: false
+		})
     //decrease life count
     if ( this.lives <= 1){
       this.lives = 0;
