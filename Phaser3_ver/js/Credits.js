@@ -28,10 +28,9 @@ class Credits extends Phaser.Scene {
     
     //back
     this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setInteractive();
+    this.backLabel.setTint(0xffb700);
     this.backLabel.on('pointerdown', function (event) {
       console.log("Credits to title");
-      // 				creditsbgm.fadeOut(1000);
-      // 				creditsbgm.stop();
 			this.scene.start('gameTitle');
 		  }, this);
     
