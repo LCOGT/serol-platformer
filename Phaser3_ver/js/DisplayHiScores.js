@@ -21,7 +21,6 @@ class DisplayHiScores extends Phaser.Scene {
 
     create ()
     {
-        let xhr = new XMLHttpRequest();
         
         this.stars = this.add.blitter(0, 0, 'star');
 
@@ -45,26 +44,35 @@ class DisplayHiScores extends Phaser.Scene {
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     
         //hiScore API setup
-        xhr.open("GET","https://serol.lco.global/api/highscore/leaders", true)
-		xhr.onload = function() {
-		  if (xhr.status >= 200 && xhr.status < 400) {
-		    // Success!
-		    this.resp = xhr.responseText;
-            leaders = JSON.parse(this.resp);
-            console.log(leaders);
-		  } else {
-		    // We reached our target server, but it returned an error
-		    console.log("Error")
-		  }
-		};
+        // xhr.open("GET","https://serol.lco.global/api/highscore/leaders", true)
+		// xhr.onload = function() {
+		//   if (xhr.status >= 200 && xhr.status < 400) {
+		//     // Success!
+		//     this.resp = xhr.responseText;
+        //     leaders = JSON.parse(this.resp);
+        //     console.log(leaders);
+		//   } else {
+		//     // We reached our target server, but it returned an error
+		//     console.log("Error")
+		//   }
+		// };
 
-		xhr.onerror = function() {
-		  // There was a connection error of some sort
-		  console.log("Connection error")
-		};
+		// xhr.onerror = function() {
+		//   // There was a connection error of some sort
+		//   console.log("Connection error")
+		// };
 
-        xhr.send();
-        this.genLeaderboard(leaders);
+        // xhr.send();
+        // this.genLeaderboard(leaders);
+
+          // call this where you need to make the request and get data, then display it
+          this.getScoresRequest(function(requestWasSuccess, leadersData){
+            if(requestWasSuccess == true){
+              this.genLeaderboard(leadersData);
+            }else{
+              // display error msg to user
+            }
+          });
     }
     update (time, delta)
     {
@@ -93,6 +101,32 @@ class DisplayHiScores extends Phaser.Scene {
             this.scene.start('gameTitle');
         }
     }
+    getScoresRequest(callbackFunction){
+        var self = this; 
+        let xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+          if (xhr.status >= 200 && xhr.status < 400) {
+            // Success!
+            this.resp = xhr.responseText; // toString() might be needed.
+            // is leaders global or part of the class?
+            leaders = JSON.parse(this.resp);
+            console.log(leaders);
+            callbackFunction.call(self, true, leaders);
+          } else {
+            // We reached our target server, but it returned an error
+            console.log("Error")
+            callbackFunction.call(self, false, leaders);
+          }
+        };
+      
+        xhr.onerror = function() {
+          // There was a connection error of some sort
+          console.log("Connection error")
+        };
+      
+        xhr.open("GET","https://serol.lco.global/api/highscore/leaders", true);
+        xhr.send();
+      }
     genLeaderboard(dict){
         let score_text = "";
           for (let i = 0; i < 5; i++) {
