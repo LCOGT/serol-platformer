@@ -8,7 +8,18 @@ class Credits extends Phaser.Scene {
     //background
     this.creditsBg = this.add.image(0,0,"creditsBg");
     this.creditsBg.setOrigin(0,0);
-
+    //sound
+    this.creditsBGM = this.sound.add("credits_bgm");
+    var musicConfig = {
+        mute: false,
+        volume: 0.8,
+        rate: 1,
+        detune: 0,
+        seek: 0,
+        loop: true,
+        delay: 0
+    }
+    this.creditsBGM.play(musicConfig);
     //people sprites
     this.ronnie = this.add.sprite(120, 550, 'people').setOrigin(0.5, 1);
     this.alice = this.add.sprite(270, 550, 'people').setOrigin(0.5, 1);
@@ -27,12 +38,7 @@ class Credits extends Phaser.Scene {
 
     
     //back
-    this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setInteractive();
-    this.backLabel.setTint(0xffb700);
-    this.backLabel.on('pointerdown', function (event) {
-      console.log("Credits to title");
-			this.scene.start('gameTitle');
-		  }, this);
+    this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
     
       //animations
     this.anims.create({
@@ -67,10 +73,14 @@ class Credits extends Phaser.Scene {
     this.edward.play("Edward");
 
     this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+
   }
   update(){
-    if (Phaser.Input.Keyboard.JustDown(this.enter))
+    if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
     {
+      this.creditsBGM.stop();
       console.log("Credits to title");
 			this.scene.start('gameTitle');
     }

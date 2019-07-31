@@ -10,7 +10,20 @@ class Title extends Phaser.Scene {
         storyMode = false;
         totalScore = 0;
 		//background
-		this.titleBg = this.add.image(0,0,"titleScreen").setOrigin(0,0);
+        this.titleBg = this.add.image(0,0,"titleScreen").setOrigin(0,0);
+        //sound
+        this.titleBGM = this.sound.add("title_bgm");
+        this.click = this.sound.add("click");
+        var musicConfig = {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.titleBGM.play(musicConfig);
 		// //button to activate fullscreen
 		this.fullscreenButton = this.add.image(980, 10, "fullscreen").setOrigin(0.5, 0).setScale(0.1).setInteractive();
 		this.fullscreenButton.on('pointerdown', function () {
@@ -50,12 +63,14 @@ class Title extends Phaser.Scene {
                     break;
             }
         });
-        textGroup.forEach((text) => {
-            text.on('pointerdown', event => {
-                this.events.emit('SELECT');
-            });        
-        });
+        // textGroup.forEach((text) => {
+        //     text.on('pointerdown', event => {
+        //         this.titleBGM.stop();
+        //         this.events.emit('SELECT');
+        //     });        
+        // });
         this.events.addListener('CHANGE_BUTTON', payload => {
+            this.click.play();
             if (activeText < 0)
                 activeText += texts.length;
             if (payload && typeof payload.setIndex !== 'undefined')
@@ -65,6 +80,7 @@ class Title extends Phaser.Scene {
             });
         });
         this.events.addListener('SELECT', payload => {
+            this.sound.stopAll();
             if (activeText == 0){
                 storyMode = true;
                 console.log("Title to lvl1 instructions");
@@ -111,7 +127,8 @@ class MenuText extends Phaser.GameObjects.BitmapText {
         scene.add.existing(this);
         this.setTint(this.normalTint)
             .setInteractive()
-            .on('pointerover', () => scene.events.emit('CHANGE_BUTTON', { setIndex: index }));
+            // .on('pointerover', () => scene.events.emit('CHANGE_BUTTON', { setIndex: index }))
+            ;
         this.setStyleActive(index === 0);
     }
     setStyleActive(active) {

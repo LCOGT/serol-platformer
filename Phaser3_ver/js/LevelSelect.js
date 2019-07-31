@@ -7,8 +7,20 @@ class LevelSelect extends Phaser.Scene {
 	create() {
 		//background
         this.levelSelectBg = this.add.image(0,0,"level_select_bg").setOrigin(0,0);
-        //level icons
-        
+        //sound
+        this.levelSelectBGM = this.sound.add("level_select");
+        var musicConfig = {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.levelSelectBGM.play(musicConfig);
+        this.click = this.sound.add("click");
+        this.select = this.sound.add("select");
 		//menu options
 		let activeText = 0;
         let textGroup = [];
@@ -41,16 +53,12 @@ class LevelSelect extends Phaser.Scene {
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'Enter':
-                    this.events.emit('SELECT');
+                    this.events.emit('SELECTITEM');
                     break;
             }
         });
-        textGroup.forEach((text) => {
-            text.on('pointerdown', event => {
-                this.events.emit('SELECT');
-            });        
-        });
         this.events.addListener('CHANGE_BUTTON', payload => {
+            this.click.play();
             if (activeText < 0)
                 activeText += textGroup.length;
             if (payload && typeof payload.setIndex !== 'undefined')
@@ -59,18 +67,23 @@ class LevelSelect extends Phaser.Scene {
                 text.setStyleActive(text.index === activeText % textGroup.length);
             });
         });
-        this.events.addListener('SELECT', payload => {
+        
+        this.events.addListener('SELECTITEM', payload => {
+            this.levelSelectBGM.stop();
             if (activeText == 0){
+                this.select.play();
                 console.log("Level Select to lvl1 instructions");
                 this.scene.start('instructions1');
             }
             if (activeText == 1){
+                this.select.play();
                 console.log("Level Select to lvl2 instructions");
                 this.scene.start('instructions2');
             }
             if (activeText == 2){
+                this.select.play();
                 console.log("Level Select to lvl3 instructions");
-                this.scene.start('gameTitle');
+                this.scene.start('levelSelect');
             }
             if (activeText == 3){
                 console.log("Level Select to title");

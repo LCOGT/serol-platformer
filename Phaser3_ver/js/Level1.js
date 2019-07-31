@@ -131,6 +131,23 @@ class Level1 extends Phaser.Scene {
 
     this.physics.add.overlap(this.boundary, this.tetrominos, this.dropTetromino, null, this);
     this.physics.add.overlap(this.boundary, this.junkItems, this.dropJunk, null, this);
+    //sounds
+    this.collect = this.sound.add('collect_t');
+    this.gainLife = this.sound.add('gain_life');
+    this.jump = this.sound.add('jump');
+    this.loseLife = this.sound.add('lose_life');
+    this.lvl1BGM = this.sound.add("levelone_bgm");
+        var musicConfig = {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+    this.lvl1BGM.play(musicConfig);
+
   }
 
 	update() {
@@ -159,6 +176,7 @@ class Level1 extends Phaser.Scene {
       this.serol.setVelocityX(0);
     }
     if((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.serol.body.onFloor()) {
+      this.jump.play();
       this.serol.setVelocityY(-gameSettings.playerYSpeed);
     }
     if (endgame == true) {
@@ -212,12 +230,14 @@ class Level1 extends Phaser.Scene {
     
   }
   catchTetromino(serol,tetromino){
+    this.collect.play();
     this.itemReset(tetromino);
     //increase score
     this.score += 10;
     this.scoreLabel.text = "SCORE " + this.score;
   }
   catchJunk(serol,junkItem){
+    this.loseLife.play();
     this.itemReset(junkItem);
     console.log(junkItem.name);
     //slow down item fall
@@ -234,6 +254,12 @@ class Level1 extends Phaser.Scene {
     //decrease life count
     if ( this.lives <= 1){
       this.lives = 0;
+      //stop bgm
+      this.tweens.add({
+        targets:  this.lvl1BGM,
+        volume:   0,
+        duration: 2000
+      });
       //endgame sequence
       endgame=true;
       //stop timer
@@ -262,6 +288,7 @@ class Level1 extends Phaser.Scene {
 
   }
   catchOneUp(serol,oneUp){
+    this.gainLife.play();
     this.itemReset(oneUp);
     //increase life count
     if (this.lives >= 3){
@@ -295,6 +322,12 @@ class Level1 extends Phaser.Scene {
     this.timerLabel.setText(this.timeFormatted);
   }
   lvlOneComplete(){
+    //stop bgm
+    this.tweens.add({
+      targets:  this.lvl1BGM,
+      volume:   0,
+      duration: 2000
+    });
     //save score
     totalScore+=this.score;
     //change scene

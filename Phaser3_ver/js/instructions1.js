@@ -15,19 +15,21 @@ class Instructions1 extends Phaser.Scene {
 		}, this);
 		//start level when space is pressed
 		this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+		this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
 		//TODO: audio controls
 		//back
-		this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[Back to Title]", 60).setOrigin(0.5,0).setInteractive();
-		this.backLabel.on('pointerdown', function (event) {
-		  console.log("instructions to title");
-				this.scene.start('gameTitle');
-			  }, this);
+		this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[Press SPACE to go back to Title]", 60).setOrigin(0.5,0);
 	}
 
 	update() {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			console.log('From Instructions 1 to Level 1');
             this.scene.start('level1');
+		}
+		if (Phaser.Input.Keyboard.JustDown(this.space)){
+			console.log('From Instructions 1 to Title');
+            this.scene.start('gameTitle');
 		}
 	}
 }

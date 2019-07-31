@@ -80,7 +80,21 @@ class Boot extends Phaser.Scene {
 			frameHeight: 171
 		});
 		
-		//sounds
+		//audio
+		this.load.audio('click', 'assets/audio/click.mp3');
+		this.load.audio('select', 'assets/audio/select.ogg');
+		this.load.audio('level_select', 'assets/audio/serol_level_select.mp3')
+		this.load.audio('collect_t', 'assets/audio/collect_t.mp3');
+		this.load.audio('gain_life', 'assets/audio/gain_life.mp3');
+		this.load.audio('game_over', 'assets/audio/game_over.mp3');
+		this.load.audio('jump', 'assets/audio/jump.mp3');
+		this.load.audio('lose_life', 'assets/audio/lose_life.mp3');
+		this.load.audio('title_bgm', 'assets/audio/serol_start.mp3');
+		this.load.audio('menu_bgm', 'assets/audio/serol_level_select.mp3');
+		this.load.audio('credits_bgm', 'assets/audio/serol_credits.mp3');
+		this.load.audio('levelone_bgm', 'assets/audio/serol_level1.mp3');
+		this.load.audio('lvl_complete', 'assets/audio/serol_level_complete.mp3');
+		this.load.audio('leveltwo_bgm', 'assets/audio/serol_level2.mp3')
 
 	}
 

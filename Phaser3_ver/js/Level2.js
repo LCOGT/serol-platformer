@@ -120,6 +120,8 @@ class Level2 extends Phaser.Scene {
 		//dequeueing using keyup
 		this.input.keyboard.on('keyup_SPACE', function (event) {
 			var removed = this.queue.shift();
+			//play sound
+			this.send.play();
 			//consider the overlap
 			if ((removed.texture.key==='tetromino')&& (overlapping == true)){
 				console.log("tetromino sent");
@@ -179,6 +181,22 @@ class Level2 extends Phaser.Scene {
 		//collisions
 		this.physics.add.overlap(this.telescope,this.serol);
 		this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
+		//sounds
+		this.send = this.sound.add("click");
+		this.jump = this.sound.add('jump');
+		this.gainLife = this.sound.add('gain_life');
+		this.loseLife = this.sound.add('lose_life');
+		this.lvl2BGM = this.sound.add("leveltwo_bgm");
+			var musicConfig = {
+				mute: false,
+				volume: 1,
+				rate: 1,
+				detune: 0,
+				seek: 0,
+				loop: true,
+				delay: 0
+			}
+		this.lvl2BGM.play(musicConfig);
 	}
 
 	update() {
@@ -209,6 +227,8 @@ class Level2 extends Phaser.Scene {
                 this.serol.body.velocity.y =  -gameSettings.playerYSpeed;
             }
             else{
+				//play sound
+				this.loseLife.play();
 				//Make Serol ivincible for a bit, then reset to normal
 				serol.alpha = 0.5
 
@@ -257,7 +277,8 @@ class Level2 extends Phaser.Scene {
 		  this.serol.setVelocityX(0);
 		}
 		if((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.serol.body.onFloor()) {
-		  this.serol.setVelocityY(-gameSettings.playerYSpeed);
+			this.jump.play();
+		  	this.serol.setVelocityY(-gameSettings.playerYSpeed);
 		}
 		if (endgame == true) {
 			this.serol.flipX = true;
@@ -317,9 +338,10 @@ class Level2 extends Phaser.Scene {
 			item.y = 460;
 			item.setTexture(this.choose(obstacleChoices),0)
 			if (item.texture.key == 'obstacle'){
-				item.setTexture(this.choose(obstacleChoices),Phaser.Math.Between(0, 4))
+				item.setTexture('obstacle',Phaser.Math.Between(0, 4))
 			}
 			else if (item.texture.key  == 'river'){
+				item.setTexture('river',0)
 				item.anims.play('flow');
 			}
 		//   item.setTexture("obstacle", Phaser.Math.Between(0, 4));
@@ -359,6 +381,7 @@ class Level2 extends Phaser.Scene {
 	}
 	catchOneUp(serol,oneUp){
 		this.itemReset(oneUp);
+		this.gainLife.play();
 		//increase life count
 		if (this.lives >= 3){
 		  this.lives = 3;
@@ -370,10 +393,28 @@ class Level2 extends Phaser.Scene {
 		this.lifeGauge.updateLife(this.lives);
 	}
 	lvlTwoComplete(){
+		//fade bgm
+		this.tweens.add({
+			targets:  this.lvl2BGM,
+			volume:   0,
+			duration: 2000
+		  });
+		
+		this.slowDown = this.time.delayedCall(1000, function(){
+			this.runSpeed = this.runSpeed/2;
+			this.oneUpSpeed = this.oneUpSpeed/2;
+			this.skySpeed = this.skySpeed/2;
+		}, [], this);
+		this.stopMovement = this.time.delayedCall(2000, function(){
+			this.runSpeed = 0;
+			this.oneUpSpeed = 0;
+			this.skySpeed = 0;
+		}, [], this);
+
 		//save score
 		totalScore+=this.score;
 		//change scene
-		this.scene.start('level2Complete');
+		this.transition = this.time.delayedCall(4000, function(){this.scene.start('level2Complete')}, [], this);  // delay in ms
 	}
 	endgame(){
 		this.lives = 0;
@@ -381,7 +422,12 @@ class Level2 extends Phaser.Scene {
 		endgame=true;
 		//stop timer
 		this.timedEvent.paused = true;
-		//remove delayed events
+		//remove bgm
+		this.tweens.add({
+			targets:  this.lvl2BGM,
+			volume:   0,
+			duration: 2000
+		  });
 		
 		//remove object sprites
 		this.runSpeed = 0;
