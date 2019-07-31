@@ -225,9 +225,7 @@ class Level1 extends Phaser.Scene {
     }
     else if (item.texture.key == "1up") {
       item.setTexture("1up", 0);  
-  }
-    
-    
+    }
   }
   catchTetromino(serol,tetromino){
     this.collect.play();

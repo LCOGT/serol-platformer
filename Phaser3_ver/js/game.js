@@ -26,7 +26,10 @@ var config = {
     Instructions2,
     Level2,
     Level2Complete,
-    GameOver
+    GameOver,
+    EnterHiScores,
+    DisplayHiScores
+    
   ],
   physics: {
     default: 'arcade',

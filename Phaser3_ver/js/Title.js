@@ -41,7 +41,7 @@ class Title extends Phaser.Scene {
 
 		let activeText = 0;
         let textGroup = [];
-        const texts = ['Story Mode', 'Level Select', '[credits]'];
+        const texts = ['Story Mode', 'Level Select', 'Hi Scores', '[credits]'];
         texts.forEach((text, index) => {
             textGroup.push(new MenuText(this, config.scale.width / 2, 400 + 70 * index + 1, "pixelFont", text, 60, index).setOrigin(0.5));
         });
@@ -91,6 +91,10 @@ class Title extends Phaser.Scene {
                 this.scene.start('levelSelect');
             }
             if (activeText == 2){
+                console.log("Title to HiScores");
+                this.scene.start('displayHiScores');
+            }
+            if (activeText == 3){
                 console.log("Title to credits");
                 this.scene.start('credits');
             }

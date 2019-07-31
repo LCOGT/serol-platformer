@@ -30,6 +30,11 @@ class Boot extends Phaser.Scene {
 		this.load.image('pipe', 'assets/images/pipe.png');
 			//game over
 		this.load.image("gameOver", "assets/images/game_over.png");
+			//hi scores
+		this.load.image('star', 'assets/images/star.png');
+		this.load.image('block', 'assets/images/block.png');
+        this.load.image('rub', 'assets/images/rub.png');
+        this.load.image('end', 'assets/images/end.png');
 		//spritesheets
 		this.load.spritesheet("start", "assets/images/click_start.png", {
 			frameWidth: 219,
