@@ -36,41 +36,19 @@ class DisplayHiScores extends Phaser.Scene {
 
             this.stars.create(x, y);
         }
-        this.add.bitmapText(config.scale.width/2, 100, 'pixelFont', 'RANK  SCORE   NAME',80).setOrigin(0.5,0).setCenterAlign().setTint(0x00bfff);
-        this.add.bitmapText(280, 200, 'pixelFont', '1ST\n2ND\n3RD\n4TH\n5TH',80);
+        this.add.bitmapText(170, 100, 'pixelFont', 'RANK   SCORE       NAME',80).setTint(0x00bfff);
+        this.add.bitmapText(170, 200, 'pixelFont', '1ST\n2ND\n3RD\n4TH\n5TH',80);
         this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
         
         this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    
-        //hiScore API setup
-        // xhr.open("GET","https://serol.lco.global/api/highscore/leaders", true)
-		// xhr.onload = function() {
-		//   if (xhr.status >= 200 && xhr.status < 400) {
-		//     // Success!
-		//     this.resp = xhr.responseText;
-        //     leaders = JSON.parse(this.resp);
-        //     console.log(leaders);
-		//   } else {
-		//     // We reached our target server, but it returned an error
-		//     console.log("Error")
-		//   }
-		// };
 
-		// xhr.onerror = function() {
-		//   // There was a connection error of some sort
-		//   console.log("Connection error")
-		// };
-
-        // xhr.send();
-        // this.genLeaderboard(leaders);
-
-          // call this where you need to make the request and get data, then display it
-          this.getScoresRequest(function(requestWasSuccess, leadersData){
+        this.getScoresRequest(function(requestWasSuccess, leadersData){
             if(requestWasSuccess == true){
-              this.genLeaderboard(leadersData);
+                this.genLeaderboard(leadersData);
             }else{
               // display error msg to user
+              console.log("Error")
             }
           });
     }
@@ -128,12 +106,15 @@ class DisplayHiScores extends Phaser.Scene {
         xhr.send();
       }
     genLeaderboard(dict){
-        let score_text = "";
+        let scores = "";
+        let names = "";
           for (let i = 0; i < 5; i++) {
             let currentData = dict[i];
-            score_text += " "+currentData['score']+"  " + currentData['username']+"\n";
+            scores += currentData['score']+"\n";
+            names += currentData['username']+"\n";
           }
         
-        this.add.bitmapText(360, 200, 'pixelFont', score_text, 80);
+        this.add.bitmapText(370, 200, 'pixelFont', scores, 80);
+        this.add.bitmapText(610, 200, 'pixelFont', names, 80);
     }
 }
