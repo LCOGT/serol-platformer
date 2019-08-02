@@ -20,8 +20,23 @@ class Level1 extends Phaser.Scene {
     this.grav = 40;
     endgame = false;
     //background
-    console.log('Loading bg...');
     this.lvl1Bg = this.add.image(0,0,"lvl1Bg").setOrigin(0,0);
+    //sounds
+    this.collect = this.sound.add('collect_t');
+    this.gainLife = this.sound.add('gain_life');
+    this.jump = this.sound.add('jump');
+    this.loseLife = this.sound.add('lose_life');
+    this.lvl1BGM = this.sound.add("levelone_bgm");
+        var musicConfig = {
+            mute: false,
+            volume: 1,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+    this.lvl1BGM.play(musicConfig);
     //score label and life gauge
     this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score  , 60);
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives  , 60);
@@ -41,7 +56,7 @@ class Level1 extends Phaser.Scene {
     this.boundary.body.immovable = true;
 
     //spawning serol
-    this.serol = new Serol(this, 512, 50);
+    this.serol = new Serol(this, 512, 100);
     this.physics.add.existing(this.serol);
     this.serol.body.setGravityY(3000);
     this.serol.anims.play('staticBob',true);
@@ -54,8 +69,8 @@ class Level1 extends Phaser.Scene {
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
 
     //spawning tetrominos
-    this.tet1 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -20).setOrigin(0.5,0.5);
-    this.tet2 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -20).setOrigin(0.5,0.5);
+    this.tet1 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -30).setOrigin(0.5,0.5);
+    this.tet2 = new Tetromino(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -30).setOrigin(0.5,0.5);
 
     this.tetrominos = this.physics.add.group();
     this.tetrominos.add(this.tet1);
@@ -80,8 +95,8 @@ class Level1 extends Phaser.Scene {
     })
 
     //spawning junk
-    this.junk1 = new Junk(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -30);
-    this.junk2 = new Junk(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -30);
+    this.junk1 = new Junk(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -50);
+    this.junk2 = new Junk(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -50);
     this.junkItems = this.physics.add.group();
     this.junkItems.add(this.junk1);
     this.junkItems.add(this.junk2);
@@ -110,7 +125,7 @@ class Level1 extends Phaser.Scene {
       loop: 2
     })
     //spawning 1ups
-    this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -20);
+    this.oneUp = new OneUp(this, this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))], -30);
     this.physics.world.enable(this.oneUp);
     this.oneUpFallDelay = this.time.addEvent({
       delay: 10000,
@@ -131,22 +146,6 @@ class Level1 extends Phaser.Scene {
 
     this.physics.add.overlap(this.boundary, this.tetrominos, this.dropTetromino, null, this);
     this.physics.add.overlap(this.boundary, this.junkItems, this.dropJunk, null, this);
-    //sounds
-    this.collect = this.sound.add('collect_t');
-    this.gainLife = this.sound.add('gain_life');
-    this.jump = this.sound.add('jump');
-    this.loseLife = this.sound.add('lose_life');
-    this.lvl1BGM = this.sound.add("levelone_bgm");
-        var musicConfig = {
-            mute: false,
-            volume: 1,
-            rate: 1,
-            detune: 0,
-            seek: 0,
-            loop: true,
-            delay: 0
-        }
-    this.lvl1BGM.play(musicConfig);
 
   }
 
@@ -320,12 +319,8 @@ class Level1 extends Phaser.Scene {
     this.timerLabel.setText(this.timeFormatted);
   }
   lvlOneComplete(){
-    //stop bgm
-    this.tweens.add({
-      targets:  this.lvl1BGM,
-      volume:   0,
-      duration: 2000
-    });
+    // //stop bgm
+    this.sound.stopAll();
     //save score
     totalScore+=this.score;
     //change scene

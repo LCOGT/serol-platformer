@@ -21,7 +21,7 @@ class DisplayHiScores extends Phaser.Scene {
 
     create ()
     {
-        
+        this.scoresBg = this.add.image(0,0,"blue_bg").setOrigin(0,0);
         this.stars = this.add.blitter(0, 0, 'star');
 
         for (let i = 0; i < this.max; i++)
@@ -36,7 +36,7 @@ class DisplayHiScores extends Phaser.Scene {
 
             this.stars.create(x, y);
         }
-        this.add.bitmapText(170, 100, 'pixelFont', 'RANK   SCORE       NAME',80).setTint(0x00bfff);
+        this.add.bitmapText(170, 100, 'pixelFont', 'RANK   SCORE       NAME',80).setTint(0x00ffff);
         this.add.bitmapText(170, 200, 'pixelFont', '1ST\n2ND\n3RD\n4TH\n5TH',80);
         this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
         

@@ -8,6 +8,12 @@ class Level2 extends Phaser.Scene {
 	constructor() {
 		super("level2");
 	}
+	preload(){
+		this.timeLeft;
+		this.minutes;
+		this.seconds;
+		this.score;
+	}
 	
 	create() {
 		if (storyMode == false){
@@ -16,12 +22,12 @@ class Level2 extends Phaser.Scene {
 		this.pipePositions = [100, 200, 300, 400, 500, 600, 700, 800];
 		//queue = [];
 		this.choices = ['tetromino', 'junk'];
-		this.score = 0;
+		if (storyMode == true){
+			this.score = totalScore;
+		}else{
+			this.score = 0;
+		}
 		this.lives = 3;
-		this.timeLeft;
-		this.minutes;
-		this.seconds;
-
 		endgame = false;
     	this.score = 0;
 		this.lives = 3;
@@ -414,7 +420,10 @@ class Level2 extends Phaser.Scene {
 		//save score
 		totalScore+=this.score;
 		//change scene
-		this.transition = this.time.delayedCall(4000, function(){this.scene.start('level2Complete')}, [], this);  // delay in ms
+		this.transition = this.time.delayedCall(4000, function(){
+			this.sound.stopAll();
+			this.scene.start('level2Complete')}
+			, [], this);
 	}
 	endgame(){
 		this.lives = 0;
@@ -439,7 +448,10 @@ class Level2 extends Phaser.Scene {
 		//save score
 		totalScore+=this.score;
 		//change scene
-		this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
+		this.transition = this.time.delayedCall(4000, function(){
+			this.sound.stopAll();
+			this.scene.start('gameOver')
+		}, [], this);  // delay in ms
 	}
 	
 }

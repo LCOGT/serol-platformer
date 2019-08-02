@@ -31,6 +31,7 @@ class Boot extends Phaser.Scene {
 			//game over
 		this.load.image("gameOver", "assets/images/game_over.png");
 			//hi scores
+		this.load.image('blue_bg', 'assets/images/blue_bg.png');
 		this.load.image('star', 'assets/images/star.png');
 		this.load.image('block', 'assets/images/block.png');
         this.load.image('rub', 'assets/images/rub.png');

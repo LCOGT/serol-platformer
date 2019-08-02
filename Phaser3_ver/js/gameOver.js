@@ -22,9 +22,13 @@ class GameOver extends Phaser.Scene {
 	update() {
 		//fade in tween here
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
-			//change for story mode and separate levels
-			console.log("Game Over to Hi Scores");
-			this.scene.start('gameTitle');
+			if(storyMode==true){
+				console.log("gameOver to enter Hi Scores");
+				this.scene.start('enterHiScores');
+			}else{
+				console.log("gameOver to Title");
+				this.scene.start('gameTitle');
+			}
 		}
 	}
 }
