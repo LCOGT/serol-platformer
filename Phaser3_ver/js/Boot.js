@@ -106,6 +106,6 @@ class Boot extends Phaser.Scene {
 
 	create() {
 		this.add.text(20, 20, "Booting game...", {font:"25px Arial", fill: "yellow"});
-		this.scene.start("gameTitle");
+		this.scene.start("level3");
 	}
 }

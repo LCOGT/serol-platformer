@@ -26,6 +26,7 @@ var config = {
     Instructions2,
     Level2,
     Level2Complete,
+    Level3,
     GameOver,
     EnterHiScores,
     DisplayHiScores

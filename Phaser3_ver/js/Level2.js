@@ -27,9 +27,7 @@ class Level2 extends Phaser.Scene {
 		}else{
 			this.score = 0;
 		}
-		this.lives = 3;
 		endgame = false;
-    	this.score = 0;
 		this.lives = 3;
 		this.queue = [];
 		this.runSpeed = 1.5;
@@ -38,6 +36,22 @@ class Level2 extends Phaser.Scene {
 		this.oneUpSpeed = 0.7;
 		this.skySpeed = 0.2;
 
+		//sounds
+		this.send = this.sound.add("click");
+		this.jump = this.sound.add('jump');
+		this.gainLife = this.sound.add('gain_life');
+		this.loseLife = this.sound.add('lose_life');
+		this.lvl2BGM = this.sound.add("leveltwo_bgm");
+			var musicConfig = {
+				mute: false,
+				volume: 1,
+				rate: 1,
+				detune: 0,
+				seek: 0,
+				loop: true,
+				delay: 0
+			}
+		this.lvl2BGM.play(musicConfig);
 		//sky
 		this.sky = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'endless_sky');
 		this.sky.setOrigin(0,0);
@@ -187,22 +201,7 @@ class Level2 extends Phaser.Scene {
 		//collisions
 		this.physics.add.overlap(this.telescope,this.serol);
 		this.physics.add.overlap(this.serol, this.oneUp, this.catchOneUp , null, this);
-		//sounds
-		this.send = this.sound.add("click");
-		this.jump = this.sound.add('jump');
-		this.gainLife = this.sound.add('gain_life');
-		this.loseLife = this.sound.add('lose_life');
-		this.lvl2BGM = this.sound.add("leveltwo_bgm");
-			var musicConfig = {
-				mute: false,
-				volume: 1,
-				rate: 1,
-				detune: 0,
-				seek: 0,
-				loop: true,
-				delay: 0
-			}
-		this.lvl2BGM.play(musicConfig);
+		
 	}
 
 	update() {
