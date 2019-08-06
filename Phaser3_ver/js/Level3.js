@@ -1,4 +1,5 @@
 //Level3.js
+frameChoices = [0,1,2,3,4,5];
 class Level3 extends Phaser.Scene {
   constructor() {
     super('level3');
@@ -17,6 +18,10 @@ class Level3 extends Phaser.Scene {
     }
     endgame = false;
     this.lives = 3;
+    this.queue = [];
+    //sounds
+    this.send = this.sound.add("click");
+    
     //  Set the camera and physics bounds to be the size of 4x4 bg images
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
@@ -32,6 +37,10 @@ class Level3 extends Phaser.Scene {
     this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score, 60).setScrollFactor(0);
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives, 60).setScrollFactor(0);
     this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4).setScrollFactor(0);
+    //astronomical objects
+
+
+    
     //target square
     this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0);
     this.target = this.add.sprite(10, config.scale.height - 10, 'target').setOrigin(0,1).setScrollFactor(0);
@@ -39,9 +48,44 @@ class Level3 extends Phaser.Scene {
     this.target.enableBody = true;
     this.target.body.x = 10;
     this.target.body.y = config.scale.height * 2 -182;
-    this.target.body.immovable = true;
-    
-    
+    this.target.body.immovable = true;   
+    //setting up queue of frames
+    console.log("making frame queue");
+    for(var i in frameChoices) {
+			this.textureChoice = frameChoices[Math.floor(Math.random() * frameChoices.length)]
+      this.queue.push(this.textureChoice);
+		  }
+    console.log(this.queue);
+    //target sprite
+    this.targetSprite = this.add.sprite(90, config.scale.height - 80, 'junk',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
+
+    //dequeueing using keyup
+		this.input.keyboard.on('keyup_SPACE', function (event) {
+      var removed = this.queue.shift();
+      console.log(removed);
+			//play sound
+			this.send.play();
+			//consider the overlap
+			// if (overlapping == true){
+			// 	console.log("tetromino sent");
+			// 	this.score += 10;
+			// 	this.scoreLabel.text = "SCORE " + this.score;
+			// 	}else{
+			// 		this.score -= 5;
+			// 		this.scoreLabel.text = "SCORE " + this.score;
+			// 	}
+			// }
+			var textureChoice = this.choose(frameChoices);
+			this.queue.push(textureChoice);
+			
+			this.targetSprite.setFrame(this.queue[0]);
+
+		}, this);
+
+
+
+
+
     //controls
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
@@ -52,7 +96,6 @@ class Level3 extends Phaser.Scene {
     this.cameras.main.startFollow(this.serol, true, 1, 1);
     this.physics.add.collider(this.target,this.serol);
 
-    console.log(this.cameras.main.getBounds()['width']);
   }
 
   update() {
@@ -105,5 +148,16 @@ class Level3 extends Phaser.Scene {
     this.timeFormatted = (this.zeroPad(this.minutes, 2) + ":" + this.zeroPad(this.seconds, 2));
     this.timerLabel.setText(this.timeFormatted);
   }
+  choose(choices) {
+		return choices[Math.floor(Math.random() * choices.length)];
+	} 
 
+}
+//astronomical object sprite
+class Astro extends Phaser.Physics.Arcade.Sprite{
+	constructor(scene, x=0, y=0, texture = 'junk', frame = 0) {
+		super(scene,x,y,texture,frame)
+		scene.add.existing(this)
+		scene.events.on('update', this.update, this)
+	}
 }
