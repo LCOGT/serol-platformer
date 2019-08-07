@@ -19,6 +19,18 @@ class Level3 extends Phaser.Scene {
     endgame = false;
     this.lives = 3;
     this.queue = [];
+    //add more coordinates when graphics are ready
+    this.coordinates = {
+      //key: [x,y,scale]
+      0:[20, 20, 0.5],
+      1:[60, 60, 0.8],
+      2:[100, 100, 1],
+      3:[140, 140, 1.2],
+      4:[180, 180, 0.3],
+      5:[220, 220, 2],
+      6:[260, 260, 0.7],
+      7:[300, 300, 1.7],
+    }
     //sounds
     this.send = this.sound.add("click");
     
@@ -40,7 +52,7 @@ class Level3 extends Phaser.Scene {
     //astronomical objects
 
 
-    
+
     //target square
     this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0);
     this.target = this.add.sprite(10, config.scale.height - 10, 'target').setOrigin(0,1).setScrollFactor(0);
@@ -58,6 +70,8 @@ class Level3 extends Phaser.Scene {
     console.log(this.queue);
     //target sprite
     this.targetSprite = this.add.sprite(90, config.scale.height - 80, 'junk',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
+    this.astros = this.physics.add.group();
+    this.scatterObjects(this.coordinates);
 
     //dequeueing using keyup
 		this.input.keyboard.on('keyup_SPACE', function (event) {
@@ -90,8 +104,12 @@ class Level3 extends Phaser.Scene {
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
     //player object
-    this.serol = this.physics.add.sprite(config.scale.width / 2, config.scale.height / 2, 'fullscreen').setScale(0.5).setOrigin(0.5, 0.5);
-    this.serol.setCollideWorldBounds(true);
+    this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(237, 142);
+    this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5);
+    this.inner = this.add.image(0,0, 'camera_circle').setOrigin(0.5, 0.5);
+    this.serol.add([this.outer, this.inner]);
+    this.physics.world.enable(this.serol);
+    this.serol.body.setCollideWorldBounds(true);
     //set camera to follow player
     this.cameras.main.startFollow(this.serol, true, 1, 1);
     this.physics.add.collider(this.target,this.serol);
@@ -110,26 +128,26 @@ class Level3 extends Phaser.Scene {
     }
 
     if (this.cursorKeys.left.isDown || this.wasdKeys.A.isDown || pad.left) {
-      this.serol.setVelocityX(-gameSettings.playerXSpeed);
+      this.serol.body.setVelocityX(-gameSettings.playerXSpeed);
     }
     else if (this.cursorKeys.right.isDown || this.wasdKeys.D.isDown || pad.right) {
-      this.serol.setVelocityX(gameSettings.playerXSpeed);
+      this.serol.body.setVelocityX(gameSettings.playerXSpeed);
     }
     else{
-      this.serol.setVelocityX(0);
+      this.serol.body.setVelocityX(0);
     }
     if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown || pad.up)) {
-      this.serol.setVelocityY(-gameSettings.playerXSpeed);
+      this.serol.body.setVelocityY(-gameSettings.playerXSpeed);
     }
     else if (this.cursorKeys.down.isDown || this.wasdKeys.S.isDown || pad.down) {
-      this.serol.setVelocityY(gameSettings.playerXSpeed);
+      this.serol.body.setVelocityY(gameSettings.playerXSpeed);
     }
     else{
-      this.serol.setVelocityY(0);
+      this.serol.body.setVelocityY(0);
     }
     if (endgame == true) {
-      this.serol.setVelocityX(0);
-      this.serol.setVelocityY(0);
+      this.serol.body.setVelocityX(0);
+      this.serol.body.setVelocityY(0);
     }
     
   }
@@ -150,7 +168,20 @@ class Level3 extends Phaser.Scene {
   }
   choose(choices) {
 		return choices[Math.floor(Math.random() * choices.length)];
-	} 
+  }
+  scatterObjects(coords){
+    let coordinates = coords;
+    let allFrames = this.anims.generateFrameNumbers('junk');
+    let temp = allFrames.slice();
+    allFrames.forEach(element => {
+      //pick from coords at random, removing each element after done
+      // console.log(temp.splice(Math.floor(Math.random() * temp.length),1)[0].frame);
+      let thing = new Astro(this,coordinates[element.frame][0],coordinates[element.frame][1],'junk',temp.splice(Math.floor(Math.random() * temp.length),1)[0].frame);
+      thing.setScale(coordinates[element.frame][2]);
+      this.astros.add(thing);
+      thing.setSize(45, 60);
+    });
+  }
 
 }
 //astronomical object sprite
@@ -159,5 +190,12 @@ class Astro extends Phaser.Physics.Arcade.Sprite{
 		super(scene,x,y,texture,frame)
 		scene.add.existing(this)
 		scene.events.on('update', this.update, this)
-	}
+  }
+  compare(target){
+    if (target.frame.name == this.frame.name){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }
