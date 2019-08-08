@@ -1,5 +1,5 @@
 //Level3.js
-frameChoices = [0,1,2,3,4,5];
+frameChoices = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 class Level3 extends Phaser.Scene {
   constructor() {
     super('level3');
@@ -22,14 +22,26 @@ class Level3 extends Phaser.Scene {
     //add more coordinates when graphics are ready
     this.coordinates = {
       //key: [x,y,scale]
-      0:[20, 20, 0.5],
-      1:[60, 60, 0.8],
-      2:[100, 100, 1],
-      3:[140, 140, 1.2],
-      4:[180, 180, 0.3],
-      5:[220, 220, 2],
-      6:[260, 260, 0.7],
-      7:[300, 300, 1.7],
+      //quadrant 1
+      0:[345, 152, 0.5],
+      1:[750, 242, 1],
+      2:[227, 420, 0.8],
+      3:[600, 592, 1.2],
+      //quadrant 2
+      4:[1392, 170, 1.5],
+      5:[1851, 350, 1],
+      6:[1173, 500, 0.3],
+      7:[1568, 567, 0.7],
+      //quadrant 3
+      8:[252, 763, 0.4],
+      9:[886, 857, 1],
+      10:[240, 1031,0.7],
+      11:[685, 1170, 1.5],
+      //quadrant 4
+      12:[1230, 784, 0.5],
+      13:[1638, 1152, 1],
+      14:[1767, 860, 1.7],
+      15:[1180, 1100, 1]
     }
     //sounds
     this.send = this.sound.add("click");
@@ -38,10 +50,18 @@ class Level3 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
     //  Mash 4 images together to create background
-    this.add.image(0, 0, 'blue_bg').setOrigin(0);
-    this.add.image(config.scale.width, 0, 'blue_bg').setOrigin(0).setFlipX(true);
-    this.add.image(0, config.scale.height, 'blue_bg').setOrigin(0).setFlipY(true);
-    this.add.image(config.scale.width, config.scale.height, 'blue_bg').setOrigin(0).setFlipX(true).setFlipY(true);
+    this.add.image(0, 0, 'dark_sky').setOrigin(0);
+    this.add.image(0, 0, 'stars_bg').setOrigin(0);
+
+    this.add.image(config.scale.width, 0, 'dark_sky').setOrigin(0).setFlipX(true);
+    this.add.image(config.scale.width, 0, 'stars_bg').setOrigin(0).setFlipX(true);
+
+    this.add.image(0, config.scale.height, 'dark_sky').setOrigin(0).setFlipY(true);
+    this.add.image(0, config.scale.height, 'stars_bg').setOrigin(0).setFlipY(true);
+
+    this.add.image(config.scale.width, config.scale.height, 'dark_sky').setOrigin(0).setFlipX(true).setFlipY(true);
+    this.add.image(config.scale.width, config.scale.height, 'stars_bg').setOrigin(0).setFlipX(true).setFlipY(true);
+
     //timer setup
     this.timedEvent = this.time.delayedCall(120000, this.lvlTwoComplete, [], this);
     this.timerLabel = this.add.bitmapText(424, 15, "pixelFont", "00:00 ", 100).setScrollFactor(0);
@@ -49,10 +69,6 @@ class Level3 extends Phaser.Scene {
     this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score, 60).setScrollFactor(0);
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives, 60).setScrollFactor(0);
     this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4).setScrollFactor(0);
-    //astronomical objects
-
-
-
     //target square
     this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0);
     this.target = this.add.sprite(10, config.scale.height - 10, 'target').setOrigin(0,1).setScrollFactor(0);
@@ -69,7 +85,7 @@ class Level3 extends Phaser.Scene {
 		  }
     console.log(this.queue);
     //target sprite
-    this.targetSprite = this.add.sprite(90, config.scale.height - 80, 'junk',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
+    this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
     this.astros = this.physics.add.group();
     this.scatterObjects(this.coordinates);
 
@@ -96,10 +112,6 @@ class Level3 extends Phaser.Scene {
 
 		}, this);
 
-
-
-
-
     //controls
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
@@ -112,13 +124,46 @@ class Level3 extends Phaser.Scene {
     this.serol.body.setCollideWorldBounds(true);
     //set camera to follow player
     this.cameras.main.startFollow(this.serol, true, 1, 1);
-    this.physics.add.collider(this.target,this.serol);
+    this.physics.add.collider(this.serol,this.target);
+    this.physics.add.overlap(this.serol,this.astros);
+    //astronomical objects
+    this.astros.getChildren().forEach(astro =>{
+      console.log(astro);
+      astro.on("overlapstart", function() {
+        overlapping = true;
+        astro.body.debugBodyColor = 0xffff00;
 
+      });
+      astro.on("overlapend", function() {
+        overlapping = false;
+        astro.body.debugBodyColor = 0x00ffff;
+      });
+
+    });
+    
   }
 
   update() {
     this.movePlayerManager();
     this.updateTimer();
+    this.astros.getChildren().forEach(astro =>{
+      // Treat 'embedded' as 'touching' also
+      if (astro.body.embedded) {
+        astro.body.touching.none = false
+      };
+
+      var touching = !astro.body.touching.none;
+      var wasTouching = !astro.body.wasTouching.none;
+      
+      if (touching && !wasTouching) {
+        astro.emit("overlapstart");
+        console.log("overlap start");
+      }
+      else if (!touching && wasTouching) {
+        astro.emit("overlapend");
+        console.log("overlap end");
+      }
+    });
   }
   movePlayerManager() {
     let pad = Phaser.Input.Gamepad.Gamepad;
@@ -161,8 +206,8 @@ class Level3 extends Phaser.Scene {
 
   updateTimer() {
     this.timeLeft = ((120000 - this.timedEvent.delay * this.timedEvent.getProgress()) / 1000).toFixed(0);
-    this.seconds = Math.floor(this.timeLeft % 60); //Seconds to display
-    this.minutes = Math.floor(this.timeLeft / 60); //Minutes to display
+    this.seconds = Math.floor(this.timeLeft % 60);
+    this.minutes = Math.floor(this.timeLeft / 60);
     this.timeFormatted = (this.zeroPad(this.minutes, 2) + ":" + this.zeroPad(this.seconds, 2));
     this.timerLabel.setText(this.timeFormatted);
   }
@@ -171,22 +216,21 @@ class Level3 extends Phaser.Scene {
   }
   scatterObjects(coords){
     let coordinates = coords;
-    let allFrames = this.anims.generateFrameNumbers('junk');
+    let allFrames = this.anims.generateFrameNumbers('astro_objects');
     let temp = allFrames.slice();
     allFrames.forEach(element => {
       //pick from coords at random, removing each element after done
-      // console.log(temp.splice(Math.floor(Math.random() * temp.length),1)[0].frame);
-      let thing = new Astro(this,coordinates[element.frame][0],coordinates[element.frame][1],'junk',temp.splice(Math.floor(Math.random() * temp.length),1)[0].frame);
+      let thing = new Astro(this,coordinates[element.frame][0],coordinates[element.frame][1],'astro_objects',temp.splice(Math.floor(Math.random() * temp.length),1)[0].frame);
       thing.setScale(coordinates[element.frame][2]);
       this.astros.add(thing);
-      thing.setSize(45, 60);
+      thing.setSize(140, 100);
     });
   }
 
 }
 //astronomical object sprite
 class Astro extends Phaser.Physics.Arcade.Sprite{
-	constructor(scene, x=0, y=0, texture = 'junk', frame = 0) {
+	constructor(scene, x=0, y=0, texture = 'astro_objects', frame = 0) {
 		super(scene,x,y,texture,frame)
 		scene.add.existing(this)
 		scene.events.on('update', this.update, this)

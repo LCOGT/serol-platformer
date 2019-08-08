@@ -29,6 +29,8 @@ class Boot extends Phaser.Scene {
 		this.load.image('lvl2_complete', 'assets/images/L2_complete.png');
 		this.load.image('pipe', 'assets/images/pipe.png');
 			//level 3
+		this.load.image('dark_sky', 'assets/images/dark_sky.png');
+		this.load.image('stars_bg', 'assets/images/stars_bg.png');
 		this.load.image('target', 'assets/images/button.png');
 		this.load.image("camera_frame", "assets/images/camera_frame.png");
 		this.load.image("camera_circle", "assets/images/camera_circle.png");	
@@ -89,7 +91,10 @@ class Boot extends Phaser.Scene {
 			frameWidth: 171,
 			frameHeight: 171
 		});
-		
+		this.load.spritesheet('astro_objects', 'assets/images/astro_objects_lg.png', {
+			frameWidth: 140,
+			frameHeight: 100
+		});
 		//audio
 		this.load.audio('click', 'assets/audio/click.mp3');
 		this.load.audio('select', 'assets/audio/select.ogg');
