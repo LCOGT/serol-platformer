@@ -31,7 +31,7 @@ class Level3 extends Phaser.Scene {
       2:[227, 420, 0.8],
       3:[600, 592, 1.2],
       //quadrant 2
-      4:[1392, 170, 1.5],
+      4:[1392, 170, 1.2],
       5:[1851, 350, 1],
       6:[1173, 500, 0.3],
       7:[1568, 567, 0.7],
@@ -39,15 +39,17 @@ class Level3 extends Phaser.Scene {
       8:[252, 763, 0.4],
       9:[886, 857, 1],
       10:[240, 1031,0.7],
-      11:[685, 1170, 1.5],
+      11:[685, 1170, 1.2],
       //quadrant 4
       12:[1230, 784, 0.5],
       13:[1638, 1152, 1],
-      14:[1767, 860, 1.7],
-      15:[1180, 1100, 1]
+      14:[1767, 860, 1.2],
+      15:[1180, 1100, 0.6]
     }
     //sounds
     this.send = this.sound.add("click");
+    this.gainLife = this.sound.add('gain_life');
+		this.loseLife = this.sound.add('lose_life');
 
     //backgrounds
     //  Set the camera and physics bounds to be the size of 4x4 bg images
@@ -94,9 +96,9 @@ class Level3 extends Phaser.Scene {
     //target sprite
     this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
     //serol object
-    this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(237, 142);
-    this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5);
-    this.inner = this.add.image(0,0, 'camera_circle').setOrigin(0.5, 0.5);
+    this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(264, 152);
+    this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5).setScale(1.2);
+    this.inner = this.add.image(0,0, 'camera_circle').setOrigin(0.5, 0.5).setScale(1.2);
     this.serol.add([this.outer, this.inner]);
     this.physics.world.enable(this.serol);
     this.serol.body.setCollideWorldBounds(true);
@@ -127,9 +129,10 @@ class Level3 extends Phaser.Scene {
       var removed = this.queue.shift();
       // console.log(removed);
 			//play sound
-			this.send.play();
+			
 			//consider the overlap
 			if (overlapping == true && captured === this.targetSprite.frame.name){
+        this.send.play();
         console.log("picture taken");
         console.log("target: " + this.targetSprite.frame.name);
         console.log("captured: " + captured);
@@ -140,8 +143,15 @@ class Level3 extends Phaser.Scene {
           console.log("bad picture taken");
           console.log("target: " + this.targetSprite.frame.name);
           console.log("captured: " + captured);
-					this.score -= 5;
-					this.scoreLabel.text = "SCORE " + this.score;
+          this.loseLife.play();
+          if ( this.lives <= 1){
+            this.endgame();			  
+            }else{
+            this.lives--;
+            }
+            this.livesLabel.text = "LIVES " + this.lives;
+            //update lives gauge
+            this.lifeGauge.updateLife(this.lives);
         }
       var textureChoice = this.choose(frameChoices);
 			this.queue.push(textureChoice);
@@ -230,9 +240,47 @@ class Level3 extends Phaser.Scene {
       let thing = new Astro(this,coordinates[element.frame][0],coordinates[element.frame][1],'astro_objects',temp.splice(Math.floor(Math.random() * temp.length),1)[0].frame);
       thing.setScale(coordinates[element.frame][2]);
       this.astros.add(thing);
-      thing.setSize(140, 100);
+      thing.body.setCircle(50,20);
     });
   }
+  lvlTwoComplete(){
+		//fade bgm
+		// this.tweens.add({
+		// 	targets:  this.lvl3BGM,
+		// 	volume:   0,
+		// 	duration: 2000
+		//   });
+		//save score
+		totalScore+=this.score;
+		//change scene
+		this.transition = this.time.delayedCall(1000, function(){
+			this.sound.stopAll();
+			this.scene.start('level3Complete')}
+			, [], this);
+	}
+  endgame(){
+		this.lives = 0;
+		//endgame sequence
+		endgame=true;
+		//stop timer
+		this.timedEvent.paused = true;
+		//remove bgm
+		// this.tweens.add({
+		// 	targets:  this.lvl3BGM,
+		// 	volume:   0,
+		// 	duration: 2000
+		//   });
+		
+		//put Serol to sleep
+		this.cameras.main.fadeOut(3000);
+		//save score
+		totalScore+=this.score;
+		//change scene
+		this.transition = this.time.delayedCall(3000, function(){
+			this.sound.stopAll();
+			this.scene.start('gameOver')
+		}, [], this);  // delay in ms
+	}
 
 }
 //astronomical object sprite

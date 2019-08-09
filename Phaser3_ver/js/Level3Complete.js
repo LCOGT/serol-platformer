@@ -1,7 +1,7 @@
-//level2Complete.js
-class Level2Complete extends Phaser.Scene {
+//level3Complete.js
+class Level3Complete extends Phaser.Scene {
 	constructor() {
-		super("level2Complete");
+		super("level3Complete");
 	}
 
 	preload() {
@@ -9,7 +9,7 @@ class Level2Complete extends Phaser.Scene {
 
 	create() {
 		//background
-		this.lvl1CompleteBg = this.add.image(0,0,"lvl2_complete").setOrigin(0,0);
+		this.lvl1CompleteBg = this.add.image(0,0,"lvl3_complete").setOrigin(0,0);
 		//sound
 		this.lvl2CompleteBGM = this.sound.add('lvl_complete');
 		this.lvl2CompleteBGM.play();
@@ -23,10 +23,10 @@ class Level2Complete extends Phaser.Scene {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			if(storyMode==true){
 				//change to level 3 when ready
-				console.log("lvl1 Complete to hiScores");
+				console.log("lvl3 Complete to hiScores");
 				this.scene.start('enterHiScores');
 			}else{
-				console.log("lvl2 Complete to title");
+				console.log("lvl3 Complete to title");
 				this.scene.start('gameTitle');
 			}
 		}

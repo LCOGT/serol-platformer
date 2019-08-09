@@ -19,6 +19,7 @@ class Boot extends Phaser.Scene {
 			//instructions
 		this.load.image("instructions1", "assets/images/L1_instructions_v2.png");
 		this.load.image("instructions2", "assets/images/L2_instructions_v2.png");
+		this.load.image("instructions3", "assets/images/L3_instructions.png");
 			//level 1
 		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
 		this.load.image("stage", "assets/images/stage_blank.png");
@@ -33,7 +34,8 @@ class Boot extends Phaser.Scene {
 		this.load.image('stars_bg', 'assets/images/stars_bg.png');
 		this.load.image('target', 'assets/images/target_square_80.png');
 		this.load.image("camera_frame", "assets/images/camera_frame.png");
-		this.load.image("camera_circle", "assets/images/camera_circle.png");	
+		this.load.image("camera_circle", "assets/images/camera_circle.png");
+		this.load.image('lvl3_complete', 'assets/images/L3_complete.png');	
 			//game over
 		this.load.image("gameOver", "assets/images/game_over.png");
 			//hi scores
@@ -115,6 +117,6 @@ class Boot extends Phaser.Scene {
 
 	create() {
 		this.add.text(20, 20, "Booting game...", {font:"25px Arial", fill: "yellow"});
-		this.scene.start("level3");
+		this.scene.start("instructions3");
 	}
 }
