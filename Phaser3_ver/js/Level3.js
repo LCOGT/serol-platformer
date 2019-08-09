@@ -79,6 +79,13 @@ class Level3 extends Phaser.Scene {
     this.scoreLabel = this.add.bitmapText(10, 15, "pixelFont", "SCORE " + this.score, 60).setScrollFactor(0);
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives, 60).setScrollFactor(0);
     this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4).setScrollFactor(0);
+    //batteries
+		this.oneUp = new OneUp(this, 2000, 350);
+    this.physics.world.enable(this.oneUp);
+    this.oneUp.body.setCollideWorldBounds(true);
+    this.oneUp.body.setVelocityX(200);
+    this.oneUp.body.setVelocityY(200);
+    this.oneUp.setBounce(1, 1);
     //target square
     this.target = this.add.sprite(10, config.scale.height - 10, 'target').setOrigin(0,1).setScrollFactor(0);
     this.physics.add.existing(this.target, true);
@@ -106,6 +113,7 @@ class Level3 extends Phaser.Scene {
     this.cameras.main.startFollow(this.serol, true, 1, 1);
     this.physics.add.collider(this.serol,this.target);
     this.physics.add.overlap(this.serol,this.astros);
+    this.physics.add.overlap(this.serol,this.oneUp,this.catchOneUp , null, this);
     //controls
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
@@ -243,6 +251,31 @@ class Level3 extends Phaser.Scene {
       thing.body.setCircle(50,20);
     });
   }
+  catchOneUp(serol,oneUp){
+    if(oneUp.alpha == 1){
+      this.gainLife.play();
+      //make the battery invisible
+      oneUp.alpha = 0;
+      //reset body and visibility
+      this.oneUpReset = this.time.addEvent({
+        delay: 5000,
+        callback: ()=>{
+          oneUp.alpha = 1;
+        },
+        loop: false
+      })
+      
+      //increase life count
+      if (this.lives >= 3){
+        this.lives = 3;
+      }else{
+        this.lives++;
+      }
+      this.livesLabel.text = "LIVES " + this.lives;
+      //update lives gauge
+      this.lifeGauge.updateLife(this.lives);
+    }
+	}
   lvlTwoComplete(){
 		//fade bgm
 		// this.tweens.add({
