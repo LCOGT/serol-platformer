@@ -1,4 +1,5 @@
 //Level3.js
+captured = 0;
 frameChoices = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 class Level3 extends Phaser.Scene {
   constructor() {
@@ -11,6 +12,7 @@ class Level3 extends Phaser.Scene {
     this.score;
   }
   create() {
+    overlapping = false;
     if (storyMode == true) {
       this.score = totalScore;
     } else {
@@ -19,6 +21,7 @@ class Level3 extends Phaser.Scene {
     endgame = false;
     this.lives = 3;
     this.queue = [];
+    captured = 0;
     //add more coordinates when graphics are ready
     this.coordinates = {
       //key: [x,y,scale]
@@ -45,7 +48,8 @@ class Level3 extends Phaser.Scene {
     }
     //sounds
     this.send = this.sound.add("click");
-    
+
+    //backgrounds
     //  Set the camera and physics bounds to be the size of 4x4 bg images
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
@@ -62,6 +66,10 @@ class Level3 extends Phaser.Scene {
     this.add.image(config.scale.width, config.scale.height, 'dark_sky').setOrigin(0).setFlipX(true).setFlipY(true);
     this.add.image(config.scale.width, config.scale.height, 'stars_bg').setOrigin(0).setFlipX(true).setFlipY(true);
 
+    //astronomical objects
+    this.astros = this.physics.add.group();
+    this.scatterObjects(this.coordinates);
+    //timer, lives, score
     //timer setup
     this.timedEvent = this.time.delayedCall(120000, this.lvlTwoComplete, [], this);
     this.timerLabel = this.add.bitmapText(424, 15, "pixelFont", "00:00 ", 100).setScrollFactor(0);
@@ -70,15 +78,14 @@ class Level3 extends Phaser.Scene {
     this.livesLabel = this.add.bitmapText(775, 15, "pixelFont", "LIVES " + this.lives, 60).setScrollFactor(0);
     this.lifeGauge = new LifeGauge(this, 950, 10).setOrigin(0.5, 0).setScale(4).setScrollFactor(0);
     //target square
-    this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0);
     this.target = this.add.sprite(10, config.scale.height - 10, 'target').setOrigin(0,1).setScrollFactor(0);
     this.physics.add.existing(this.target, true);
     this.target.enableBody = true;
     this.target.body.x = 10;
     this.target.body.y = config.scale.height * 2 -182;
-    this.target.body.immovable = true;   
+    this.target.body.immovable = true;
+    this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0); 
     //setting up queue of frames
-    console.log("making frame queue");
     for(var i in frameChoices) {
 			this.textureChoice = frameChoices[Math.floor(Math.random() * frameChoices.length)]
       this.queue.push(this.textureChoice);
@@ -86,36 +93,7 @@ class Level3 extends Phaser.Scene {
     console.log(this.queue);
     //target sprite
     this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
-    this.astros = this.physics.add.group();
-    this.scatterObjects(this.coordinates);
-
-    //dequeueing using keyup
-		this.input.keyboard.on('keyup_SPACE', function (event) {
-      var removed = this.queue.shift();
-      console.log(removed);
-			//play sound
-			this.send.play();
-			//consider the overlap
-			// if (overlapping == true){
-			// 	console.log("tetromino sent");
-			// 	this.score += 10;
-			// 	this.scoreLabel.text = "SCORE " + this.score;
-			// 	}else{
-			// 		this.score -= 5;
-			// 		this.scoreLabel.text = "SCORE " + this.score;
-			// 	}
-			// }
-			var textureChoice = this.choose(frameChoices);
-			this.queue.push(textureChoice);
-			
-			this.targetSprite.setFrame(this.queue[0]);
-
-		}, this);
-
-    //controls
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
-    //player object
+    //serol object
     this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(237, 142);
     this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5);
     this.inner = this.add.image(0,0, 'camera_circle').setOrigin(0.5, 0.5);
@@ -126,21 +104,50 @@ class Level3 extends Phaser.Scene {
     this.cameras.main.startFollow(this.serol, true, 1, 1);
     this.physics.add.collider(this.serol,this.target);
     this.physics.add.overlap(this.serol,this.astros);
-    //astronomical objects
+    //controls
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
+    //overlap
     this.astros.getChildren().forEach(astro =>{
       console.log(astro);
       astro.on("overlapstart", function() {
+        captured = astro.frame.name;
         overlapping = true;
+        console.log("to capture: " + captured);
         astro.body.debugBodyColor = 0xffff00;
-
       });
       astro.on("overlapend", function() {
+        captured = -1;
         overlapping = false;
         astro.body.debugBodyColor = 0x00ffff;
       });
-
     });
-    
+    //dequeueing using keyup
+		this.input.keyboard.on('keyup_SPACE', function (event) {
+      var removed = this.queue.shift();
+      // console.log(removed);
+			//play sound
+			this.send.play();
+			//consider the overlap
+			if (overlapping == true && captured === this.targetSprite.frame.name){
+        console.log("picture taken");
+        console.log("target: " + this.targetSprite.frame.name);
+        console.log("captured: " + captured);
+
+				this.score += 10;
+				this.scoreLabel.text = "SCORE " + this.score;
+				}else{
+          console.log("bad picture taken");
+          console.log("target: " + this.targetSprite.frame.name);
+          console.log("captured: " + captured);
+					this.score -= 5;
+					this.scoreLabel.text = "SCORE " + this.score;
+        }
+      var textureChoice = this.choose(frameChoices);
+			this.queue.push(textureChoice);
+			
+			this.targetSprite.setFrame(this.queue[0]);
+			}, this);
   }
 
   update() {

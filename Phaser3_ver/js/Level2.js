@@ -16,6 +16,7 @@ class Level2 extends Phaser.Scene {
 	}
 	
 	create() {
+		overlapping = false;
 		if (storyMode == false){
 			totalScore = 0;
 		}

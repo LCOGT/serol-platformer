@@ -31,7 +31,7 @@ class Boot extends Phaser.Scene {
 			//level 3
 		this.load.image('dark_sky', 'assets/images/dark_sky.png');
 		this.load.image('stars_bg', 'assets/images/stars_bg.png');
-		this.load.image('target', 'assets/images/button.png');
+		this.load.image('target', 'assets/images/target_square_80.png');
 		this.load.image("camera_frame", "assets/images/camera_frame.png");
 		this.load.image("camera_circle", "assets/images/camera_circle.png");	
 			//game over
