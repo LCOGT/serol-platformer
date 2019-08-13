@@ -7,6 +7,8 @@ class Title extends Phaser.Scene {
 	}
 
 	create() {
+        //remove listeners
+        this.events.removeAllListeners('SELECT');
         storyMode = false;
         totalScore = 0;
 		//background
@@ -82,7 +84,7 @@ class Title extends Phaser.Scene {
             textGroup.forEach(text => {
                 text.setStyleActive(text.index === this.activeText % texts.length);
             });
-        });
+        }, this, true);
         this.events.addListener('SELECT', payload => {
             this.sound.stopAll();
             if (this.activeText == 0){
@@ -90,6 +92,7 @@ class Title extends Phaser.Scene {
                 console.log("Title to lvl1 instructions");
                 this.scene.start('instructions1');
                 console.log("Stopping current scene" + this.scene.toString());
+                scene.events.
                 this.scene.stop('gameTitle');
             }
             else if (this.activeText == 1){
@@ -116,7 +119,7 @@ class Title extends Phaser.Scene {
             // textGroup.forEach(text => {
             //     text.setStyleActive(text.index === this.activeText % texts.length);
             // });
-        });
+        },this);
         this.events.addListener('FULLSCREEN', payload => {
             if (this.scale.isFullscreen)
             {                

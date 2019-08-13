@@ -5,6 +5,8 @@ class LevelSelect extends Phaser.Scene {
 	}
 
 	create() {
+        //remove listeners
+        this.events.removeAllListeners('SELECTITEM');
 		//background
         this.levelSelectBg = this.add.image(0,0,"level_select_bg").setOrigin(0,0);
         //sound
