@@ -22,7 +22,7 @@ class LevelSelect extends Phaser.Scene {
         this.click = this.sound.add("click");
         this.select = this.sound.add("select");
 		//menu options
-		let activeText = 0;
+		this.activeSelection = 0;
         let textGroup = [];
         let iconGroup = [];
         const texts = ['Level 1', 'Level 2', 'Level 3'];
@@ -37,19 +37,19 @@ class LevelSelect extends Phaser.Scene {
         this.input.keyboard.on('keydown', event => {
             switch (event.key) {
                 case 'ArrowLeft':
-                    activeText -= 1;
+                    this.activeSelection -= 1;
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'ArrowRight':
-                    activeText += 1;
+                    this.activeSelection += 1;
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'ArrowDown':
-                        activeText = 3;
+                        this.activeSelection = 3;
                         this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'ArrowUp':
-                    activeText = 1;
+                    this.activeSelection = 1;
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'Enter':
@@ -59,41 +59,54 @@ class LevelSelect extends Phaser.Scene {
         });
         this.events.addListener('CHANGE_BUTTON', payload => {
             this.click.play();
-            if (activeText < 0)
-                activeText += textGroup.length;
+            if (this.activeSelection < 0){
+                this.activeSelection = 3;
+                console.log("after correction: " + this.activeSelection)
+            }
+            else if (this.activeSelection > 3){
+                this.activeSelection = 0;
+                console.log("after correction: " + this.activeSelection);
+            }
             if (payload && typeof payload.setIndex !== 'undefined')
-                activeText = payload.setIndex;
+                this.activeSelection = payload.setIndex;
             textGroup.forEach(text => {
-                text.setStyleActive(text.index === activeText % textGroup.length);
+                text.setStyleActive(text.index === this.activeSelection % textGroup.length);
             });
         });
         
         this.events.addListener('SELECTITEM', payload => {
             this.levelSelectBGM.stop();
-            if (activeText == 0){
+            if (this.activeSelection == 0){
                 this.select.play();
                 console.log("Level Select to lvl1 instructions");
                 this.scene.start('instructions1');
+                console.log("Stopping current Scene");
+                this.scene.stop();
             }
-            if (activeText == 1){
+            else if (this.activeSelection == 1){
                 this.select.play();
                 console.log("Level Select to lvl2 instructions");
                 this.scene.start('instructions2');
+                console.log("Stopping current Scene");
+                this.scene.stop();
             }
-            if (activeText == 2){
+            else if (this.activeSelection == 2){
                 this.select.play();
                 console.log("Level Select to lvl3 instructions");
-                this.scene.start('levelSelect');
+                this.scene.start('instructions3');
+                console.log("Stopping current Scene");
+                this.scene.stop();
             }
-            if (activeText == 3){
+            else if (this.activeSelection == 3){
                 console.log("Level Select to title");
                 this.scene.start('gameTitle');
+                console.log("Stopping current Scene");
+                this.scene.stop();
             }
-                activeText += texts.length;
             if (payload && typeof payload.setIndex !== 'undefined')
-                activeText = payload.setIndex;
+                this.activeSelection = payload.setIndex;
             textGroup.forEach(text => {
-                text.setStyleActive(text.index === activeText % texts.length);
+                text.setStyleActive(text.index === this.activeSelection % texts.length);
             });
         });
 	}

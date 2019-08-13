@@ -43,15 +43,15 @@ class Level2 extends Phaser.Scene {
 		this.gainLife = this.sound.add('gain_life');
 		this.loseLife = this.sound.add('lose_life');
 		this.lvl2BGM = this.sound.add("leveltwo_bgm");
-			var musicConfig = {
-				mute: false,
-				volume: 1,
-				rate: 1,
-				detune: 0,
-				seek: 0,
-				loop: true,
-				delay: 0
-			}
+		var musicConfig = {
+			mute: false,
+			volume: 1,
+			rate: 1,
+			detune: 0,
+			seek: 0,
+			loop: true,
+			delay: 0
+		}
 		this.lvl2BGM.play(musicConfig);
 		//sky
 		this.sky = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'endless_sky');
@@ -422,8 +422,10 @@ class Level2 extends Phaser.Scene {
 		//change scene
 		this.transition = this.time.delayedCall(4000, function(){
 			this.sound.stopAll();
-			this.scene.start('level2Complete')}
-			, [], this);
+			this.scene.start('level2Complete');
+			console.log("Stopping current Scene");
+			this.scene.stop();
+		}, [], this);
 	}
 	endgame(){
 		this.lives = 0;
@@ -450,7 +452,9 @@ class Level2 extends Phaser.Scene {
 		//change scene
 		this.transition = this.time.delayedCall(4000, function(){
 			this.sound.stopAll();
-			this.scene.start('gameOver')
+			this.scene.start('gameOver');
+			console.log("Stopping current Scene");
+			this.scene.stop();
 		}, [], this);  // delay in ms
 	}
 	

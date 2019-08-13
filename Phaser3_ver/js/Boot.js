@@ -19,7 +19,7 @@ class Boot extends Phaser.Scene {
 			//instructions
 		this.load.image("instructions1", "assets/images/L1_instructions_v2.png");
 		this.load.image("instructions2", "assets/images/L2_instructions_v2.png");
-		this.load.image("instructions3", "assets/images/L3_instructions.png");
+		this.load.image("instructions3", "assets/images/L3_instructions_v2.png");
 			//level 1
 		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
 		this.load.image("stage", "assets/images/stage_blank.png");
@@ -89,7 +89,7 @@ class Boot extends Phaser.Scene {
 			frameWidth: 104,
 			frameHeight: 49
 		});
-		this.load.spritesheet('level_icon', 'assets/images/level_select_icons.png', {
+		this.load.spritesheet('level_icon', 'assets/images/level_select_icons4.png', {
 			frameWidth: 171,
 			frameHeight: 171
 		});
@@ -106,17 +106,19 @@ class Boot extends Phaser.Scene {
 		this.load.audio('game_over', 'assets/audio/game_over.mp3');
 		this.load.audio('jump', 'assets/audio/jump.mp3');
 		this.load.audio('lose_life', 'assets/audio/lose_life.mp3');
+		this.load.audio('shutter', 'assets/audio/shutter.mp3');
 		this.load.audio('title_bgm', 'assets/audio/serol_start.mp3');
 		this.load.audio('menu_bgm', 'assets/audio/serol_level_select.mp3');
 		this.load.audio('credits_bgm', 'assets/audio/serol_credits.mp3');
 		this.load.audio('levelone_bgm', 'assets/audio/serol_level1.mp3');
 		this.load.audio('lvl_complete', 'assets/audio/serol_level_complete.mp3');
-		this.load.audio('leveltwo_bgm', 'assets/audio/serol_level2.mp3')
+		this.load.audio('leveltwo_bgm', 'assets/audio/serol_level2.mp3');
+		this.load.audio('levelthree_bgm', 'assets/audio/serol_level3.mp3');
 
 	}
 
 	create() {
 		this.add.text(20, 20, "Booting game...", {font:"25px Arial", fill: "yellow"});
-		this.scene.start("instructions3");
+		this.scene.start("gameTitle");
 	}
 }

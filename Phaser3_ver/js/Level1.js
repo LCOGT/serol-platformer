@@ -274,7 +274,11 @@ class Level1 extends Phaser.Scene {
       //save score
       totalScore+=this.score;
       //transition to Game Over screen
-      this.transition = this.time.delayedCall(4000, function(){this.scene.start('gameOver')}, [], this);  // delay in ms
+      this.transition = this.time.delayedCall(4000, function(){
+        this.scene.start('gameOver');
+        console.log("Stopping current Scene");
+        this.scene.stop();
+      }, [], this);  // delay in ms
 
     }else{
       this.lives--;
@@ -325,6 +329,8 @@ class Level1 extends Phaser.Scene {
     totalScore+=this.score;
     //change scene
     this.scene.start('level1Complete');
+    console.log("Stopping current Scene");
+    this.scene.stop();
   }
 }
 

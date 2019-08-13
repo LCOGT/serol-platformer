@@ -24,9 +24,13 @@ class Level1Complete extends Phaser.Scene {
 			if(storyMode==true){
 				console.log("lvl1 Complete to lvl2 instructions");
 				this.scene.start('instructions2');
+				console.log("Stopping current Scene");
+                this.scene.stop();
 			}else{
 				console.log("lvl1 Complete to title");
 				this.scene.start('gameTitle');
+				console.log("Stopping current Scene");
+                this.scene.stop();
 			}
 		}
 	}

@@ -77,6 +77,8 @@ class DisplayHiScores extends Phaser.Scene {
         {
             console.log("DisplayHiScores to title");
             this.scene.start('gameTitle');
+            console.log("Stopping current Scene");
+            this.scene.stop();
         }
     }
     getScoresRequest(callbackFunction){
@@ -108,7 +110,7 @@ class DisplayHiScores extends Phaser.Scene {
     genLeaderboard(dict){
         let scores = "";
         let names = "";
-          for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < leaders.length; i++) {
             let currentData = dict[i];
             scores += currentData['score']+"\n";
             names += currentData['username']+"\n";

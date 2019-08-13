@@ -25,11 +25,15 @@ class Instructions1 extends Phaser.Scene {
 	update() {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			console.log('From Instructions 1 to Level 1');
-            this.scene.start('level1');
+			this.scene.start('level1');
+			console.log("Stopping current Scene");
+			this.scene.stop();
 		}
 		if (Phaser.Input.Keyboard.JustDown(this.space)){
 			console.log('From Instructions 1 to Title');
-            this.scene.start('gameTitle');
+			this.scene.start('gameTitle');
+			console.log("Stopping current Scene");
+			this.scene.stop();
 		}
 	}
 }

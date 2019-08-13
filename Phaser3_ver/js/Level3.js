@@ -47,10 +47,20 @@ class Level3 extends Phaser.Scene {
       15:[1180, 1100, 0.6]
     }
     //sounds
-    this.send = this.sound.add("click");
+    this.send = this.sound.add("shutter");
     this.gainLife = this.sound.add('gain_life');
-		this.loseLife = this.sound.add('lose_life');
-
+    this.loseLife = this.sound.add('lose_life');
+    this.lvl3BGM = this.sound.add('levelthree_bgm')
+    var musicConfig = {
+			mute: false,
+			volume: 1,
+			rate: 1,
+			detune: 0,
+			seek: 0,
+			loop: true,
+			delay: 0
+		}
+    this.lvl3BGM.play(musicConfig);
     //backgrounds
     //  Set the camera and physics bounds to be the size of 4x4 bg images
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
@@ -278,18 +288,20 @@ class Level3 extends Phaser.Scene {
 	}
   lvlTwoComplete(){
 		//fade bgm
-		// this.tweens.add({
-		// 	targets:  this.lvl3BGM,
-		// 	volume:   0,
-		// 	duration: 2000
-		//   });
+		this.tweens.add({
+			targets:  this.lvl3BGM,
+			volume:   0,
+			duration: 2000
+		  });
 		//save score
 		totalScore+=this.score;
 		//change scene
 		this.transition = this.time.delayedCall(1000, function(){
 			this.sound.stopAll();
-			this.scene.start('level3Complete')}
-			, [], this);
+      this.scene.start('level3Complete');
+      console.log("Stopping current Scene");
+      this.scene.stop();
+    }, [], this);
 	}
   endgame(){
 		this.lives = 0;
@@ -298,11 +310,11 @@ class Level3 extends Phaser.Scene {
 		//stop timer
 		this.timedEvent.paused = true;
 		//remove bgm
-		// this.tweens.add({
-		// 	targets:  this.lvl3BGM,
-		// 	volume:   0,
-		// 	duration: 2000
-		//   });
+		this.tweens.add({
+			targets:  this.lvl3BGM,
+			volume:   0,
+			duration: 2000
+		  });
 		
 		//put Serol to sleep
 		this.cameras.main.fadeOut(3000);
@@ -311,7 +323,9 @@ class Level3 extends Phaser.Scene {
 		//change scene
 		this.transition = this.time.delayedCall(3000, function(){
 			this.sound.stopAll();
-			this.scene.start('gameOver')
+      this.scene.start('gameOver');
+      console.log("Stopping current Scene");
+      this.scene.stop();
 		}, [], this);  // delay in ms
 	}
 

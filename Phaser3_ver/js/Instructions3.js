@@ -19,17 +19,21 @@ class Instructions3 extends Phaser.Scene {
 
 		//TODO: audio controls
 		//back
-		this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[Press SPACE to go back to Title]", 60).setOrigin(0.5,0);
+		this.backLabel = this.add.bitmapText(config.scale.width/2, 580, "pixelFont", "[Press SPACE to go back to Title]", 60).setOrigin(0.5,0);
 	}
 
 	update() {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			console.log('From Instructions 3 to Level 3');
-            this.scene.start('level3');
+			this.scene.start('level3');
+			console.log("Stopping current Scene");
+			this.scene.stop();
 		}
 		if (Phaser.Input.Keyboard.JustDown(this.space)){
 			console.log('From Instructions 3 to Title');
-            this.scene.start('gameTitle');
+			this.scene.start('gameTitle');
+			console.log("Stopping current Scene");
+			this.scene.stop();
 		}
 	}
 }

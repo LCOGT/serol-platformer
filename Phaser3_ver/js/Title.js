@@ -39,7 +39,8 @@ class Title extends Phaser.Scene {
 
         }, this);
 
-		let activeText = 0;
+        //menu system
+		this.activeText = 0;
         let textGroup = [];
         const texts = ['Story Mode', 'Level Select', 'Hi Scores', '[credits]'];
         texts.forEach((text, index) => {
@@ -48,11 +49,13 @@ class Title extends Phaser.Scene {
         this.input.keyboard.on('keydown', event => {
             switch (event.key) {
                 case 'ArrowUp':
-                    activeText -= 1;
+                    this.activeText -= 1;
+                    console.log(this.activeText)
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'ArrowDown':
-                    activeText += 1;
+                    this.activeText += 1;
+                    console.log(this.activeText)
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'Enter':
@@ -63,47 +66,56 @@ class Title extends Phaser.Scene {
                     break;
             }
         });
-        // textGroup.forEach((text) => {
-        //     text.on('pointerdown', event => {
-        //         this.titleBGM.stop();
-        //         this.events.emit('SELECT');
-        //     });        
-        // });
         this.events.addListener('CHANGE_BUTTON', payload => {
             this.click.play();
-            if (activeText < 0)
-                activeText += texts.length;
-            if (payload && typeof payload.setIndex !== 'undefined')
-                activeText = payload.setIndex;
+            if (this.activeText < 0){
+                this.activeText = 3;
+                console.log("after correction: " + this.activeText)
+            }
+            else if (this.activeText > 3){
+                this.activeText = 0;
+                console.log("after correction: " + this.activeText)
+            }
+            if (payload && typeof payload.setIndex !== 'undefined'){
+                this.activeText = payload.setIndex;
+            }
             textGroup.forEach(text => {
-                text.setStyleActive(text.index === activeText % texts.length);
+                text.setStyleActive(text.index === this.activeText % texts.length);
             });
         });
         this.events.addListener('SELECT', payload => {
             this.sound.stopAll();
-            if (activeText == 0){
+            if (this.activeText == 0){
                 storyMode = true;
                 console.log("Title to lvl1 instructions");
                 this.scene.start('instructions1');
+                console.log("Stopping current scene" + this.scene.toString());
+                this.scene.stop('gameTitle');
             }
-            if (activeText == 1){
+            else if (this.activeText == 1){
                 console.log("Title to level select");
                 this.scene.start('levelSelect');
+                console.log("Stopping current Scene" + this.scene.toString());
+                this.scene.stop('gameTitle');
             }
-            if (activeText == 2){
+            else if (this.activeText == 2){
                 console.log("Title to HiScores");
                 this.scene.start('displayHiScores');
+                console.log("Stopping current Scene" + this.scene.toString());
+                this.scene.stop('gameTitle');
             }
-            if (activeText == 3){
+            else if (this.activeText == 3){
                 console.log("Title to credits");
                 this.scene.start('credits');
+                console.log("Stopping current Scene");
+                this.scene.stop('gameTitle');
             }
-                activeText += texts.length;
-            if (payload && typeof payload.setIndex !== 'undefined')
-                activeText = payload.setIndex;
-            textGroup.forEach(text => {
-                text.setStyleActive(text.index === activeText % texts.length);
-            });
+            if (payload && typeof payload.setIndex !== 'undefined'){
+                this.activeText = payload.setIndex;
+            }
+            // textGroup.forEach(text => {
+            //     text.setStyleActive(text.index === this.activeText % texts.length);
+            // });
         });
         this.events.addListener('FULLSCREEN', payload => {
             if (this.scale.isFullscreen)

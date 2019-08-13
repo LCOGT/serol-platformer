@@ -25,9 +25,13 @@ class GameOver extends Phaser.Scene {
 			if(storyMode==true){
 				console.log("gameOver to enter Hi Scores");
 				this.scene.start('enterHiScores');
+				console.log("Stopping current Scene");
+                this.scene.stop();
 			}else{
 				console.log("gameOver to Title");
 				this.scene.start('gameTitle');
+				console.log("Stopping current Scene");
+                this.scene.stop();
 			}
 		}
 	}

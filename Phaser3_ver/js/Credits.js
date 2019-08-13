@@ -80,9 +80,11 @@ class Credits extends Phaser.Scene {
   update(){
     if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
     {
-      this.creditsBGM.stop();
+      this.sound.stopAll();
       console.log("Credits to title");
-			this.scene.start('gameTitle');
+      this.scene.switch('gameTitle');
+      console.log("Stopping current Scene");
+      this.scene.stop();
     }
   }
 }
