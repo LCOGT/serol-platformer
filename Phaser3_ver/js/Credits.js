@@ -27,18 +27,29 @@ class Credits extends Phaser.Scene {
     this.edward = this.add.sprite(950, 550, 'people').setOrigin(0.5, 1);
     
     //title
-    this.creditsTitle = this.add.bitmapText(config.scale.width/2, 50, "pixelFont", "Credits", 80).setOrigin(0.5,0).setCenterAlign();
+    this.creditsTitle = this.add.bitmapText(config.scale.width/2, 40, "pixelFont", "Credits", 80).setOrigin(0.5,0).setCenterAlign();
     
     //labels
-    this.ronnieLabel = this.add.bitmapText(120, 50, "pixelFont", "Veronika\nKravchenko", 40).setOrigin(0.5,0).setCenterAlign();
-    this.aliceLabel = this.add.bitmapText(270, 100, "pixelFont", "Alice\nHopkinson", 40).setOrigin(0.5,0).setCenterAlign();
-    this.sarahLabel = this.add.bitmapText(800, 100, "pixelFont", "Sarah Eve\nRoberts", 40).setOrigin(0.5,0).setCenterAlign();
-    this.edwardLabel = this.add.bitmapText(950, 50, "pixelFont", "Edward\nGomez", 40).setOrigin(0.5,0).setCenterAlign();
+    this.ronnieLabel = this.add.bitmapText(120, 50, "pixelFont", "Veronika\nKravchenko", 40).setOrigin(0.5,0).setCenterAlign().setTint(0x00fcf4);
+    this.add.bitmapText(120, 560, "pixelFont", "Code", 40).setOrigin(0.5,0).setCenterAlign();
+    this.aliceLabel = this.add.bitmapText(270, 100, "pixelFont", "Alice\nHopkinson", 40).setOrigin(0.5,0).setCenterAlign().setTint(0xfff311);
+    this.add.bitmapText(270, 560, "pixelFont", "Art", 40).setOrigin(0.5,0).setCenterAlign();
+    this.sarahLabel = this.add.bitmapText(800, 100, "pixelFont", "Sarah Eve\nRoberts", 40).setOrigin(0.5,0).setCenterAlign().setTint(0xd60c3b);
+    this.add.bitmapText(860, 560, "pixelFont", "Ideas & Supervision", 40).setOrigin(0.5,0).setCenterAlign();
+    this.edwardLabel = this.add.bitmapText(950, 50, "pixelFont", "Edward\nGomez", 40).setOrigin(0.5,0).setCenterAlign().setTint(0x00ff6e);
+
+    //music credits
+    this.musicCredits = this.add.bitmapText(config.scale.width/2, 110, "pixelFont", 
+    "Music:\n\n\n\n\n\n\n\n\n\n\n\nSound effects:\n", 30).setOrigin(0.5,0).setCenterAlign().setTint(0x00ffff);
+    this.add.bitmapText(370,130, "pixelFont",
+    "Komiku -\n\n\nRolemusic -\n\nRoccoW -\n\nMathgrant -\n\n\n\n\nNenadSimic -\n\nplasterbrain -",30).setTint(0xffb700);
+    this.add.bitmapText(380,130, "pixelFont",
+    "\nPoupi Great Adventures :\n The Arcade Game\n\nThe White\n\nChipho instrumental\n\nA Foxger's Prayerful Dream\nGeneric Falling Blocks Puzzle\nHydroplanes\n\n\nMenu Selection Click\nGame Start",30).setRightAlign();
 
 
     
     //back
-    this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
+    this.backLabel = this.add.bitmapText(config.scale.width/2, 570, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
     
       //animations
     this.anims.create({

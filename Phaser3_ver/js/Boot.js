@@ -13,13 +13,13 @@ class Boot extends Phaser.Scene {
 		this.load.image("titleScreen", "assets/images/titlescreenlarge.png");
 		this.load.image("fullscreen", "assets/images/fullscreen.png");
 			//credits
-		this.load.image("creditsBg", "assets/images/credits_bg.png");
+		this.load.image("creditsBg", "assets/images/credits_bg_v3.png");
 			//level select
 		this.load.image("level_select_bg", "assets/images/level_select_bg.png");
 			//instructions
 		this.load.image("instructions1", "assets/images/L1_instructions_v2.png");
 		this.load.image("instructions2", "assets/images/L2_instructions_v2.png");
-		this.load.image("instructions3", "assets/images/L3_instructions_v2.png");
+		this.load.image("instructions3", "assets/images/L3_instructions_v3.png");
 			//level 1
 		this.load.image("lvl1Bg", "assets/images/background_day_large.png");
 		this.load.image("stage", "assets/images/stage_blank.png");

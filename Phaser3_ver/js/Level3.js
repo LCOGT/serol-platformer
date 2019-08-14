@@ -46,6 +46,15 @@ class Level3 extends Phaser.Scene {
       14:[1767, 860, 1.2],
       15:[1180, 1100, 0.6]
     }
+    this.astrolabels = [
+      "planet", "planet", "planet", "planet", 
+      "globular cluster", "open cluster", 
+      "planetary nebula", "star forming nebula",
+      "supernova remnant", "supernova remnant",
+      "spiral galaxy", "spiral galaxy",
+      "elliptical galaxy", "elliptical galaxy",
+      "galaxy group", "spiral bar galaxy"
+      ]
     //sounds
     this.send = this.sound.add("shutter");
     this.gainLife = this.sound.add('gain_life');
@@ -112,8 +121,17 @@ class Level3 extends Phaser.Scene {
     console.log(this.queue);
     //target sprite
     this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
+    //target text
+    this.targetLabelBg = this.add.sprite(config.scale.width -10, config.scale.height -10, 'target').setOrigin(0,1).setOrigin(1,1).setScrollFactor(0);
+    this.targetLabelBg.setScale(2,0.5);
+    this.physics.add.existing(this.targetLabelBg, true);
+    this.targetLabelBg.enableBody = true;
+    this.targetLabelBg.body.x = config.scale.width * 2 - 10;
+    this.targetLabelBg.body.y = config.scale.height * 2 -10;
+    this.targetLabelBg.body.immovable = true;
+    this.targetLabel = this.add.bitmapText(config.scale.width -10, config.scale.height -10, "pixelFont", this.astrolabels[this.queue[0]], 60).setOrigin(1,1).setScrollFactor(0);
     //serol object
-    this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(264, 152);
+    this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(50, 50);
     this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5).setScale(1.2);
     this.inner = this.add.image(0,0, 'camera_circle').setOrigin(0.5, 0.5).setScale(1.2);
     this.serol.add([this.outer, this.inner]);
@@ -144,7 +162,8 @@ class Level3 extends Phaser.Scene {
     });
     //dequeueing using keyup
 		this.input.keyboard.on('keyup_SPACE', function (event) {
-      var removed = this.queue.shift();
+      this.queue.shift();
+      this.targetLabel.text = this.astrolabels[this.queue[0]];
       // console.log(removed);
 			//play sound
 			
