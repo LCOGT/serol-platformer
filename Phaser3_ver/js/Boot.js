@@ -97,6 +97,10 @@ class Boot extends Phaser.Scene {
 			frameWidth: 140,
 			frameHeight: 100
 		});
+		this.load.spritesheet('target_squares', 'assets/images/target_squares.png', {
+			frameWidth: 171,
+			frameHeight: 171
+		});
 		//audio
 		this.load.audio('click', 'assets/audio/click.mp3');
 		this.load.audio('select', 'assets/audio/select.ogg');

@@ -110,7 +110,13 @@ class DisplayHiScores extends Phaser.Scene {
     genLeaderboard(dict){
         let scores = "";
         let names = "";
-          for (let i = 0; i < leaders.length; i++) {
+        let length =0;
+        if(leaders.length<5){
+          length = leaders.length;
+        }else{
+          length = 5;
+        }
+          for (let i = 0; i < length; i++) {
             let currentData = dict[i];
             scores += currentData['score']+"\n";
             names += currentData['username']+"\n";

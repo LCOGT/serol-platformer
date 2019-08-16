@@ -106,13 +106,20 @@ class Level3 extends Phaser.Scene {
     this.oneUp.body.setVelocityY(200);
     this.oneUp.setBounce(1, 1);
     //target square
-    this.target = this.add.sprite(10, config.scale.height - 10, 'target').setOrigin(0,1).setScrollFactor(0);
+    this.target = this.add.sprite(10, config.scale.height - 10, 'target_squares',3).setOrigin(0,1).setScrollFactor(0);
     this.physics.add.existing(this.target, true);
     this.target.enableBody = true;
     this.target.body.x = 10;
     this.target.body.y = config.scale.height * 2 -182;
     this.target.body.immovable = true;
-    this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0); 
+    this.add.bitmapText(21, config.scale.height - 170, "pixelFont", "TARGET", 60).setScrollFactor(0);
+    
+    this.anims.create({
+      key: 'critical',
+      frames: this.anims.generateFrameNumbers('target_squares', {frames: [3,2,3,2,3,2,3,2,3]}),
+      frameRate: 4,
+      repeat: -1
+    });
     //setting up queue of frames
     for(var i in frameChoices) {
 			this.textureChoice = frameChoices[Math.floor(Math.random() * frameChoices.length)]
@@ -122,14 +129,19 @@ class Level3 extends Phaser.Scene {
     //target sprite
     this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
     //target text
-    this.targetLabelBg = this.add.sprite(config.scale.width -10, config.scale.height -10, 'target').setOrigin(0,1).setOrigin(1,1).setScrollFactor(0);
-    this.targetLabelBg.setScale(2,0.5);
-    this.physics.add.existing(this.targetLabelBg, true);
-    this.targetLabelBg.enableBody = true;
-    this.targetLabelBg.body.x = config.scale.width * 2 - 10;
-    this.targetLabelBg.body.y = config.scale.height * 2 -10;
-    this.targetLabelBg.body.immovable = true;
+    // this.targetLabelBg = this.add.sprite(config.scale.width -10, config.scale.height -10, 'target').setOrigin(0,1).setOrigin(1,1).setScrollFactor(0);
+    // this.targetLabelBg.setScale(2,0.5);
+    // this.physics.add.existing(this.targetLabelBg, true);
+    // this.targetLabelBg.enableBody = true;
+    // this.targetLabelBg.body.x = config.scale.width * 2 - 10;
+    // this.targetLabelBg.body.y = config.scale.height * 2 -10;
+    // this.targetLabelBg.body.immovable = true;
     this.targetLabel = this.add.bitmapText(config.scale.width -10, config.scale.height -10, "pixelFont", this.astrolabels[this.queue[0]], 60).setOrigin(1,1).setScrollFactor(0);
+    //countdown in seconds
+    
+    this.countdown = 10;
+        
+    
     //serol object
     this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(50, 50);
     this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5).setScale(1.2);
@@ -175,7 +187,9 @@ class Level3 extends Phaser.Scene {
         console.log("captured: " + captured);
 
 				this.score += 10;
-				this.scoreLabel.text = "SCORE " + this.score;
+        this.scoreLabel.text = "SCORE " + this.score;
+        //reset countdown
+        this.countdown = 10;
 				}else{
           console.log("bad picture taken");
           console.log("target: " + this.targetSprite.frame.name);
@@ -197,7 +211,7 @@ class Level3 extends Phaser.Scene {
 			}, this);
   }
 
-  update() {
+  update(time, delta) {
     this.movePlayerManager();
     this.updateTimer();
     this.astros.getChildren().forEach(astro =>{
@@ -218,6 +232,43 @@ class Level3 extends Phaser.Scene {
         console.log("overlap end");
       }
     });
+    //countdown
+    if(this.countdown >= 0){
+      this.countdown -= delta * 0.001;
+      //if countdown is finished
+      if(this.countdown <= 10){
+        this.target.setFrame(3);
+        if (this.countdown <= 7){
+        this.target.setFrame(0);
+        if (this.countdown <= 4){
+          this.target.setFrame(1);
+          if(this.countdown <= 2){
+            this.target.setFrame(2);
+            if(this.countdown <=0){
+              console.log("Time out!");
+              this.loseLife.play();
+                if ( this.lives <= 1){
+                  this.endgame();			  
+                }else{
+                  this.lives--;
+                  this.queue.shift();
+                  this.targetLabel.text = this.astrolabels[this.queue[0]];
+                  var textureChoice = this.choose(frameChoices);
+			            this.queue.push(textureChoice);
+			            this.targetSprite.setFrame(this.queue[0]);
+                }
+                this.livesLabel.text = "LIVES " + this.lives;
+                //update lives gauge
+                this.lifeGauge.updateLife(this.lives);
+                //reset countdown
+                this.countdown = 10;
+                
+            }
+          }
+        }
+      }
+    } 
+    }
   }
   movePlayerManager() {
     let pad = Phaser.Input.Gamepad.Gamepad;
@@ -287,7 +338,7 @@ class Level3 extends Phaser.Scene {
       oneUp.alpha = 0;
       //reset body and visibility
       this.oneUpReset = this.time.addEvent({
-        delay: 5000,
+        delay: 10000,
         callback: ()=>{
           oneUp.alpha = 1;
         },
