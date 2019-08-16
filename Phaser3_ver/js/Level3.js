@@ -125,7 +125,7 @@ class Level3 extends Phaser.Scene {
 			this.textureChoice = frameChoices[Math.floor(Math.random() * frameChoices.length)]
       this.queue.push(this.textureChoice);
 		  }
-    console.log(this.queue);
+    // console.log(this.queue);
     //target sprite
     this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
     //target text
@@ -159,11 +159,11 @@ class Level3 extends Phaser.Scene {
     this.wasdKeys = this.input.keyboard.addKeys('W,S,A,D');
     //overlap
     this.astros.getChildren().forEach(astro =>{
-      console.log(astro);
+      // console.log(astro);
       astro.on("overlapstart", function() {
         captured = astro.frame.name;
         overlapping = true;
-        console.log("to capture: " + captured);
+        // console.log("to capture: " + captured);
         astro.body.debugBodyColor = 0xffff00;
       });
       astro.on("overlapend", function() {
@@ -175,25 +175,22 @@ class Level3 extends Phaser.Scene {
     //dequeueing using keyup
 		this.input.keyboard.on('keyup_SPACE', function (event) {
       this.queue.shift();
-      this.targetLabel.text = this.astrolabels[this.queue[0]];
-      // console.log(removed);
-			//play sound
-			
+      this.targetLabel.text = this.astrolabels[this.queue[0]];			
 			//consider the overlap
 			if (overlapping == true && captured === this.targetSprite.frame.name){
         this.send.play();
-        console.log("picture taken");
-        console.log("target: " + this.targetSprite.frame.name);
-        console.log("captured: " + captured);
+        // console.log("picture taken");
+        // console.log("target: " + this.targetSprite.frame.name);
+        // console.log("captured: " + captured);
 
 				this.score += 10;
         this.scoreLabel.text = "SCORE " + this.score;
         //reset countdown
         this.countdown = 10;
 				}else{
-          console.log("bad picture taken");
-          console.log("target: " + this.targetSprite.frame.name);
-          console.log("captured: " + captured);
+          // console.log("bad picture taken");
+          // console.log("target: " + this.targetSprite.frame.name);
+          // console.log("captured: " + captured);
           this.loseLife.play();
           if ( this.lives <= 1){
             this.endgame();			  
@@ -225,11 +222,11 @@ class Level3 extends Phaser.Scene {
       
       if (touching && !wasTouching) {
         astro.emit("overlapstart");
-        console.log("overlap start");
+        // console.log("overlap start");
       }
       else if (!touching && wasTouching) {
         astro.emit("overlapend");
-        console.log("overlap end");
+        // console.log("overlap end");
       }
     });
     //countdown
@@ -245,7 +242,7 @@ class Level3 extends Phaser.Scene {
           if(this.countdown <= 2){
             this.target.setFrame(2);
             if(this.countdown <=0){
-              console.log("Time out!");
+              // console.log("Time out!");
               this.loseLife.play();
                 if ( this.lives <= 1){
                   this.endgame();			  
@@ -369,7 +366,6 @@ class Level3 extends Phaser.Scene {
 		this.transition = this.time.delayedCall(1000, function(){
 			this.sound.stopAll();
       this.scene.start('level3Complete');
-      console.log("Stopping current Scene");
       this.scene.stop();
     }, [], this);
 	}

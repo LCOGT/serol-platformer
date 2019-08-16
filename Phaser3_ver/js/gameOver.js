@@ -23,14 +23,14 @@ class GameOver extends Phaser.Scene {
 		//fade in tween here
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			if(storyMode==true){
-				console.log("gameOver to enter Hi Scores");
+				// console.log("gameOver to enter Hi Scores");
 				this.scene.start('enterHiScores');
-				console.log("Stopping current Scene");
+				// console.log("Stopping current Scene");
                 this.scene.stop();
 			}else{
-				console.log("gameOver to Title");
+				// console.log("gameOver to Title");
 				this.scene.start('gameTitle');
-				console.log("Stopping current Scene");
+				// console.log("Stopping current Scene");
                 this.scene.stop();
 			}
 		}

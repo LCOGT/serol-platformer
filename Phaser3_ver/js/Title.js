@@ -52,12 +52,10 @@ class Title extends Phaser.Scene {
             switch (event.key) {
                 case 'ArrowUp':
                     this.activeText -= 1;
-                    console.log(this.activeText)
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'ArrowDown':
                     this.activeText += 1;
-                    console.log(this.activeText)
                     this.events.emit('CHANGE_BUTTON');
                     break;
                 case 'Enter':
@@ -72,11 +70,9 @@ class Title extends Phaser.Scene {
             this.click.play();
             if (this.activeText < 0){
                 this.activeText = 3;
-                console.log("after correction: " + this.activeText)
             }
             else if (this.activeText > 3){
                 this.activeText = 0;
-                console.log("after correction: " + this.activeText)
             }
             if (payload && typeof payload.setIndex !== 'undefined'){
                 this.activeText = payload.setIndex;
@@ -89,36 +85,28 @@ class Title extends Phaser.Scene {
             this.sound.stopAll();
             if (this.activeText == 0){
                 storyMode = true;
-                console.log("Title to lvl1 instructions");
+                // console.log("Title to lvl1 instructions");
                 this.scene.start('instructions1');
-                console.log("Stopping current scene" + this.scene.toString());
-                scene.events.
                 this.scene.stop('gameTitle');
             }
             else if (this.activeText == 1){
-                console.log("Title to level select");
+                // console.log("Title to level select");
                 this.scene.start('levelSelect');
-                console.log("Stopping current Scene" + this.scene.toString());
                 this.scene.stop('gameTitle');
             }
             else if (this.activeText == 2){
-                console.log("Title to HiScores");
+                // console.log("Title to HiScores");
                 this.scene.start('displayHiScores');
-                console.log("Stopping current Scene" + this.scene.toString());
                 this.scene.stop('gameTitle');
             }
             else if (this.activeText == 3){
-                console.log("Title to credits");
+                // console.log("Title to credits");
                 this.scene.start('credits');
-                console.log("Stopping current Scene");
                 this.scene.stop('gameTitle');
             }
             if (payload && typeof payload.setIndex !== 'undefined'){
                 this.activeText = payload.setIndex;
             }
-            // textGroup.forEach(text => {
-            //     text.setStyleActive(text.index === this.activeText % texts.length);
-            // });
         },this);
         this.events.addListener('FULLSCREEN', payload => {
             if (this.scale.isFullscreen)

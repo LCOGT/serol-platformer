@@ -127,7 +127,7 @@ class Boot extends Phaser.Scene {
 		})
 		this.load.on("progress", (percent)=>{
 			loadingBar.fillRect(0,config.scale.height-200, config.scale.width * percent, 50)
-			console.log(percent);
+			// console.log(percent);
 		})
 
 	}

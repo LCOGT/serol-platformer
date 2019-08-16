@@ -11,12 +11,12 @@ class Instructions2 extends Phaser.Scene {
 		//back
 		this.backLabel = this.add.bitmapText(config.scale.width/2, 570, "pixelFont", "[Press SPACE to go back to Title]", 60).setOrigin(0.5,0).setInteractive();
 		this.backLabel.on('pointerdown', function (event) {
-		  console.log("instructions to title");
+		//   console.log("instructions to title");
 				this.scene.start('gameTitle');
 			  }, this);		
 		//start level when bg is clicked
 		this.lvl2InstBg.on('pointerdown', function (event) {
-            console.log('From Instructions 2 to Level 2');
+            // console.log('From Instructions 2 to Level 2');
             this.scene.start('level2');
 		}, this);
 		//start level when space is pressed
@@ -28,15 +28,15 @@ class Instructions2 extends Phaser.Scene {
 
 	update() {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
-			console.log('From Instructions 2 to Level 2');
+			// console.log('From Instructions 2 to Level 2');
 			this.scene.start('level2');
-			console.log("Stopping current Scene");
+			// console.log("Stopping current Scene");
 			this.scene.stop();
 		}
 		if (Phaser.Input.Keyboard.JustDown(this.space)){
-			console.log('From Instructions 2 to Title');
+			// console.log('From Instructions 2 to Title');
 			this.scene.start('gameTitle');
-			console.log("Stopping current Scene");
+			// console.log("Stopping current Scene");
 			this.scene.stop();
 		}
 	}

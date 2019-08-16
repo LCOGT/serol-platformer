@@ -23,14 +23,10 @@ class Level3Complete extends Phaser.Scene {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
 			if(storyMode==true){
 				//change to level 3 when ready
-				console.log("lvl3 Complete to hiScores");
 				this.scene.start('enterHiScores');
-				console.log("Stopping current Scene");
                 this.scene.stop();
 			}else{
-				console.log("lvl3 Complete to title");
 				this.scene.start('gameTitle');
-				console.log("Stopping current Scene");
                 this.scene.stop();
 			}
 		}

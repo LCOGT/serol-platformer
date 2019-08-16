@@ -191,7 +191,6 @@ class Level1 extends Phaser.Scene {
     item.body.setAcceleration(0,accel);
     //reset item when it falls beyond the world boundary (top/bottom)
     if (item.y > config.scale.height) {
-      console.log(item.toString());
       this.itemReset(item);
     }
   }
@@ -200,7 +199,6 @@ class Level1 extends Phaser.Scene {
     item.body.setAcceleration(0,0);
     item.y = -20;
     item.x = this.xCoords[Math.round(Math.random() * (this.xCoords.length - 1))];
-    // console.log(item.texture.key);
     if (item.texture.key == "tetromino1") {
       item.setTexture("tetromino1", Phaser.Math.Between(0, 31));
       item.setAngle(this.angles[Math.round(Math.random() * (this.angles.length - 1))]);
@@ -216,7 +214,7 @@ class Level1 extends Phaser.Scene {
         this.grav = this.maxGrav;
       }
       this.itemFall(item,this.grav);
-      console.log(this.grav);
+      // console.log(this.grav);
     }
     else if (item.texture.key == "junk") {
       item.setTexture("junk", Phaser.Math.Between(0, 5));
@@ -236,7 +234,6 @@ class Level1 extends Phaser.Scene {
   catchJunk(serol,junkItem){
     this.loseLife.play();
     this.itemReset(junkItem);
-    console.log(junkItem.name);
     //slow down item fall
     this.grav *= (2/3);
     //make Serol invincible for a bit
@@ -276,7 +273,7 @@ class Level1 extends Phaser.Scene {
       //transition to Game Over screen
       this.transition = this.time.delayedCall(4000, function(){
         this.scene.start('gameOver');
-        console.log("Stopping current Scene");
+        // console.log("Stopping current Scene");
         this.scene.stop();
       }, [], this);  // delay in ms
 
@@ -329,7 +326,7 @@ class Level1 extends Phaser.Scene {
     totalScore+=this.score;
     //change scene
     this.scene.start('level1Complete');
-    console.log("Stopping current Scene");
+    // console.log("Stopping current Scene");
     this.scene.stop();
   }
 }

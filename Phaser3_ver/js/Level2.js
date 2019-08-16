@@ -137,7 +137,8 @@ class Level2 extends Phaser.Scene {
 			}
 			this.queue.push(this.sprite);
 		  }
-		console.log(this.queue);
+		// console.log(this.queue);
+
 		//dequeueing using keyup
 		this.input.keyboard.on('keyup_SPACE', function (event) {
 			var removed = this.queue.shift();
@@ -145,11 +146,11 @@ class Level2 extends Phaser.Scene {
 			this.send.play();
 			//consider the overlap
 			if ((removed.texture.key==='tetromino')&& (overlapping == true)){
-				console.log("tetromino sent");
+				// console.log("tetromino sent");
 				this.score += 10;
 				this.scoreLabel.text = "SCORE " + this.score;
 			} else if ((removed.texture.key==='junk') && (overlapping == true)){
-				console.log("junk sent");
+				// console.log("junk sent");
 				if (this.score <= 0){
 					this.score = 0;
 				}else{
@@ -423,7 +424,6 @@ class Level2 extends Phaser.Scene {
 		this.transition = this.time.delayedCall(4000, function(){
 			this.sound.stopAll();
 			this.scene.start('level2Complete');
-			console.log("Stopping current Scene");
 			this.scene.stop();
 		}, [], this);
 	}
@@ -453,7 +453,6 @@ class Level2 extends Phaser.Scene {
 		this.transition = this.time.delayedCall(4000, function(){
 			this.sound.stopAll();
 			this.scene.start('gameOver');
-			console.log("Stopping current Scene");
 			this.scene.stop();
 		}, [], this);  // delay in ms
 	}

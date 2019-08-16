@@ -228,7 +228,7 @@ class EnterHiScores extends Phaser.Scene {
         request.setRequestHeader('Authorization', 'Token a3675b1c9c520c3bd047703d7a1a395ba379932f');
         request.send(JSON.stringify(data));
         this.scene.start('displayHiScores');
-        console.log("Stopping current Scene");
+        // console.log("Stopping current Scene");
         this.scene.stop();
     }
 

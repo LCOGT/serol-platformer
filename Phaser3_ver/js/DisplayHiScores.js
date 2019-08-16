@@ -75,9 +75,9 @@ class DisplayHiScores extends Phaser.Scene {
         
         if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
         {
-            console.log("DisplayHiScores to title");
+            // console.log("DisplayHiScores to title");
             this.scene.start('gameTitle');
-            console.log("Stopping current Scene");
+            // console.log("Stopping current Scene");
             this.scene.stop();
         }
     }
@@ -90,7 +90,7 @@ class DisplayHiScores extends Phaser.Scene {
             this.resp = xhr.responseText; // toString() might be needed.
             // is leaders global or part of the class?
             leaders = JSON.parse(this.resp);
-            console.log(leaders);
+            // console.log(leaders);
             callbackFunction.call(self, true, leaders);
           } else {
             // We reached our target server, but it returned an error

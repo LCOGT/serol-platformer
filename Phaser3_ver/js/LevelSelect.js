@@ -63,11 +63,9 @@ class LevelSelect extends Phaser.Scene {
             this.click.play();
             if (this.activeSelection < 0){
                 this.activeSelection = 3;
-                console.log("after correction: " + this.activeSelection)
             }
             else if (this.activeSelection > 3){
                 this.activeSelection = 0;
-                console.log("after correction: " + this.activeSelection);
             }
             if (payload && typeof payload.setIndex !== 'undefined')
                 this.activeSelection = payload.setIndex;
@@ -80,29 +78,25 @@ class LevelSelect extends Phaser.Scene {
             this.levelSelectBGM.stop();
             if (this.activeSelection == 0){
                 this.select.play();
-                console.log("Level Select to lvl1 instructions");
+                // console.log("Level Select to lvl1 instructions");
                 this.scene.start('instructions1');
-                console.log("Stopping current Scene");
                 this.scene.stop();
             }
             else if (this.activeSelection == 1){
                 this.select.play();
-                console.log("Level Select to lvl2 instructions");
+                // console.log("Level Select to lvl2 instructions");
                 this.scene.start('instructions2');
-                console.log("Stopping current Scene");
                 this.scene.stop();
             }
             else if (this.activeSelection == 2){
                 this.select.play();
-                console.log("Level Select to lvl3 instructions");
+                // console.log("Level Select to lvl3 instructions");
                 this.scene.start('instructions3');
-                console.log("Stopping current Scene");
                 this.scene.stop();
             }
             else if (this.activeSelection == 3){
-                console.log("Level Select to title");
+                // console.log("Level Select to title");
                 this.scene.start('gameTitle');
-                console.log("Stopping current Scene");
                 this.scene.stop();
             }
             if (payload && typeof payload.setIndex !== 'undefined')

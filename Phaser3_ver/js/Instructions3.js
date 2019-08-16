@@ -10,7 +10,7 @@ class Instructions3 extends Phaser.Scene {
 		
 		//start level when bg is clicked
 		this.lvl3InstBg.on('pointerdown', function (event) {
-            console.log('From Instructions 3 to Level 3');
+            // console.log('From Instructions 3 to Level 3');
             this.scene.start('level3');
 		}, this);
 		//start level when space is pressed
@@ -24,15 +24,15 @@ class Instructions3 extends Phaser.Scene {
 
 	update() {
 		if (Phaser.Input.Keyboard.JustDown(this.enter)){
-			console.log('From Instructions 3 to Level 3');
+			// console.log('From Instructions 3 to Level 3');
 			this.scene.start('level3');
-			console.log("Stopping current Scene");
+			// console.log("Stopping current Scene");
 			this.scene.stop();
 		}
 		if (Phaser.Input.Keyboard.JustDown(this.space)){
-			console.log('From Instructions 3 to Title');
+			// console.log('From Instructions 3 to Title');
 			this.scene.start('gameTitle');
-			console.log("Stopping current Scene");
+			// console.log("Stopping current Scene");
 			this.scene.stop();
 		}
 	}
