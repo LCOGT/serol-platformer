@@ -46,8 +46,10 @@ class Credits extends Phaser.Scene {
     this.add.bitmapText(380,130, "pixelFont",
     "\nPoupi Great Adventures :\n The Arcade Game\n\nThe White\n\nChipho instrumental\n\nA Foxger's Prayerful Dream\nGeneric Falling Blocks Puzzle\nHydroplanes\nVictorious Accomplishment\n\n\nMenu Selection Click",30).setRightAlign();
     
+    //button
+    this.highlight = this.add.sprite(config.scale.width/2, 595, 'buttons',2).setScale(0.8).setOrigin(0.5);
     //back
-    this.backLabel = this.add.bitmapText(config.scale.width/2, 570, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
+    this.backLabel = this.add.bitmapText(config.scale.width/2, 570, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffffff);
     
       //animations
     this.anims.create({

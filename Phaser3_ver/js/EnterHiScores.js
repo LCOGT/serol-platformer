@@ -31,19 +31,8 @@ class EnterHiScores extends Phaser.Scene {
     create (){
         //bg and stardust
         this.scoresBg = this.add.image(0,0,"blue_bg").setOrigin(0,0);
-        this.stars = this.add.blitter(0, 0, 'star');
+        this.add.image(0, 0, 'stars_bg').setOrigin(0);
 
-        for (let i = 0; i < this.max; i++){
-            this.xx[i] = Math.floor(Math.random() * 820) - 400;
-            this.yy[i] = Math.floor(Math.random() * 600) - 300;
-            this.zz[i] = Math.floor(Math.random() * 1800) - 100;
-
-            let perspective = this.distance / (this.distance - this.zz[i]);
-            let x = config.scale.width/2 + this.xx[i] * perspective;
-            let y = config.scale.height/2 + this.yy[i] * perspective;
-
-            this.stars.create(x, y);
-        }
         //on screen keyboard
         let text = this.add.bitmapText(200, 50, 'pixelFont', 'ABCDEFGHIJ\n\nKLMNOPQRST\n\nUVWXYZ.-',50);
 
@@ -84,23 +73,8 @@ class EnterHiScores extends Phaser.Scene {
         this.events.on('submitName', this.submitName, this);
     }
 
-    update (time, delta){
-        for (let i = 0; i < this.max; i++){
-            let perspective = this.distance / (this.distance - this.zz[i]);
-            let x = config.scale.width/2 + this.xx[i] * perspective;
-            let y = config.scale.height/2 + this.yy[i] * perspective;
-
-            this.zz[i] += this.speed * (delta / 1000);
-
-            if (this.zz[i] > 300){
-                this.zz[i] -= 600;
-            }
-
-            let bob = this.stars.children.list[i];
-
-            bob.x = x;
-            bob.y = y;
-        }
+    update (){
+        
     }
     moveBlock (pointer, x, y){
         let cx = Phaser.Math.Snap.Floor(x, 68, 0, true);

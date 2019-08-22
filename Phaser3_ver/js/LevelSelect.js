@@ -24,6 +24,10 @@ class LevelSelect extends Phaser.Scene {
         this.levelSelectBGM.play(musicConfig);
         this.click = this.sound.add("click");
         this.select = this.sound.add("select");
+        //button
+        this.highlight = this.add.sprite(300, 420, 'buttons',2).setScale(0.9).setOrigin(0.5);
+        this.buttonXPositions = [300, 510, 720, config.scale.width/2];
+        this.buttonYPositions = [420, 420, 420, 550];
 		//menu options
 		this.activeSelection = 0;
         let textGroup = [];
@@ -67,15 +71,20 @@ class LevelSelect extends Phaser.Scene {
             this.click.play();
             if (this.activeSelection < 0){
                 this.activeSelection = 3;
+                this.highlight.setX(this.buttonXPositions[this.activeSelection]);
+                this.highlight.setY(this.buttonYPositions[this.activeSelection]);
+                
             }
             else if (this.activeSelection > 3){
                 this.activeSelection = 0;
+                this.highlight.setX(this.buttonXPositions[this.activeSelection]);
+                this.highlight.setY(this.buttonYPositions[this.activeSelection]);
             }
             if (payload && typeof payload.setIndex !== 'undefined')
                 this.activeSelection = payload.setIndex;
             textGroup.forEach(text => {
-                text.setStyleActive(text.index === this.activeSelection % textGroup.length);
-            });
+                this.highlight.setX(this.buttonXPositions[this.activeSelection]);
+                this.highlight.setY(this.buttonYPositions[this.activeSelection]);            });
         });
         
         this.events.addListener('SELECTITEM', payload => {

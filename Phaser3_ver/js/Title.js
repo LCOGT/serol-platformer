@@ -41,6 +41,9 @@ class Title extends Phaser.Scene {
 
         }, this);
 
+        //button
+        this.highlight = this.add.sprite(config.scale.width/2, 400, 'buttons',2).setScale(1.1).setOrigin(0.5);
+        this.buttonPositions = [400, 470, 540, 610];
         //menu system
 		this.activeText = 0;
         let textGroup = [];
@@ -61,7 +64,7 @@ class Title extends Phaser.Scene {
                 case 'Enter':
                     this.events.emit('SELECT');
                     break;
-                case 'f':
+                case 'i':
                     this.events.emit('FULLSCREEN');
                     break;
             }
@@ -70,15 +73,21 @@ class Title extends Phaser.Scene {
             this.click.play();
             if (this.activeText < 0){
                 this.activeText = 3;
+                this.highlight.setY(this.buttonPositions[this.activeText]);
+
             }
             else if (this.activeText > 3){
                 this.activeText = 0;
+                this.highlight.setY(this.buttonPositions[this.activeText]);
+
+
             }
             if (payload && typeof payload.setIndex !== 'undefined'){
                 this.activeText = payload.setIndex;
             }
             textGroup.forEach(text => {
-                text.setStyleActive(text.index === this.activeText % texts.length);
+                // text.setStyleActive(text.index === this.activeText % texts.length);
+                this.highlight.setY(this.buttonPositions[this.activeText]);
             });
         }, this, true);
         this.events.addListener('SELECT', payload => {
@@ -129,19 +138,9 @@ class MenuText extends Phaser.GameObjects.BitmapText {
         super(scene, x, y, font, text, size, 0);
         this.index = index;
         this.normalTint = 0xffffff;
-        this.activeTint= 0xffb700;
+        this.activeTint= 0xffffff;
         this.isActive = false;
         scene.add.existing(this);
-        this.setTint(this.normalTint)
-            .setInteractive()
-            // .on('pointerover', () => scene.events.emit('CHANGE_BUTTON', { setIndex: index }))
-            ;
-        this.setStyleActive(index === 0);
-    }
-    setStyleActive(active) {
-        if (this.isActive === active)
-            return;
-        this.isActive = active;
-        this.setTint(this.isActive ? this.activeTint : this.normalTint);
+        this.setTint(this.normalTint).setInteractive();
     }
 }

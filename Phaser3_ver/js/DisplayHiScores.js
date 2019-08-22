@@ -22,7 +22,7 @@ class DisplayHiScores extends Phaser.Scene {
     create ()
     {
         this.scoresBg = this.add.image(0,0,"blue_bg").setOrigin(0,0);
-        this.stars = this.add.blitter(0, 0, 'star');
+        this.add.image(0, 0, 'stars_bg').setOrigin(0);
 
         //sound
         this.hiScoresBGM = this.sound.add("hi_scores");
@@ -37,21 +37,11 @@ class DisplayHiScores extends Phaser.Scene {
         }
         this.hiScoresBGM.play(musicConfig);
 
-        for (let i = 0; i < this.max; i++)
-        {
-            this.xx[i] = Math.floor(Math.random() * 800) - 400;
-            this.yy[i] = Math.floor(Math.random() * 600) - 300;
-            this.zz[i] = Math.floor(Math.random() * 1700) - 100;
-
-            let perspective = this.distance / (this.distance - this.zz[i]);
-            let x = config.scale.width/2 + this.xx[i] * perspective;
-            let y = config.scale.height/2 + this.yy[i] * perspective;
-
-            this.stars.create(x, y);
-        }
         this.add.bitmapText(170, 100, 'pixelFont', 'RANK   SCORE       NAME',80).setTint(0x00ffff);
         this.add.bitmapText(170, 200, 'pixelFont', '1ST\n2ND\n3RD\n4TH\n5TH',80);
-        this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);
+        //button
+        this.highlight = this.add.sprite(config.scale.width/2, 575, 'buttons',2).setScale(0.8).setOrigin(0.5);
+        this.backLabel = this.add.bitmapText(config.scale.width/2, 550, "pixelFont", "[back]", 60).setOrigin(0.5,0);
         
         this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -65,26 +55,8 @@ class DisplayHiScores extends Phaser.Scene {
             }
           });
     }
-    update (time, delta)
+    update ()
     {
-        for (let i = 0; i < this.max; i++)
-        {
-            let perspective = this.distance / (this.distance - this.zz[i]);
-            let x = config.scale.width/2 + this.xx[i] * perspective;
-            let y = config.scale.height/2 + this.yy[i] * perspective;
-
-            this.zz[i] += this.speed * (delta / 1000);
-
-            if (this.zz[i] > 300)
-            {
-                this.zz[i] -= 600;
-            }
-
-            let bob = this.stars.children.list[i];
-
-            bob.x = x;
-            bob.y = y;
-        }
         
         if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
         {
