@@ -7,6 +7,7 @@ class LevelSelect extends Phaser.Scene {
 	create() {
         //remove listeners
         this.events.removeAllListeners('SELECTITEM');
+        this.events.removeAllListeners('BACK');
 		//background
         this.levelSelectBg = this.add.image(0,0,"level_select_bg").setOrigin(0,0);
         //sound
@@ -57,6 +58,9 @@ class LevelSelect extends Phaser.Scene {
                 case 'Enter':
                     this.events.emit('SELECTITEM');
                     break;
+                case ' ':
+                    this.events.emit("BACK");
+                    break;
             }
         });
         this.events.addListener('CHANGE_BUTTON', payload => {
@@ -104,6 +108,12 @@ class LevelSelect extends Phaser.Scene {
             textGroup.forEach(text => {
                 text.setStyleActive(text.index === this.activeSelection % texts.length);
             });
+        });
+        this.events.addListener('BACK', payload => {
+            // console.log("Level Select to title");
+            this.levelSelectBGM.stop();
+            this.scene.start('gameTitle');
+            this.scene.stop();
         });
 	}
 
