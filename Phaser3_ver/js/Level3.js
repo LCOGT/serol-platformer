@@ -183,7 +183,7 @@ class Level3 extends Phaser.Scene {
         // console.log("target: " + this.targetSprite.frame.name);
         // console.log("captured: " + captured);
 
-				this.score += 10;
+				this.score += 40;
         this.scoreLabel.text = "SCORE " + this.score;
         //reset countdown
         this.countdown = 10;

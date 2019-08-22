@@ -147,14 +147,14 @@ class Level2 extends Phaser.Scene {
 			//consider the overlap
 			if ((removed.texture.key==='tetromino')&& (overlapping == true)){
 				// console.log("tetromino sent");
-				this.score += 10;
+				this.score += 15;
 				this.scoreLabel.text = "SCORE " + this.score;
 			} else if ((removed.texture.key==='junk') && (overlapping == true)){
 				// console.log("junk sent");
 				if (this.score <= 0){
 					this.score = 0;
 				}else{
-					this.score -= 5;
+					this.score -= 7;
 					this.scoreLabel.text = "SCORE " + this.score;
 				}
 			}
