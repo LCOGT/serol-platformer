@@ -16,7 +16,8 @@ var config = {
   backgroundColor: 0x000000,
   pixelArt: true,
   scene:[
-    Boot, 
+    Boot,
+    ControllerTest, 
     Title,
     LevelSelect, 
     Credits,

@@ -52,34 +52,38 @@ class DisplayHiScores extends Phaser.Scene {
             }
           });
     }
-    update (time, delta)
-    {
-        for (let i = 0; i < this.max; i++)
-        {
-            let perspective = this.distance / (this.distance - this.zz[i]);
-            let x = config.scale.width/2 + this.xx[i] * perspective;
-            let y = config.scale.height/2 + this.yy[i] * perspective;
+    update (time, delta){
+      let pad = Phaser.Input.Gamepad.Gamepad;
 
-            this.zz[i] += this.speed * (delta / 1000);
+    	if (this.input.gamepad.total){
+      		pad = this.input.gamepad.getPad(0);
+    	}
+      for (let i = 0; i < this.max; i++)
+      {
+          let perspective = this.distance / (this.distance - this.zz[i]);
+          let x = config.scale.width/2 + this.xx[i] * perspective;
+          let y = config.scale.height/2 + this.yy[i] * perspective;
 
-            if (this.zz[i] > 300)
-            {
-                this.zz[i] -= 600;
-            }
+          this.zz[i] += this.speed * (delta / 1000);
 
-            let bob = this.stars.children.list[i];
+          if (this.zz[i] > 300)
+          {
+              this.zz[i] -= 600;
+          }
 
-            bob.x = x;
-            bob.y = y;
-        }
-        
-        if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
-        {
-            // console.log("DisplayHiScores to title");
-            this.scene.start('gameTitle');
-            // console.log("Stopping current Scene");
-            this.scene.stop();
-        }
+          let bob = this.stars.children.list[i];
+
+          bob.x = x;
+          bob.y = y;
+      }
+      
+      if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space) || pad.A || pad.B)
+      {
+          // console.log("DisplayHiScores to title");
+          this.scene.start('gameTitle');
+          // console.log("Stopping current Scene");
+          this.scene.stop();
+      }
     }
     getScoresRequest(callbackFunction){
         var self = this; 

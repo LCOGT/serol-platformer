@@ -174,7 +174,7 @@ class Level1 extends Phaser.Scene {
       this.serol.anims.play('staticBob',true);
       this.serol.setVelocityX(0);
     }
-    if((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.serol.body.onFloor()) {
+    if((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown || pad.A) && this.serol.body.onFloor()) {
       this.jump.play();
       this.serol.setVelocityY(-gameSettings.playerYSpeed);
     }

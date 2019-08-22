@@ -9,6 +9,12 @@ class Title extends Phaser.Scene {
 	create() {
         //remove listeners
         this.events.removeAllListeners('SELECT');
+        this.pad = this.input.gamepad;
+
+    	if (this.input.gamepad.total){
+      		this.pad = this.input.gamepad.getPad(0);
+        }
+        this.pad.off('up');
         storyMode = false;
         totalScore = 0;
 		//background
@@ -48,6 +54,30 @@ class Title extends Phaser.Scene {
         texts.forEach((text, index) => {
             textGroup.push(new MenuText(this, config.scale.width / 2, 400 + 70 * index + 1, "pixelFont", text, 60, index).setOrigin(0.5));
         });
+
+        
+        
+        this.pad.on('up', (pad, button, value) =>{
+            console.log("pad: "+pad);
+            console.log("button down " + button.index);
+            switch (button.index) {
+                case 12:
+                    console.log("up");
+                    this.activeText -= 1;
+                    this.events.emit('CHANGE_BUTTON');
+                    break;
+                case 13:
+                    console.log("up");
+                    this.activeText += 1;
+                    this.events.emit('CHANGE_BUTTON');
+                    break;
+                case 1:
+                    console.log("up");
+                    this.events.emit('SELECT');
+                    break;
+            }           
+        });
+
         this.input.keyboard.on('keydown', event => {
             switch (event.key) {
                 case 'ArrowUp':
@@ -118,6 +148,7 @@ class Title extends Phaser.Scene {
                 this.scale.startFullscreen();
             }
         });
+        
 	}
 
 	update() {

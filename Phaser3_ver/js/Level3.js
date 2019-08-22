@@ -390,7 +390,7 @@ class Level3 extends Phaser.Scene {
 		this.transition = this.time.delayedCall(3000, function(){
 			this.sound.stopAll();
       this.scene.start('gameOver');
-      console.log("Stopping current Scene");
+      // console.log("Stopping current Scene");
       this.scene.stop();
 		}, [], this);  // delay in ms
 	}

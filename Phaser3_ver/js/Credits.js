@@ -84,17 +84,36 @@ class Credits extends Phaser.Scene {
     this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+    this.pad = this.input.gamepad;
+    if (this.input.gamepad.total){
+      this.pad = this.input.gamepad.getPad(0);
+    }
+    this.pad.on('down', (pad, button, value) =>{
+      switch (button.index) {
+          case 0:
+              this.switchScene();
+              break;
+          case 1:
+              this.switchScene();
+              break;
+      }           
+    });
+
 
   }
   update(){
+    
     if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
     {
-      this.sound.stopAll();
-      // console.log("Credits to title");
-      this.scene.switch('gameTitle');
-      // console.log("Stopping current Scene");
-      this.scene.stop();
+      this.switchScene();
     }
+  }
+  switchScene(){
+    this.sound.stopAll();
+    // console.log("Credits to title");
+    this.scene.switch('gameTitle');
+    // console.log("Stopping current Scene");
+    this.scene.stop();
   }
 }
 

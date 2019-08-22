@@ -20,7 +20,12 @@ class Level2Complete extends Phaser.Scene {
 	}
 
 	update() {
-		if (Phaser.Input.Keyboard.JustDown(this.enter)){
+		let pad = Phaser.Input.Gamepad.Gamepad;
+
+    	if (this.input.gamepad.total){
+      		pad = this.input.gamepad.getPad(0);
+    	}
+		if (Phaser.Input.Keyboard.JustDown(this.enter)|| pad.B){
 			if(storyMode==true){
 				//change to level 3 when ready
 				this.scene.start('instructions3');

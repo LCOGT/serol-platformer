@@ -6,7 +6,7 @@ class GameOver extends Phaser.Scene {
 
 	create() {
 		//background
-		this.gameOverBg = this.add.image(0,0,"gameOver").setOrigin(0,0).setInteractive();
+		this.gameOverBg = this.add.image(0,0,"gameOver").setOrigin(0,0);
 		//sound
 		this.gameOverBGM = this.sound.add('game_over');
 		this.gameOverBGM.play();
@@ -20,8 +20,13 @@ class GameOver extends Phaser.Scene {
 	}
 
 	update() {
+		let pad = this.input.gamepad;
+
+    	if (this.input.gamepad.total){
+      		pad = this.input.gamepad.getPad(0);
+    	}
 		//fade in tween here
-		if (Phaser.Input.Keyboard.JustDown(this.enter)){
+		if (Phaser.Input.Keyboard.JustDown(this.enter) || pad.B){
 			if(storyMode==true){
 				// console.log("gameOver to enter Hi Scores");
 				this.scene.start('enterHiScores');
