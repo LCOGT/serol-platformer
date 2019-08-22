@@ -291,6 +291,8 @@ class Level1 extends Phaser.Scene {
     //increase life count
     if (this.lives >= 3){
       this.lives = 3;
+      this.score += 50;
+      this.scoreLabel.text = "SCORE " + this.score;
     }else{
       this.lives++;
     }

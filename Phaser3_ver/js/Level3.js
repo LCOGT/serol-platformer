@@ -74,6 +74,8 @@ class Level3 extends Phaser.Scene {
     //  Set the camera and physics bounds to be the size of 4x4 bg images
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
+    this.cameras.main.setBackgroundColor('#000095')
+    
     //  Mash 4 images together to create background
     this.add.image(0, 0, 'dark_sky').setOrigin(0);
     this.add.image(0, 0, 'stars_bg').setOrigin(0);
@@ -345,6 +347,8 @@ class Level3 extends Phaser.Scene {
       //increase life count
       if (this.lives >= 3){
         this.lives = 3;
+        this.score += 50;
+        this.scoreLabel.text = "SCORE " + this.score;
       }else{
         this.lives++;
       }

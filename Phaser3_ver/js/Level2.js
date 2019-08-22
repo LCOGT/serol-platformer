@@ -391,9 +391,11 @@ class Level2 extends Phaser.Scene {
 		this.gainLife.play();
 		//increase life count
 		if (this.lives >= 3){
-		  this.lives = 3;
+		    this.lives = 3;
+		    this.score += 50;
+    		this.scoreLabel.text = "SCORE " + this.score;
 		}else{
-		  this.lives++;
+		  	this.lives++;
 		}
 		this.livesLabel.text = "LIVES " + this.lives;
 		//update lives gauge
