@@ -77,17 +77,17 @@ class Level3 extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#000095')
     
     //  Mash 4 images together to create background
-    this.add.sprite(0, 0, 'dark_sky',0).setOrigin(0);
-    this.add.sprite(0, 0, 'stars_bg',0).setOrigin(0);
+    this.bg1 = this.add.sprite(0, 0, 'dark_sky',0).setOrigin(0);
+    this.bg1s =this.add.sprite(0, 0, 'stars_bg',0).setOrigin(0);
 
-    this.add.sprite(config.scale.width, 0, 'dark_sky',0).setOrigin(0).setFlipX(true);
-    this.add.sprite(config.scale.width, 0, 'stars_bg',0).setOrigin(0).setFlipX(true);
+    this.bg2 = this.add.sprite(config.scale.width, 0, 'dark_sky',0).setOrigin(0).setFlipX(true);
+    this.bg2s =this.add.sprite(config.scale.width, 0, 'stars_bg',0).setOrigin(0).setFlipX(true);
 
-    this.add.sprite(0, config.scale.height, 'dark_sky',0).setOrigin(0).setFlipY(true);
-    this.add.sprite(0, config.scale.height, 'stars_bg',0).setOrigin(0).setFlipY(true);
+    this.bg3 = this.add.sprite(0, config.scale.height, 'dark_sky',0).setOrigin(0).setFlipY(true);
+    this.bg3s =this.add.sprite(0, config.scale.height, 'stars_bg',0).setOrigin(0).setFlipY(true);
 
-    this.add.sprite(config.scale.width, config.scale.height, 'dark_sky',0).setOrigin(0).setFlipX(true).setFlipY(true);
-    this.add.sprite(config.scale.width, config.scale.height, 'stars_bg',0).setOrigin(0).setFlipX(true).setFlipY(true);
+    this.bg4 = this.add.sprite(config.scale.width, config.scale.height, 'dark_sky',0).setOrigin(0).setFlipX(true).setFlipY(true);
+    this.bg4s =this.add.sprite(config.scale.width, config.scale.height, 'stars_bg',0).setOrigin(0).setFlipX(true).setFlipY(true);
 
     //astronomical objects
     this.astros = this.physics.add.group();
