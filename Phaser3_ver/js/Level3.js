@@ -145,7 +145,7 @@ class Level3 extends Phaser.Scene {
         
     
     //serol object
-    this.serol = this.add.container(config.scale.width / 2, config.scale.height / 2).setSize(50, 50);
+    this.serol = this.add.container(config.scale.width, config.scale.height).setSize(50, 50);
     this.outer = this.add.image(0,-12, 'camera_frame').setOrigin(0.5, 0.5).setScale(1.2);
     this.inner = this.add.image(0,0, 'camera_circle').setOrigin(0.5, 0.5).setScale(1.2);
     this.serol.add([this.outer, this.inner]);
