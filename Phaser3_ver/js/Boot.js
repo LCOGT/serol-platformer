@@ -118,6 +118,7 @@ class Boot extends Phaser.Scene {
 		this.load.audio('lvl_complete', 'assets/audio/serol_level_complete.mp3');
 		this.load.audio('leveltwo_bgm', 'assets/audio/serol_level2.mp3');
 		this.load.audio('levelthree_bgm', 'assets/audio/serol_level3.mp3');
+		this.load.audio('hi_scores', 'assets/audio/hi_scores.mp3');
 
 		this.add.text(config.scale.height-300, config.scale.width/2 , "NOW LOADING", "arial", 80).setOrigin(0,0.5);
 		let loadingBar = this.add.graphics({

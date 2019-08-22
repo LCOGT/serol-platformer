@@ -40,11 +40,11 @@ class Credits extends Phaser.Scene {
 
     //music credits
     this.musicCredits = this.add.bitmapText(config.scale.width/2, 110, "pixelFont", 
-    "Music:\n\n\n\n\n\n\n\n\n\n\n\nSound effects:\n", 30).setOrigin(0.5,0).setCenterAlign().setTint(0x00ffff);
+    "Music:\n\n\n\n\n\n\n\n\n\n\n\n\nSound effects:\n", 30).setOrigin(0.5,0).setCenterAlign().setTint(0x00ffff);
     this.add.bitmapText(370,130, "pixelFont",
-    "Komiku -\n\n\nRolemusic -\n\nRoccoW -\n\nMathgrant -\n\n\n\n\nNenadSimic -\n\nplasterbrain -",30).setTint(0xffb700);
+    "Komiku -\n\n\nRolemusic -\n\nRoccoW -\n\nMathgrant -\n\n\n\n\n\nNenadSimic -",30).setTint(0xffb700);
     this.add.bitmapText(380,130, "pixelFont",
-    "\nPoupi Great Adventures :\n The Arcade Game\n\nThe White\n\nChipho instrumental\n\nA Foxger's Prayerful Dream\nGeneric Falling Blocks Puzzle\nHydroplanes\n\n\nMenu Selection Click\nGame Start",30).setRightAlign();
+    "\nPoupi Great Adventures :\n The Arcade Game\n\nThe White\n\nChipho instrumental\n\nA Foxger's Prayerful Dream\nGeneric Falling Blocks Puzzle\nHydroplanes\nVictorious Accomplishment\n\n\nMenu Selection Click",30).setRightAlign();
     
     //back
     this.backLabel = this.add.bitmapText(config.scale.width/2, 570, "pixelFont", "[back]", 60).setOrigin(0.5,0).setTint(0xffb700);

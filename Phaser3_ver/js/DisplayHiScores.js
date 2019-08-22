@@ -24,6 +24,19 @@ class DisplayHiScores extends Phaser.Scene {
         this.scoresBg = this.add.image(0,0,"blue_bg").setOrigin(0,0);
         this.stars = this.add.blitter(0, 0, 'star');
 
+        //sound
+        this.hiScoresBGM = this.sound.add("hi_scores");
+        var musicConfig = {
+            mute: false,
+            volume: 0.8,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.hiScoresBGM.play(musicConfig);
+
         for (let i = 0; i < this.max; i++)
         {
             this.xx[i] = Math.floor(Math.random() * 800) - 400;
@@ -75,6 +88,7 @@ class DisplayHiScores extends Phaser.Scene {
         
         if (Phaser.Input.Keyboard.JustDown(this.enter)||Phaser.Input.Keyboard.JustDown(this.space))
         {
+          this.sound.stopAll();
             // console.log("DisplayHiScores to title");
             this.scene.start('gameTitle');
             // console.log("Stopping current Scene");
