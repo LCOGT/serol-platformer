@@ -81,13 +81,13 @@ class Level3 extends Phaser.Scene {
     this.add.image(0, 0, 'stars_bg');
 
     // this.add.image(config.scale.width, 0, 'dark_sky').setOrigin(0).setFlipX(true);
-    this.add.image(1024, 0, 'stars_bg');
+    this.add.image(1124, 0, 'stars_bg');
 
     // this.add.image(0, config.scale.height, 'dark_sky').setOrigin(0).setFlipY(true);
-    this.add.image(0, 640, 'stars_bg');
+    this.add.image(0, 740, 'stars_bg');
 
     // this.add.image(config.scale.width, config.scale.height, 'dark_sky').setOrigin(0).setFlipX(true).setFlipY(true);
-    this.add.image(1024, 640, 'stars_bg');
+    this.add.image(1124, 740, 'stars_bg');
     
     //astronomical objects
     this.astros = this.physics.add.group();
