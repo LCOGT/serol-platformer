@@ -76,10 +76,6 @@ class Level3 extends Phaser.Scene {
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
     this.cameras.main.setBackgroundColor('#000062')
     
-    //  add stars in random locations
-    this.stars = this.physics.add.group();
-    this.scatterStars();
-    
     //astronomical objects
     this.astros = this.physics.add.group();
     this.scatterObjects(this.coordinates);
@@ -313,15 +309,6 @@ class Level3 extends Phaser.Scene {
       this.astros.add(thing);
       thing.body.setCircle(50,20);
     });
-  }
-  scatterStars(){
-    console.log("creating stars")
-    for(var i=0; i<1000; i++){
-      console.log("new star")
-      let star = this.add.sprite(Math.floor(Math.random() * config.scale.width*2), Math.floor(Math.random() * config.scale.height*2), 'star',0);
-      star.alpha = (Math.random() * 1);
-      this.stars.add(star);
-    }
   }
   catchOneUp(serol,oneUp){
     if(oneUp.alpha == 1){
