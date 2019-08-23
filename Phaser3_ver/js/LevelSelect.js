@@ -114,9 +114,7 @@ class LevelSelect extends Phaser.Scene {
             }
             if (payload && typeof payload.setIndex !== 'undefined')
                 this.activeSelection = payload.setIndex;
-            textGroup.forEach(text => {
-                text.setStyleActive(text.index === this.activeSelection % texts.length);
-            });
+            
         });
         this.events.addListener('BACK', payload => {
             // console.log("Level Select to title");

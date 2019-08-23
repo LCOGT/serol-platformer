@@ -74,21 +74,12 @@ class Level3 extends Phaser.Scene {
     //  Set the camera and physics bounds to be the size of 4x4 bg images
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
-    this.cameras.main.setBackgroundColor('#000095')
+    this.cameras.main.setBackgroundColor('#000062')
     
-    //  Mash 4 images together to create background
-    this.bg1 = this.add.sprite(0, 0, 'dark_sky',0).setOrigin(0);
-    this.bg1s =this.add.sprite(0, 0, 'stars_bg',0).setOrigin(0);
-
-    this.bg2 = this.add.sprite(config.scale.width, 0, 'dark_sky',0).setOrigin(0).setFlipX(true);
-    this.bg2s =this.add.sprite(config.scale.width, 0, 'stars_bg',0).setOrigin(0).setFlipX(true);
-
-    this.bg3 = this.add.sprite(0, config.scale.height, 'dark_sky',0).setOrigin(0).setFlipY(true);
-    this.bg3s =this.add.sprite(0, config.scale.height, 'stars_bg',0).setOrigin(0).setFlipY(true);
-
-    this.bg4 = this.add.sprite(config.scale.width, config.scale.height, 'dark_sky',0).setOrigin(0).setFlipX(true).setFlipY(true);
-    this.bg4s =this.add.sprite(config.scale.width, config.scale.height, 'stars_bg',0).setOrigin(0).setFlipX(true).setFlipY(true);
-
+    //  add stars in random locations
+    this.stars = this.physics.add.group();
+    this.scatterStars();
+    
     //astronomical objects
     this.astros = this.physics.add.group();
     this.scatterObjects(this.coordinates);
@@ -131,13 +122,6 @@ class Level3 extends Phaser.Scene {
     //target sprite
     this.targetSprite = this.add.sprite(95, config.scale.height - 80, 'astro_objects',this.queue[0]).setOrigin(0.5,0.5).setScrollFactor(0);
     //target text
-    // this.targetLabelBg = this.add.sprite(config.scale.width -10, config.scale.height -10, 'target').setOrigin(0,1).setOrigin(1,1).setScrollFactor(0);
-    // this.targetLabelBg.setScale(2,0.5);
-    // this.physics.add.existing(this.targetLabelBg, true);
-    // this.targetLabelBg.enableBody = true;
-    // this.targetLabelBg.body.x = config.scale.width * 2 - 10;
-    // this.targetLabelBg.body.y = config.scale.height * 2 -10;
-    // this.targetLabelBg.body.immovable = true;
     this.targetLabel = this.add.bitmapText(config.scale.width -10, config.scale.height -10, "pixelFont", this.astrolabels[this.queue[0]], 60).setOrigin(1,1).setScrollFactor(0);
     //countdown in seconds
     
@@ -329,6 +313,15 @@ class Level3 extends Phaser.Scene {
       this.astros.add(thing);
       thing.body.setCircle(50,20);
     });
+  }
+  scatterStars(){
+    console.log("creating stars")
+    for(var i=0; i<1000; i++){
+      console.log("new star")
+      let star = this.add.sprite(Math.floor(Math.random() * config.scale.width*2), Math.floor(Math.random() * config.scale.height*2), 'star',0);
+      star.alpha = (Math.random() * 1);
+      this.stars.add(star);
+    }
   }
   catchOneUp(serol,oneUp){
     if(oneUp.alpha == 1){
