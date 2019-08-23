@@ -81,7 +81,7 @@ class Level3 extends Phaser.Scene {
     this.add.image(0, 0, 'stars_bg').setOrigin(0,0);
 
     // this.add.image(config.scale.width, 0, 'dark_sky').setOrigin(0).setFlipX(true);
-    // this.add.image(1536, 318, 'stars_bg').setOrigin(0,0);
+    this.add.image(1024, 0, 'stars_bg').setOrigin(0,0);
 
     // this.add.image(0, config.scale.height, 'dark_sky').setOrigin(0).setFlipY(true);
     // this.add.image(512, 958, 'stars_bg').setOrigin(0,0);
