@@ -75,6 +75,19 @@ class Level3 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, config.scale.width * 2, config.scale.height * 2);
     this.physics.world.setBounds(0, 70, config.scale.width * 2, config.scale.height * 2 -70);
     this.cameras.main.setBackgroundColor('#000062')
+
+    //  Mash 4 images together to create background
+    // this.add.image(0, 0, 'dark_sky').setOrigin(0);
+    this.add.image(0, 0, 'stars_bg').setOrigin(0);
+
+    // this.add.image(config.scale.width, 0, 'dark_sky').setOrigin(0).setFlipX(true);
+    this.add.image(config.scale.width, 0, 'stars_bg').setOrigin(0).setFlipX(true);
+
+    // this.add.image(0, config.scale.height, 'dark_sky').setOrigin(0).setFlipY(true);
+    this.add.image(0, config.scale.height, 'stars_bg').setOrigin(0).setFlipY(true);
+
+    // this.add.image(config.scale.width, config.scale.height, 'dark_sky').setOrigin(0).setFlipX(true).setFlipY(true);
+    this.add.image(config.scale.width, config.scale.height, 'stars_bg').setOrigin(0).setFlipX(true).setFlipY(true);
     
     //astronomical objects
     this.astros = this.physics.add.group();
