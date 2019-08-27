@@ -1,28 +1,51 @@
-//game.js
+// game.js
+var gameSettings = {
+  playerXSpeed: 400,
+  playerYSpeed: 1000
+}
 
-var game = new Phaser.Game(
-  1024, 640,
-  Phaser.AUTO,
-  'SerolGame',
-  null,
-  false,
-  false,
-  null);
+var config = {
+  type: Phaser.AUTO,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    parent: "SerolGame",
+    width: 1024,
+    height: 640
+  },
+  backgroundColor: 0x000000,
+  pixelArt: true,
+  scene:[
+    Boot, 
+    Title,
+    LevelSelect, 
+    Credits,
+    Instructions1,
+    Level1,
+    Level1Complete,
+    Instructions2,
+    Level2,
+    Level2Complete,
+    Instructions3,
+    Level3,
+    Level3Complete,
+    GameOver,
+    EnterHiScores,
+    DisplayHiScores
+    
+  ],
+  physics: {
+    default: 'arcade',
+    arcade: {
+        gravity: {y: 0},
+        debug: false
+    }
+  },
+  input: {
+    gamepad: true
+  }
 
-//add each game state
-game.state.add('boot', bootState);
-game.state.add('load', loadState);
-game.state.add('title', titleState);
-game.state.add('credits', credits);
-game.state.add('instructions1', instructions1);
-game.state.add('instructions2', instructions2);
-game.state.add('menu', mainMenu);
-game.state.add('gameOver', gameOver);
-game.state.add('levelone', playState1);
-game.state.add('leveltwo', playState2);
-game.state.add('hiScores', hiScores);
-game.state.add('level1Complete', level1Complete);
-game.state.add('level2Complete', level2Complete);
+};
 
-//call the boot state
-game.state.start('boot');
+var game = new Phaser.Game(config);
+
