@@ -1,7 +1,7 @@
 # serol-platformer
 This game only works if a web server is running.
 
-## To set up a server (using anaconda):
+## To set up a simple web server for development (using anaconda):
 * set up anaconda
 * `conda create -n [environment name] python=3` (if you are using python 3)
 * go to directory where website file is
